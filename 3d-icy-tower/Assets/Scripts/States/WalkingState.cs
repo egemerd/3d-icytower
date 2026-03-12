@@ -9,12 +9,12 @@ public class WalkingState : IState
 
     public void ExitState(PlayerController player)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Exited Walking State");
     }
 
     public void UpdateState(PlayerController player)
     {
-        player.Movement();
+         player.Movement();
          if (!player.isMoving)
          {
              player.ChangeState(new IdleState());

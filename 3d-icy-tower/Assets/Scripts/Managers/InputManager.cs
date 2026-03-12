@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
     private PlayerInput playerInput;
 
     private InputAction moveAction;
-    private InputAction jumpAction;
+    public InputAction jumpAction;
 
     public Vector2 moveInput { get; private set; }
 
