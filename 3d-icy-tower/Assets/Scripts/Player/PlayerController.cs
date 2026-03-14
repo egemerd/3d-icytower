@@ -111,7 +111,6 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = velocity;
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
-        
 
     }
 

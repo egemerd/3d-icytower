@@ -14,15 +14,16 @@ public class IdleState : IState
 
     public void UpdateState(PlayerController player)
     {
+        player.Movement();
         if (player.isMoving)
         {
             player.ChangeState(new WalkingState()); 
         }
-        if (player.IsGrounded() && InputManager.Instance.isJumpingTriggered)
+        if (player.IsGrounded() && InputManager.Instance.jumpAction.IsPressed())
         {
             player.Jump();
             player.ChangeState(new JumpingState());
         }
-        player.Movement();
+        
     }
 }

@@ -19,7 +19,7 @@ public class WalkingState : IState
         {
             player.ChangeState(new IdleState());
         }
-        if (player.IsGrounded() && InputManager.Instance.isJumpingTriggered)
+        else if (player.IsGrounded() && InputManager.Instance.jumpAction.IsPressed())
         {
             player.Jump();
             player.ChangeState(new JumpingState());
