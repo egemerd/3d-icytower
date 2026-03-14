@@ -22,11 +22,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.12f;
 
     [Header("Ground Check")]
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckRadius = 0.15f;
+    [SerializeField] private float groundCheckDistance = 0.25f;
     [SerializeField] private LayerMask groundMask;
 
-    public bool isMoving { get; private set; }
+    [Header("Debug")]
+    [SerializeField] private bool showCurrentStateOnScreen = true;
+
+    private GUIStyle stateLabelStyle;
+
+    public bool isMoving { get; private set; } 
 
     private void Awake()
     {
@@ -45,6 +49,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = input.moveInput;
         isMoving = Mathf.Abs(moveInput.x) > 0.1f;
+        Debug.Log(IsGrounded());
     }
 
     private void FixedUpdate()
@@ -99,45 +104,66 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         Vector3 velocity = rb.linearVelocity;
-
-        // Calculate rate of stop: How fast to go from currentSpeed to 0 within 'decelerationTime'
-        float decelerationRate = targetReachSpeed / decelerationTime;
-
-        // Bring velocity down to 0 smoothly 
-        velocity.z = Mathf.MoveTowards(velocity.z, 0f, decelerationRate * Time.fixedDeltaTime);
-        velocity.x = 0f;
-
+        velocity.y = 0f;
         rb.linearVelocity = velocity;
+
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        
+
     }
 
-    
 
-    
 
-   
+
+
+
 
     public void InAirMovement()
     {
         
     }   
 
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
-        if (groundCheck != null)
-        {
-            return Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask, QueryTriggerInteraction.Ignore);
-        }
-
-        float checkDistance = 0.25f;
-        return Physics.Raycast(transform.position, Vector3.down, checkDistance, groundMask, QueryTriggerInteraction.Ignore);
+        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        if (groundCheck != null)
+        Vector3 origin = transform.position;
+        Vector3 direction = Vector3.down;
+        Vector3 end = origin + direction * groundCheckDistance;
+
+        bool grounded = Physics.Raycast(
+            origin,
+            direction,
+            groundCheckDistance,
+            groundMask,
+            QueryTriggerInteraction.Ignore);
+
+        Gizmos.color = grounded ? Color.green : Color.red;
+        Gizmos.DrawRay(origin, direction * groundCheckDistance);
+        Gizmos.DrawWireSphere(end, 0.03f);
+    }
+
+    private void OnGUI()
+    {
+        if (!showCurrentStateOnScreen || currentState == null)
         {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            return;
         }
+
+        if (stateLabelStyle == null)
+        {
+            stateLabelStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 16,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = Color.white }
+            };
+        }
+
+        string stateName = currentState.GetType().Name;
+        GUI.Label(new Rect(10f, 10f, 500f, 24f), "State: " + stateName, stateLabelStyle);
     }
 }

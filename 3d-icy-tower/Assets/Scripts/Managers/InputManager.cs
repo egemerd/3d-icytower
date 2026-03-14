@@ -40,7 +40,6 @@ public class InputManager : MonoBehaviour
     {
         moveInput = moveAction.ReadValue<Vector2>();
         isMoving = moveInput.magnitude > 0.1f;
-        Debug.Log($"Move Input: {moveInput}, Is Moving: {isMoving}");
     }
 
 }

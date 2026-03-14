@@ -1,16 +1,23 @@
 using UnityEngine;
 
-public class JumpingState : MonoBehaviour
+public class JumpingState : IState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+    public void EnterState(PlayerController player)
+    {   
+        Debug.Log("Entered Jumping State");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ExitState(PlayerController player)
     {
-        
+        Debug.Log("Exited Jumping State");
+    }
+
+    public void UpdateState(PlayerController player)
+    {
+        player.Movement();
+        if (!player.isMoving && player.IsGrounded())
+        {
+            player.ChangeState(new IdleState());
+        }
     }
 }
