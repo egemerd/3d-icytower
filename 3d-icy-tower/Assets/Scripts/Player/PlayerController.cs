@@ -2,33 +2,54 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    InputManager input;
-    public float speed = 8f;   
-    Rigidbody rb;
-    public bool isMoving;
+    private InputManager input;
+    private Vector2 moveInput;
+    private Rigidbody rb;
     private IState currentState;
 
-    [Header("Jump / Ground Check")]
-    [SerializeField] private float jumpForce = 7f;          // upward impulse applied on jump
-    [SerializeField] private Transform groundCheck;        // assign an empty child at player's feet
+    [Header("Movement")]
+    [SerializeField] private float startSpeed = 3f;
+    [SerializeField] private float targetReachSpeed = 10f;
+    [SerializeField] private float accelerationTime = 0.3f;
+    [SerializeField] private float decelerationTime = 0.2f;
+    [SerializeField] private float decelerationAmount = 1.5f;
+    [SerializeField] private float accelerationAmount = 1.1f;
+
+
+    [Header("Jump")]
+    [SerializeField] private float jumpForce = 7f;
+    [SerializeField] private float coyoteTime = 0.12f;
+    [SerializeField] private float jumpBufferTime = 0.12f;
+
+    [Header("Ground Check")]
+    [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.15f;
     [SerializeField] private LayerMask groundMask;
+
+    public bool isMoving { get; private set; }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
+
     private void Start()
     {
         input = InputManager.Instance;
+        
         currentState = new IdleState();
         currentState.EnterState(this);
     }
 
+    private void Update()
+    {
+        moveInput = input.moveInput;
+        isMoving = Mathf.Abs(moveInput.x) > 0.1f;
+    }
+
     private void FixedUpdate()
     {
-        currentState.UpdateState(this);
-        if(input.jumpAction.triggered)
-            Jump();
+        currentState.UpdateState(this); 
     }
 
     public void ChangeState(IState newState)
@@ -38,41 +59,77 @@ public class PlayerController : MonoBehaviour
         currentState.EnterState(this);
     }
 
-
     public void Movement()
     {
-        float inputX = input.moveInput.x;
+        Vector3 velocity = rb.linearVelocity;
+        float currentZ = velocity.z;
+        float inputX = moveInput.x;
 
-        // Preserve vertical velocity, set horizontal directly for tight arcade feel.
-        Vector3 vel = rb.linearVelocity;
-        vel.z = inputX * speed * Time.deltaTime;
-        rb.linearVelocity = vel;
+        if (Mathf.Abs(inputX) > 0.1f)
+        {
+            float direction = Mathf.Sign(inputX);
+            float initialSpeed = Mathf.Min(startSpeed, targetReachSpeed);
+
+            if (Mathf.Abs(currentZ) < 0.01f || Mathf.Sign(currentZ) != direction)
+            {
+                currentZ = direction * initialSpeed;
+            }
+
+            float baseAccelerationRate = Mathf.Abs(targetReachSpeed - initialSpeed) / Mathf.Max(0.001f, accelerationTime);
+            float accelerationRate = baseAccelerationRate * Mathf.Max(0f, accelerationAmount);
+            float targetZ = direction * targetReachSpeed;
+
+            currentZ = Mathf.MoveTowards(currentZ, targetZ, accelerationRate * Time.fixedDeltaTime);
+        }
+        else
+        {
+            float baseDecelerationRate = targetReachSpeed / Mathf.Max(0.001f, decelerationTime);
+            float decelerationRate = baseDecelerationRate * Mathf.Max(0f, decelerationAmount);
+
+            currentZ = Mathf.MoveTowards(currentZ, 0f, decelerationRate * Time.fixedDeltaTime);
+        }
+
+        velocity.z = currentZ;
+        velocity.x = 0f;
+        rb.linearVelocity = velocity;
     }
+
+    
 
     public void Jump()
     {
-        if (!IsGrounded())
-            return;
+        Vector3 velocity = rb.linearVelocity;
 
-        // Clear any downward velocity and apply an immediate upward velocity change for predictable jump.
-        Vector3 vel = rb.linearVelocity;
-        vel.y = 0f;
-        rb.linearVelocity = vel;
+        // Calculate rate of stop: How fast to go from currentSpeed to 0 within 'decelerationTime'
+        float decelerationRate = targetReachSpeed / decelerationTime;
 
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        // Bring velocity down to 0 smoothly 
+        velocity.z = Mathf.MoveTowards(velocity.z, 0f, decelerationRate * Time.fixedDeltaTime);
+        velocity.x = 0f;
+
+        rb.linearVelocity = velocity;
     }
+
+    
+
+    
+
+   
+
+    public void InAirMovement()
+    {
+        
+    }   
 
     private bool IsGrounded()
     {
-        // If a groundCheck Transform is provided, use sphere check; else fallback to a short raycast.
         if (groundCheck != null)
         {
             return Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask, QueryTriggerInteraction.Ignore);
         }
 
-        // fallback - raycast from object position downward
-        float checkDistance = 0.2f;
-        return Physics.Raycast(transform.position, Vector3.down, checkDistance);
+        float checkDistance = 0.25f;
+        return Physics.Raycast(transform.position, Vector3.down, checkDistance, groundMask, QueryTriggerInteraction.Ignore);
     }
 
     private void OnDrawGizmosSelected()

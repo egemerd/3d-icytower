@@ -14,9 +14,10 @@ public class IdleState : IState
 
     public void UpdateState(PlayerController player)
     {
-        if (InputManager.Instance.isMoving)
+        if (player.isMoving)
         {
             player.ChangeState(new WalkingState()); 
         }
+        player.Movement();
     }
 }
