@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool showCurrentStateOnScreen = true;
 
     private GUIStyle stateLabelStyle;
+    public Rigidbody Rb => rb;
 
     public bool isMoving { get; private set; } 
 
@@ -49,7 +50,6 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = input.moveInput;
         isMoving = Mathf.Abs(moveInput.x) > 0.1f;
-        Debug.Log(IsGrounded());
     }
 
     private void FixedUpdate()
@@ -63,7 +63,10 @@ public class PlayerController : MonoBehaviour
         currentState = newState;
         currentState.EnterState(this);
     }
-
+    public bool CheckJumpInput()
+    {
+        return InputManager.Instance.ConsumeJumpPressed();
+    }
     public void Movement()
     {
         Vector3 velocity = rb.linearVelocity;
@@ -120,7 +123,7 @@ public class PlayerController : MonoBehaviour
 
     public void InAirMovement()
     {
-        
+        Movement();
     }   
 
     public bool IsGrounded()

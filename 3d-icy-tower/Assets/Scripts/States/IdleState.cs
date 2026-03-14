@@ -18,7 +18,7 @@ public class IdleState : IState
         {
             player.ChangeState(new WalkingState()); 
         }
-        if (player.IsGrounded() && InputManager.Instance.jumpAction.triggered)
+        if (player.IsGrounded() && InputManager.Instance.isJumpingTriggered)
         {
             player.Jump();
             player.ChangeState(new JumpingState());

@@ -11,6 +11,8 @@ public class InputManager : MonoBehaviour
     private InputAction moveAction;
     public InputAction jumpAction;
 
+    public bool jumpPressed;
+
     public Vector2 moveInput { get; private set; }
 
     //Booleans
@@ -40,6 +42,16 @@ public class InputManager : MonoBehaviour
     {
         moveInput = moveAction.ReadValue<Vector2>();
         isMoving = moveInput.magnitude > 0.1f;
+        if (jumpAction.WasPressedThisFrame())
+        {
+            jumpPressed = true;
+        }
     }
 
+    public bool ConsumeJumpPressed()
+    {
+        bool wasPressed = jumpPressed;
+        jumpPressed = false;
+        return wasPressed;
+    }
 }

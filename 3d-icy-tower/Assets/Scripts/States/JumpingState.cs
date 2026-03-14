@@ -14,10 +14,18 @@ public class JumpingState : IState
 
     public void UpdateState(PlayerController player)
     {
-        player.Movement();
-        if (!player.isMoving && player.IsGrounded())
+        player.InAirMovement();
+
+        if (player.Rb.linearVelocity.y <= 0.1f && player.IsGrounded())
         {
-            player.ChangeState(new IdleState());
+            if (player.isMoving)
+            {
+                player.ChangeState(new WalkingState());
+            }
+            else
+            {
+                player.ChangeState(new IdleState());
+            }
         }
     }
 }
