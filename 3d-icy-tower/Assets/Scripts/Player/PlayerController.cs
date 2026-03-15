@@ -25,11 +25,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 0.25f;
     [SerializeField] private LayerMask groundMask;
 
+    [Header("Wall Bounce")]
+    [SerializeField] private LayerMask wallMask;
+    [SerializeField] private float minBounceSpeed = 5f; // Minimum speed to trigger a bounce
+    [SerializeField] private float bounceSpeedMultiplier = 1.0f;
+
+    [Header("Gravity")]
+    [SerializeField] private float gravityScale = 2.5f;       // Multiplier for Physics.gravity (1 = default)
+    [SerializeField] private float fallMultiplier = 1.5f;     // Extra multiplier when falling (makes jumps feel snappy)
+    [SerializeField] private float maxFallSpeed = 40f;
+
+
     [Header("Debug")]
     [SerializeField] private bool showCurrentStateOnScreen = true;
 
     private GUIStyle stateLabelStyle;
     public Rigidbody Rb => rb;
+    private Vector3 lastFrameVelocity;
 
     public bool isMoving { get; private set; } 
 
@@ -54,6 +66,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        lastFrameVelocity = rb.linearVelocity;
         currentState.UpdateState(this); 
     }
 
@@ -102,7 +115,70 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = velocity;
     }
 
-    
+    public void HandleGravity()
+    {
+        // 1. Calculate Base Gravity
+        Vector3 gravity = Physics.gravity * gravityScale;
+
+        // 2. Apply "Fall Multiplier" 
+        // If we are moving downwards (y < 0), apply extra gravity.
+        // This makes the descent faster than the ascent, which feels better for platformers.
+        if (rb.linearVelocity.y < 0.1f)
+        {
+            gravity *= fallMultiplier;
+        }
+
+        // 3. Apply the Force
+        // ForceMode.Acceleration ignores Mass, giving consistent physics regardless of character weight.
+        rb.AddForce(gravity, ForceMode.Acceleration);
+
+        // 4. Terminal Velocity (Clamp)
+        // Prevent falling too fast if falling from a great height.
+        if (rb.linearVelocity.y < -maxFallSpeed)
+        {
+            Vector3 clampedVelocity = rb.linearVelocity;
+            clampedVelocity.y = -maxFallSpeed;
+            rb.linearVelocity = clampedVelocity;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if ((wallMask.value & (1 << collision.gameObject.layer)) > 0)
+        {
+            Bounce(collision);
+        }
+    }
+
+    private void Bounce(Collision collision)
+    {
+        Vector3 normal = collision.contacts[0].normal;
+
+        // Only bounce off vertical walls (ignore floors/ceilings)
+        if (Mathf.Abs(normal.y) > 0.5f) return;
+
+        // Use the velocity from the previous frame (incoming velocity)
+        // because rb.linearVelocity is likely 0 now (stopped by wall)
+        Vector3 incomingVelocity = lastFrameVelocity;
+
+        // Calculate the reflection. This gives the exact "mirror" angle.
+        Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
+
+        // Apply bounce logic only if we hit hard enough
+        if (incomingVelocity.magnitude > minBounceSpeed || Mathf.Abs(incomingVelocity.z) > 2f)
+        {
+            // Apply the new velocity
+            Vector3 finalBounce = reflectedVelocity * bounceSpeedMultiplier;
+
+            // Optional: Preserve some Y velocity if you want to keep jumping up
+            // finalBounce.y = Mathf.Max(finalBounce.y, incomingVelocity.y);
+
+            rb.linearVelocity = finalBounce;
+
+            // IMPORTANT: If you want to force the state to Jumping/Air
+            // ChangeState(new JumpingState());
+        }
+    }
 
     public void Jump()
     {

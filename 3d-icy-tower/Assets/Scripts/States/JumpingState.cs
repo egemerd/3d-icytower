@@ -15,6 +15,7 @@ public class JumpingState : IState
     public void UpdateState(PlayerController player)
     {
         player.InAirMovement();
+        player.HandleGravity();
 
         if (player.Rb.linearVelocity.y <= 0.1f && player.IsGrounded())
         {
