@@ -1911,13 +1911,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f55b7ac7b47d5642a98b12d96b9ee73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  startSpeed: 5
+  startSpeed: 10
   targetReachSpeed: 25
   accelerationTime: 1.2
   decelerationTime: 0.8
   decelerationAmount: 1.4
   accelerationAmount: 1.5
-  jumpForce: 10
+  jumpForce: 18
   coyoteTime: 0.12
   jumpBufferTime: 0.12
   groundCheckDistance: 2.42
@@ -1929,6 +1929,9 @@ MonoBehaviour:
     m_Bits: 256
   minBounceSpeed: 5
   bounceSpeedMultiplier: 1
+  gravityScale: 3
+  fallMultiplier: 1.5
+  maxFallSpeed: 40
   showCurrentStateOnScreen: 1
 --- !u!136 &1588544251
 CapsuleCollider:

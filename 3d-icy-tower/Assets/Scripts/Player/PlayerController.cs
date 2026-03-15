@@ -27,12 +27,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Wall Bounce")]
     [SerializeField] private LayerMask wallMask;
-    [SerializeField] private float minBounceSpeed = 5f; // Minimum speed to trigger a bounce
+    [SerializeField] private float minBounceSpeed = 5f; 
     [SerializeField] private float bounceSpeedMultiplier = 1.0f;
 
     [Header("Gravity")]
-    [SerializeField] private float gravityScale = 2.5f;       // Multiplier for Physics.gravity (1 = default)
-    [SerializeField] private float fallMultiplier = 1.5f;     // Extra multiplier when falling (makes jumps feel snappy)
+    [SerializeField] private float gravityScale = 2.5f;       
+    [SerializeField] private float fallMultiplier = 1.5f;   
     [SerializeField] private float maxFallSpeed = 40f;
 
 
@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
     private GUIStyle stateLabelStyle;
     public Rigidbody Rb => rb;
     private Vector3 lastFrameVelocity;
+    private float zMomentum;
+
 
     public bool isMoving { get; private set; } 
 
@@ -82,8 +84,6 @@ public class PlayerController : MonoBehaviour
     }
     public void Movement()
     {
-        Vector3 velocity = rb.linearVelocity;
-        float currentZ = velocity.z;
         float inputX = moveInput.x;
 
         if (Mathf.Abs(inputX) > 0.1f)
@@ -91,26 +91,30 @@ public class PlayerController : MonoBehaviour
             float direction = Mathf.Sign(inputX);
             float initialSpeed = Mathf.Min(startSpeed, targetReachSpeed);
 
-            if (Mathf.Abs(currentZ) < 0.01f || Mathf.Sign(currentZ) != direction)
+            // Give a kickoff speed if we are changing direction or stationary
+            if (Mathf.Abs(zMomentum) < 0.01f || Mathf.Sign(zMomentum) != direction)
             {
-                currentZ = direction * initialSpeed;
+                zMomentum = direction * initialSpeed;
             }
 
             float baseAccelerationRate = Mathf.Abs(targetReachSpeed - initialSpeed) / Mathf.Max(0.001f, accelerationTime);
             float accelerationRate = baseAccelerationRate * Mathf.Max(0f, accelerationAmount);
             float targetZ = direction * targetReachSpeed;
 
-            currentZ = Mathf.MoveTowards(currentZ, targetZ, accelerationRate * Time.fixedDeltaTime);
+            // Apply momentum internally
+            zMomentum = Mathf.MoveTowards(zMomentum, targetZ, accelerationRate * Time.fixedDeltaTime);
         }
         else
         {
             float baseDecelerationRate = targetReachSpeed / Mathf.Max(0.001f, decelerationTime);
             float decelerationRate = baseDecelerationRate * Mathf.Max(0f, decelerationAmount);
 
-            currentZ = Mathf.MoveTowards(currentZ, 0f, decelerationRate * Time.fixedDeltaTime);
+            // Friction/Deceleration
+            zMomentum = Mathf.MoveTowards(zMomentum, 0f, decelerationRate * Time.fixedDeltaTime);
         }
 
-        velocity.z = currentZ;
+        Vector3 velocity = rb.linearVelocity;
+        velocity.z = zMomentum;
         velocity.x = 0f;
         rb.linearVelocity = velocity;
     }
@@ -157,26 +161,18 @@ public class PlayerController : MonoBehaviour
         // Only bounce off vertical walls (ignore floors/ceilings)
         if (Mathf.Abs(normal.y) > 0.5f) return;
 
-        // Use the velocity from the previous frame (incoming velocity)
-        // because rb.linearVelocity is likely 0 now (stopped by wall)
         Vector3 incomingVelocity = lastFrameVelocity;
-
-        // Calculate the reflection. This gives the exact "mirror" angle.
         Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
 
-        // Apply bounce logic only if we hit hard enough
         if (incomingVelocity.magnitude > minBounceSpeed || Mathf.Abs(incomingVelocity.z) > 2f)
         {
-            // Apply the new velocity
             Vector3 finalBounce = reflectedVelocity * bounceSpeedMultiplier;
-
-            // Optional: Preserve some Y velocity if you want to keep jumping up
-            // finalBounce.y = Mathf.Max(finalBounce.y, incomingVelocity.y);
 
             rb.linearVelocity = finalBounce;
 
-            // IMPORTANT: If you want to force the state to Jumping/Air
-            // ChangeState(new JumpingState());
+            // IMPORTANT UPDATE: Overwrite the internal momentum tracker so the Movement() 
+            // function immediately respects the newly bounced direction and speed.
+            zMomentum = finalBounce.z;
         }
     }
 
