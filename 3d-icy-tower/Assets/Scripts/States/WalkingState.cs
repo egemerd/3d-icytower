@@ -17,12 +17,12 @@ public class WalkingState : IState
         player.Movement();
         if (!player.isMoving && player.IsGrounded())
         {
-            player.ChangeState(new IdleState());
+            player.ChangeState<IdleState>();
         }
         else if (player.IsGrounded() && InputManager.Instance.jumpAction.IsPressed())
         {
             player.Jump();
-            player.ChangeState(new JumpingState());
+            player.ChangeState<JumpingState>();
         }
     }
 }

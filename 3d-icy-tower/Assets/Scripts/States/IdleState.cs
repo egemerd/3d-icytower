@@ -17,12 +17,12 @@ public class IdleState : IState
         player.Movement();
         if (player.isMoving)
         {
-            player.ChangeState(new WalkingState()); 
+            player.ChangeState<WalkingState>(); 
         }
         if (player.IsGrounded() && InputManager.Instance.jumpAction.IsPressed())
         {
             player.Jump();
-            player.ChangeState(new JumpingState());
+            player.ChangeState<JumpingState>();
         }
         
     }

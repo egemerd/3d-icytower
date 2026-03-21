@@ -21,11 +21,11 @@ public class JumpingState : IState
         {
             if (player.isMoving)
             {
-                player.ChangeState(new WalkingState());
+                player.ChangeState<WalkingState>();
             }
             else
             {
-                player.ChangeState(new IdleState());
+                player.ChangeState<IdleState>();
             }
         }
     }
