@@ -318,7 +318,6 @@ GameObject:
   - component: {fileID: 235773069}
   - component: {fileID: 235773068}
   - component: {fileID: 235773067}
-  - component: {fileID: 235773066}
   m_Layer: 0
   m_Name: Platform
   m_TagString: ClimbPoint
@@ -342,22 +341,6 @@ Transform:
   - {fileID: 2079150900}
   m_Father: {fileID: 750345883}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &235773066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 235773064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: feaa8be1999a53743bbe4669418fae1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OneWayPlatform
-  solidCollider: {fileID: 235773067}
-  passThroughTrigger: {fileID: 2079150901}
-  reEnableOffset: 0.02
-  playerTag: Player
 --- !u!65 &235773067
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -375,7 +358,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2092,7 +2075,7 @@ GameObject:
   - component: {fileID: 2079150900}
   - component: {fileID: 2079150901}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: MantleCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2132,8 +2115,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.63392544, z: 1}
+  m_Center: {x: 0, y: 0.18303728, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

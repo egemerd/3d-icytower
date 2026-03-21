@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         lastFrameVelocity = rb.linearVelocity;
+        HandleGravity();
         currentState.UpdateState(this); 
     }
 
@@ -158,15 +159,17 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 normal = collision.contacts[0].normal;
 
-        // Only bounce off vertical walls (ignore floors/ceilings)
-        if (Mathf.Abs(normal.y) > 0.5f) return;
-
         Vector3 incomingVelocity = lastFrameVelocity;
         Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
 
         if (incomingVelocity.magnitude > minBounceSpeed || Mathf.Abs(incomingVelocity.z) > 2f)
         {
             Vector3 finalBounce = reflectedVelocity * bounceSpeedMultiplier;
+
+            
+
+            float upwardBounceForce = jumpForce * 1.2f; 
+            finalBounce.y = upwardBounceForce;
 
             rb.linearVelocity = finalBounce;
 
