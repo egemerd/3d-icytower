@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class MantleState : MonoBehaviour
+public class MantleState : IState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void EnterState(PlayerController player)
     {
-        
+        Debug.Log("Entering Mantle State");
+        player.CallMantleJumpCoroutine();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ExitState(PlayerController player)
     {
-        
+        Debug.Log("Exiting Mantle State");
+    }
+
+    public void UpdateState(PlayerController player)
+    {
+        Debug.Log("Updating Mantle State");
     }
 }

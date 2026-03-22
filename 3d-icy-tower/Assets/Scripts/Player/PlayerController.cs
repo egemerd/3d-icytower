@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -19,9 +21,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float accelerationAmount = 1.1f;
 
     [Header("Air Movement")]
-    [SerializeField] private float maxAirSpeed = 10f;
-    [SerializeField] private float airAcceleration = 12f; // How fast you speed up in the air
-    [SerializeField] private float airDeceleration = 4f;
+    [SerializeField] private float maxAirSpeed = 12f;
+    [SerializeField] private float airAcceleration = 8f;   // Yavaþ hýzlanma
+    [SerializeField] private float airTurnSpeed = 15f;      // Havada dönüþ keskinliði
+    [SerializeField] private float airFriction = 0.5f;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 7f;
@@ -36,7 +39,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask wallMask;
     [SerializeField] private float minBounceSpeed = 5f;
     [SerializeField] private float bounceSpeedMultiplier = 1.0f;
-    [SerializeField] private bool groundCheckerForBounce = true;    
+    [SerializeField] private bool groundCheckerForBounce = true;
+
+    [Header("Mantling")]
+    [SerializeField] private float mantleJumpBoost = 20f;
+    [SerializeField] private float mantleBoostTimer = 0.5f;
+    [SerializeField] private float mantleDuration = 1f;
+    [SerializeField] private float mantleOffset = 1.2f;
+
+    [Header("Mantling (OverlapSphere logic)")]
+    [SerializeField] private float mantleGrabRadius = 0.5f; // How big is the grab area?
+    [SerializeField] private float mantleGrabHeight = 0.8f; // How high up on the body are the hands?
+    [SerializeField] private float mantleGrabForward = 0.5f; // How far forward from the body are the hands?
+    [SerializeField] private LayerMask mantleMask;
+
+
 
     [Header("Gravity")]
     [SerializeField] private float gravityScale = 2.5f;
@@ -49,11 +66,14 @@ public class PlayerController : MonoBehaviour
     private GUIStyle stateLabelStyle;
     public Rigidbody Rb => rb;
 
-    // ARCADE PHYSICS TRACKERS
-    private Vector3 lastFrameVelocity;
+    
+    private Vector3 lastFrameVelocity; //tracker for bounce calculations, recorded at the start of each FixedUpdate before any physics changes it.
     private float zMomentum;
+    public Vector3 mantlePosition { get; private set; }
+    public Vector3 mantleStartPosition { get; private set; }
 
     public bool isMoving { get; private set; }
+    public bool isMantling { get; private set; }
 
     private void Awake()
     {
@@ -74,6 +94,13 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isMantling)
+        {
+            rb.linearVelocity = Vector3.zero;
+            return; // Skip all physics, gravity, and movement updates
+        }
+
+        CheckForMantleOverlap();
         // 1. RECORD: Save the velocity at the start of the physics frame for accurate bouncing
         lastFrameVelocity = rb.linearVelocity;
 
@@ -98,6 +125,7 @@ public class PlayerController : MonoBehaviour
         stateCache.Add(typeof(IdleState), new IdleState());
         stateCache.Add(typeof(WalkingState), new WalkingState());
         stateCache.Add(typeof(JumpingState), new JumpingState());
+        stateCache.Add(typeof(MantleState), new MantleState());
 
         currentState = stateCache[typeof(IdleState)];
         currentState.EnterState(this);
@@ -221,35 +249,7 @@ public class PlayerController : MonoBehaviour
 
     public void InAirMovement()
     {
-        float inputX = moveInput.x;
-
-        if (Mathf.Abs(inputX) > 0.1f)
-        {
-            float direction = Mathf.Sign(inputX);
-            float targetZ = direction * maxAirSpeed;
-
-            // FIX: If we are starting from zero or changing directions in mid-air, 
-            // we need to give a small speed boost and snap the turnaround faster!
-            if (Mathf.Abs(zMomentum) < 0.01f || Mathf.Sign(zMomentum) != direction)
-            {
-                // Instantly bump them to startSpeed, just like the ground, but allow 
-                // a 2x faster acceleration to snap their direction safely.
-                if (Mathf.Abs(zMomentum) < 0.01f) zMomentum = direction * startSpeed;
-
-                float airTurnSpeed = airAcceleration * 2.5f;
-                zMomentum = Mathf.MoveTowards(zMomentum, targetZ, airTurnSpeed * Time.fixedDeltaTime);
-            }
-            else
-            {
-                // Standard air acceleration
-                zMomentum = Mathf.MoveTowards(zMomentum, targetZ, airAcceleration * Time.fixedDeltaTime);
-            }
-        }
-        else
-        {
-            // Slowly drift
-            zMomentum = Mathf.MoveTowards(zMomentum, 0f, airDeceleration * Time.fixedDeltaTime);
-        }
+        Movement();
     }
 
     public bool IsGrounded()
@@ -262,8 +262,84 @@ public class PlayerController : MonoBehaviour
         return grounded;
     }
 
-    private void GroundCheckForBounce()
+    private void MantleJump()
     {
+
+    }
+    
+    private void MantleBoostJump()
+    {
+
+    }
+
+    private void CheckForMantleOverlap()
+    {
+        // Don't mantle if we are already mantling or standing safely on the ground
+        if (isMantling || IsGrounded()) return;
+
+        // Calculate where the "hands" are. 
+        // We move UP from the feet by grabHeight, and FORWARD based on the player's facing direction or momentum
+        float faceDirection = Mathf.Abs(moveInput.x) > 0.1f ? Mathf.Sign(moveInput.x) : Mathf.Sign(zMomentum);
+        if (Mathf.Abs(faceDirection) < 0.1f) faceDirection = 1f; // Default facing
+
+        Vector3 handPosition = transform.position + (Vector3.up * mantleGrabHeight) + (new Vector3(0, 0, faceDirection) * mantleGrabForward);
+
+        // Instantly generate a sphere at handPosition. Returns an array of all colliders it touches.
+        Collider[] hits = Physics.OverlapSphere(handPosition, mantleGrabRadius, mantleMask);
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("MantleCollider"))
+            {
+                // We found a ledge! Calculate where we need to climb to.
+                mantlePosition = hit.ClosestPoint(transform.position) + (Vector3.up * mantleOffset);
+                mantleStartPosition = transform.position; // Start climbing from where we are currently at
+
+                ChangeState<MantleState>();
+                return; // Stop checking, we found one!
+            }
+        }
+    }
+
+    public void CallMantleJumpCoroutine()
+    {
+        StartCoroutine(MantleCoroutine(mantlePosition));    
+    }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.CompareTag("MantleCollider"))
+    //    {
+    //        mantlePosition = other.ClosestPoint(transform.position) + Vector3.up * mantleOffset;
+    //        mantleStartPosition = other.ClosestPoint(transform.position);
+    //        ChangeState<MantleState>();
+    //    }
+    //}
+
+    private IEnumerator MantleCoroutine(Vector3 targetPosition)
+    {
+        isMantling = true;
+        zMomentum = 0f;
+
+        float elapsed = 0f;
+        float duration = mantleDuration;
+
+        // FIX: Start exactly where the player's center body is right now, no teleporting!
+        Vector3 startPosition = transform.position;
+
+        while (elapsed < duration)
+        {
+            // Smoothly move from current body position to the calculated top position
+            rb.MovePosition(Vector3.Lerp(startPosition, targetPosition, elapsed / duration));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPosition;
+
+        isMantling = false;
+        ChangeState<IdleState>();
+        yield return null;
 
     }
 
@@ -279,6 +355,17 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = grounded ? Color.green : Color.red;
         Gizmos.DrawRay(origin, direction * groundCheckDistance);
         Gizmos.DrawWireSphere(end, 0.03f);
+
+        if (Application.isPlaying) // We need gameplay momentum/input to know which way we are checking
+        {
+            float faceDirection = Mathf.Abs(moveInput.x) > 0.1f ? Mathf.Sign(moveInput.x) : Mathf.Sign(zMomentum);
+            if (Mathf.Abs(faceDirection) < 0.1f) faceDirection = 1f;
+
+            Vector3 handPosition = transform.position + (Vector3.up * mantleGrabHeight) + (new Vector3(0, 0, faceDirection) * mantleGrabForward);
+
+            Gizmos.color = new Color(0, 1, 1, 0.5f); // Semi-transparent Cyan
+            Gizmos.DrawSphere(handPosition, mantleGrabRadius);
+        }
     }
 
     private void OnGUI()

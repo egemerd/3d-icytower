@@ -1016,10 +1016,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feaa8be1999a53743bbe4669418fae1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OneWayPlatform
-  solidCollider: {fileID: 847423265}
-  passThroughTrigger: {fileID: 1898702788}
-  reEnableOffset: 0.02
-  playerTag: Player
 --- !u!65 &847423265
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1258,10 +1254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feaa8be1999a53743bbe4669418fae1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OneWayPlatform
-  solidCollider: {fileID: 920606523}
-  passThroughTrigger: {fileID: 289581147}
-  reEnableOffset: 0.02
-  playerTag: Player
 --- !u!65 &920606523
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1388,10 +1380,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feaa8be1999a53743bbe4669418fae1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OneWayPlatform
-  solidCollider: {fileID: 1064918406}
-  passThroughTrigger: {fileID: 1498580415}
-  reEnableOffset: 0.02
-  playerTag: Player
 --- !u!65 &1064918406
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1894,12 +1882,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f55b7ac7b47d5642a98b12d96b9ee73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  startSpeed: 15
+  startSpeed: 12
   targetReachSpeed: 25
-  accelerationTime: 1.2
+  accelerationTime: 1.5
   decelerationTime: 0.8
-  decelerationAmount: 1.4
-  accelerationAmount: 1.5
+  decelerationAmount: 2
+  accelerationAmount: 0.8
+  maxAirSpeed: 12
+  airAcceleration: 8
+  airTurnSpeed: 15
+  airFriction: 0.5
   jumpForce: 25
   coyoteTime: 0.12
   jumpBufferTime: 0.12
@@ -1913,6 +1905,16 @@ MonoBehaviour:
   minBounceSpeed: 5
   bounceSpeedMultiplier: 1
   groundCheckerForBounce: 1
+  mantleJumpBoost: 20
+  mantleBoostTimer: 0.5
+  mantleDuration: 0.6
+  mantleOffset: 4
+  mantleGrabRadius: 0.5
+  mantleGrabHeight: 0.8
+  mantleGrabForward: 0.5
+  mantleMask:
+    serializedVersion: 2
+    m_Bits: 0
   gravityScale: 3
   fallMultiplier: 2
   maxFallSpeed: 40
@@ -2006,7 +2008,7 @@ Transform:
   m_GameObject: {fileID: 1588544248}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.85, y: 3.79, z: 0.47}
+  m_LocalPosition: {x: -13.19, y: 3.79, z: 0.47}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2075,6 +2077,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2079150900}
   - component: {fileID: 2079150901}
+  - component: {fileID: 2079150902}
   m_Layer: 0
   m_Name: MantleCollider
   m_TagString: MantleCollider
@@ -2118,6 +2121,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.63392544, z: 1}
   m_Center: {x: 0, y: 0.18303728, z: 0}
+--- !u!54 &2079150902
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079150899}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
