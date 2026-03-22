@@ -66,7 +66,9 @@ public class PlayerController : MonoBehaviour
     private GUIStyle stateLabelStyle;
     public Rigidbody Rb => rb;
 
-    
+    public float MantleBoostTimer => mantleBoostTimer;
+
+
     private Vector3 lastFrameVelocity; //tracker for bounce calculations, recorded at the start of each FixedUpdate before any physics changes it.
     private float zMomentum;
     public Vector3 mantlePosition { get; private set; }
@@ -74,6 +76,11 @@ public class PlayerController : MonoBehaviour
 
     public bool isMoving { get; private set; }
     public bool isMantling { get; private set; }
+
+    public void UnlockFromMantle()
+    {
+        isMantling = false;
+    }
 
     private void Awake()
     {
@@ -97,6 +104,7 @@ public class PlayerController : MonoBehaviour
         if (isMantling)
         {
             rb.linearVelocity = Vector3.zero;
+            currentState.UpdateState(this);
             return; // Skip all physics, gravity, and movement updates
         }
 
@@ -262,14 +270,40 @@ public class PlayerController : MonoBehaviour
         return grounded;
     }
 
-    private void MantleJump()
+    public void MantleBoostJump()
     {
+        Debug.Log("Mantle Boost Jump Activated!");
+        // 1. Get input direction (-1, 0, or 1)
+        float faceDirection = Mathf.Abs(moveInput.x) > 0.1f ? Mathf.Sign(moveInput.x) : 1f;
 
+        // 2. Erase any zero'd out velocity
+        Vector3 vel = rb.linearVelocity;
+        vel.y = 0f;
+        rb.linearVelocity = vel;
+
+        // 3. Apply massive vertical boost
+        rb.AddForce(Vector3.up * mantleJumpBoost, ForceMode.VelocityChange);
+
+        // 4. Overwrite zMomentum to give them a massive forward speed boost as well
+        // We multiply maxAirSpeed by a boost factor to make it feel explosive
+        zMomentum = faceDirection * (maxAirSpeed * 1.5f);
     }
-    
-    private void MantleBoostJump()
-    {
 
+    public void MantleNormalJump()
+    {
+        Debug.Log("Mantle Jump Activated!");
+        // Same as boost jump, but weaker. Or you can just call your standard jump!
+        float faceDirection = Mathf.Abs(moveInput.x) > 0.1f ? Mathf.Sign(moveInput.x) : 1f;
+
+        Vector3 vel = rb.linearVelocity;
+        vel.y = 0f;
+        rb.linearVelocity = vel;
+
+        // Uses standard jump force instead of the massive mantleJumpBoost
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+
+        // Just start them at normal air speed
+        zMomentum = faceDirection * maxAirSpeed;
     }
 
     private void CheckForMantleOverlap()
@@ -306,15 +340,7 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(MantleCoroutine(mantlePosition));    
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.CompareTag("MantleCollider"))
-    //    {
-    //        mantlePosition = other.ClosestPoint(transform.position) + Vector3.up * mantleOffset;
-    //        mantleStartPosition = other.ClosestPoint(transform.position);
-    //        ChangeState<MantleState>();
-    //    }
-    //}
+    
 
     private IEnumerator MantleCoroutine(Vector3 targetPosition)
     {
