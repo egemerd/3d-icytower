@@ -364,6 +364,7 @@ public class PlayerController : MonoBehaviour
         transform.position = targetPosition;
 
         isMantling = false;
+        
         ChangeState<IdleState>();
         yield return null;
 
