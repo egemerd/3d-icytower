@@ -13,7 +13,16 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("UI Visuals")]
     [SerializeField] private Transform scanCircleTransform; // 2D Çemberi tutan Transform
-    [SerializeField] private SpriteRenderer scanCircleRenderer; 
+    [SerializeField] private SpriteRenderer scanCircleRenderer;
+
+    [Header("Attack Feel Settings")]
+    [SerializeField] private float dashDuration = 0.15f; // Düþmana ne kadar sürede varacak?
+    [SerializeField] private AnimationCurve dashCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // Dash'in ivmesi
+    [SerializeField] private float hitstopDuration = 0.1f; // Vurunca oyun ne kadar süre donacak?
+    [SerializeField] private float hitstopTimeScale = 0.05f;
+
+    private bool isAttacking = false;
+
 
     private void Awake()
     {
@@ -26,10 +35,13 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
+        if (isAttacking) return;
+
         ScanForTarget();
 
         if (currentTarget != null && InputManager.Instance.attackAction.WasPressedThisFrame())
         {
+            stateMachine.ChangeState<AttackingState>();
             DashAttack(currentTarget);
         }
     }
@@ -131,4 +143,6 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, scanRadius);
     }
+
+    
 }

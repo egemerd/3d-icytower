@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     private Vector2 moveInput;
     private Rigidbody rb;
     private IState currentState;
+    private PlayerAttack playerAttack;
 
     private Dictionary<System.Type, IState> stateCache = new Dictionary<System.Type, IState>();
 
@@ -85,6 +86,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
 
     private void Start()
