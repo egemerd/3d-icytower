@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour
     public InputAction attackAction;
 
     public bool jumpPressed;
+    public bool attackPressed;
 
     public Vector2 moveInput { get; private set; }
 
@@ -54,6 +55,13 @@ public class InputManager : MonoBehaviour
     {
         bool wasPressed = jumpPressed;
         jumpPressed = false;
+        return wasPressed;
+    }
+
+    public bool ConsumeAttackPressed()
+    {
+        bool wasPressed = attackPressed;
+        attackPressed = false; // Tüketildi, tekrar false yap!
         return wasPressed;
     }
 }

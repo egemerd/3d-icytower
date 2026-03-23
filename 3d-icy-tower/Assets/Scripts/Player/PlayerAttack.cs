@@ -25,6 +25,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float hitstopTimeScale = 0.05f;
 
     private bool isAttacking = false;
+    float lockOnDelay = 1f;
 
 
     private void Awake()
@@ -97,7 +98,7 @@ public class PlayerAttack : MonoBehaviour
             }
             currentTarget?.OnLockOff();
             currentTarget = target;
-            currentTarget?.OnLockOn();
+            currentTarget?.OnLockOn(lockOnDelay);
         }
     }
 

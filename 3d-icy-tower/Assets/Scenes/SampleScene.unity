@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &77665262
 Transform:
   m_ObjectHideFlags: 0
@@ -145,8 +145,8 @@ Transform:
   m_GameObject: {fileID: 77665261}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.00000011921, z: 0.000000059605}
-  m_LocalScale: {x: 1.5038, y: 1.5038, z: 1.5038}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1588544254}
@@ -2097,6 +2097,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6156b9e8183c8d4e848d3ee87233f7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy1
+  enemyData: {fileID: 11400000, guid: 267475e3d8aa22446b07e97b847fe345, type: 2}
+  reticleCorners:
+  - {fileID: 523576739}
+  - {fileID: 762041460}
+  - {fileID: 2136773638}
+  - {fileID: 790869206}
 --- !u!1 &1185095054
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,6 +2294,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   jumpPressed: 0
+  attackPressed: 0
   isMoving: 0
 --- !u!4 &1454419062
 Transform:
@@ -2740,8 +2747,10 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 131072
-  scanCircleTransform: {fileID: 0}
-  scanCircleRenderer: {fileID: 0}
+  scanCircleTransform: {fileID: 77665262}
+  scanCircleRenderer: {fileID: 77665263}
+  lockOnDelay: 1
+  perfectWindowTolerance: 0.2
   dashDuration: 0.15
   dashCurve:
     serializedVersion: 2

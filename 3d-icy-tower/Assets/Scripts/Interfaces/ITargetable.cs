@@ -4,7 +4,7 @@ public interface ITargetable
 {
     Transform GetTransform();
     void OnKilled();
-    void OnLockOn();
+    void OnLockOn(float lockOnDelay);
     void OnLockOff();
 
 
