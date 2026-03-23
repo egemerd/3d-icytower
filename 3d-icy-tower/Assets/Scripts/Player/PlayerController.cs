@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     private Vector2 moveInput;
     private Rigidbody rb;
     private IState currentState;
-    private PlayerAttack playerAttack;
+    public PlayerAttack playerAttack { get; private set; }
 
     private Dictionary<System.Type, IState> stateCache = new Dictionary<System.Type, IState>();
 
@@ -78,6 +78,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
     public bool isMoving { get; private set; }
     public bool isMantling { get; private set; }
 
+    public bool isAttacking { get; set; }
+
     public void UnlockFromMantle()
     {
         isMantling = false;
@@ -107,22 +109,25 @@ public class PlayerController : MonoBehaviour, IStateMachine
         {
             rb.linearVelocity = Vector3.zero;
             currentState.UpdateState(this);
-            return; // Skip all physics, gravity, and movement updates
+            return; 
+        }
+        if (isAttacking)
+        {
+            currentState.UpdateState(this);
+            return;
         }
 
         CheckForMantleOverlap();
-        // 1. RECORD: Save the velocity at the start of the physics frame for accurate bouncing
-        lastFrameVelocity = rb.linearVelocity;
+        
+        lastFrameVelocity = rb.linearVelocity; //Save the velocity at the start of the physics frame for accurate bouncing
 
-        // 2. CALCULATE: Let the state machine do the math (updates zMomentum)
         currentState.UpdateState(this);
 
-        // 3. GRAVITY: Apply vertical falling forces
         HandleGravity();
 
-        // 4. EXECUTE: Construct the final velocity vector exactly ONCE and apply it.
-        // We preserve whatever 'y' value gravity or jumping created, 
-        // but force 'z' to equal our mathematically perfect zMomentum.
+        //Construct the final velocity vector exactly ONCE and apply it.
+        //We preserve whatever 'y' value gravity or jumping created, 
+        //but force 'z' to equal our mathematically perfect zMomentum.
         Vector3 finalVelocity = rb.linearVelocity;
         finalVelocity.z = zMomentum;
         finalVelocity.x = 0f;
@@ -136,6 +141,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
         stateCache.Add(typeof(WalkingState), new WalkingState());
         stateCache.Add(typeof(JumpingState), new JumpingState());
         stateCache.Add(typeof(MantleState), new MantleState());
+        stateCache.Add(typeof(AttackingState), new AttackingState());
 
         currentState = stateCache[typeof(IdleState)];
         currentState.EnterState(this);

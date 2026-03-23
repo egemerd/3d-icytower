@@ -4,16 +4,20 @@ public class AttackingState : IState
 {
     public void EnterState(PlayerController player)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void ExitState(PlayerController player)
-    {
-        throw new System.NotImplementedException();
+        player.isAttacking = true;
+        player.Rb.linearVelocity = Vector3.zero;
+        player.Rb.useGravity = false;
     }
 
     public void UpdateState(PlayerController player)
     {
-        throw new System.NotImplementedException();
+        
+    }
+
+    public void ExitState(PlayerController player)
+    {
+        // State'ten çýkarken yerçekimini geri aç
+        player.Rb.useGravity = true;
+        player.isAttacking = false;
     }
 }
