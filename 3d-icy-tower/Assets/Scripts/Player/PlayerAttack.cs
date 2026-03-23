@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+// Input sistemi kütüphanenizin ekli olduðundan emin olun (örn: using UnityEngine.InputSystem;)
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -8,30 +9,42 @@ public class PlayerAttack : MonoBehaviour
     [Header("Enemy Detection")]
     [SerializeField] private float scanRadius = 10f;
     [SerializeField] private LayerMask targetLayer;
-    private Collider[] scanResults = new Collider[5]; // Ayný anda max 5 hedef
+    private Collider[] scanResults = new Collider[5];
     private ITargetable currentTarget;
 
     [Header("UI Visuals")]
-    [SerializeField] private Transform scanCircleTransform; // 2D Çemberi tutan Transform
+    [SerializeField] private Transform scanCircleTransform;
     [SerializeField] private SpriteRenderer scanCircleRenderer;
+    [SerializeField] private Transform timingUiTransform; // Yeni: Daralan veya büyüyen zamanlama halkasý
 
     [Header("Attack Feel Settings")]
-    [SerializeField] private float dashDuration = 0.15f; // Düþmana ne kadar sürede varacak?
-    [SerializeField] private AnimationCurve dashCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // Dash'in ivmesi
+    [SerializeField] private float dashDuration = 0.15f;
+    [SerializeField] private AnimationCurve dashCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [Header("Timing Attack Settings")]
+    [SerializeField] private float timingWindowStart = 0.4f; // Saniyenin % kaçýnda pencere açýlsýn?
+    [SerializeField] private float timingWindowEnd = 0.6f;   // Saniyenin % kaçýnda pencere kapansýn?
+    [SerializeField] private float totalTimingDuration = 1f; // Tüm sürecin tamamlanma süresi
+    private bool isInTimingWindow = false;
+    private bool timingRoutineActive = false;
 
     [Header("Hitstop Settings")]
-    [SerializeField] private float hitstopTriggerPercent = 0.85f; // Dash'in yolunun % kaçýnda zaman dursun? (0.85 = %85)
-    [SerializeField] private float hitstopDuration = 0.1f; // Vurunca oyun ne kadar süre donacak?
+    [SerializeField] private float hitstopTriggerPercent = 0.85f;
+    [SerializeField] private float hitstopDuration = 0.1f;
     [SerializeField] private float hitstopTimeScale = 0.05f;
+
+    [Header("Post Attack Movement")]
+    [SerializeField] private float postAttackJumpForce = 8f;
+    [SerializeField] private float postAttackForwardForce = 15f; // Hareket yönüne uygulanacak itme
 
     private bool isAttacking = false;
     float lockOnDelay = 1f;
-
 
     private void Awake()
     {
         stateMachine = GetComponent<IStateMachine>();
     }
+
     private void Start()
     {
         UpdateScanCircleSize();
@@ -43,15 +56,32 @@ public class PlayerAttack : MonoBehaviour
 
         ScanForTarget();
 
+        // Eðer bir hedefimiz varsa timing UI'ý baþlat
+        if (currentTarget != null && !timingRoutineActive)
+        {
+            StartCoroutine(TimingWindowCoroutine());
+        }
+
+        // Doðru zamanda tuþa basýldýysa attack baþlat
         if (currentTarget != null && InputManager.Instance.attackAction.WasPressedThisFrame())
         {
-            stateMachine.ChangeState<AttackingState>();
-            // Artýk düz metod yerine Coroutine baþlatýyoruz
-            StartCoroutine(AttackCoroutine(currentTarget));
+            if (isInTimingWindow)
+            {
+                StopAllCoroutines(); // Timing'i durdur
+                timingRoutineActive = false;
+                timingUiTransform.gameObject.SetActive(false);
 
+                stateMachine.ChangeState<AttackingState>();
+                StartCoroutine(AttackCoroutine(currentTarget));
+            }
+            else
+            {
+                Debug.Log("Yanlýþ zamanlama!");
+            }
         }
     }
 
+    
     public ITargetable GetFirstEntryTarget()
     {
         if (currentTarget != null)
@@ -68,9 +98,7 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
-        //Eðer hedefimiz yoksa veya menzilden çýktýysa yeni bir tane ara
         int count = Physics.OverlapSphereNonAlloc(transform.position, scanRadius, scanResults, targetLayer);
-
         for (int i = 0; i < count; i++)
         {
             if (scanResults[i].TryGetComponent(out ITargetable target))
@@ -79,87 +107,110 @@ public class PlayerAttack : MonoBehaviour
                 return currentTarget;
             }
         }
-
         return null;
     }
 
     private void ScanForTarget()
     {
-        var target= GetFirstEntryTarget();
+        var target = GetFirstEntryTarget();
         if (target != currentTarget)
         {
             if (target != null)
-            {
-                SetCircleColor(Color.red); 
-            }
+                SetCircleColor(Color.red);
             else
             {
                 SetCircleColor(Color.white);
+                timingUiTransform.gameObject.SetActive(false); // Hedef çýkarsa UI gizle
+                timingRoutineActive = false;
             }
+
             currentTarget?.OnLockOff();
             currentTarget = target;
             currentTarget?.OnLockOn(lockOnDelay);
         }
     }
 
+    // YENÝ: Zamanlama mantýðýný ve görselini yönetecek Coroutine
+    private IEnumerator TimingWindowCoroutine()
+    {
+        timingRoutineActive = true;
+        timingUiTransform.gameObject.SetActive(true);
+        float elapsed = 0f;
+
+        while (elapsed < totalTimingDuration && currentTarget != null)
+        {
+            timingUiTransform.position = currentTarget.GetTransform().position;
+
+            elapsed += Time.deltaTime;
+            float t = elapsed / totalTimingDuration;
+
+            // UI Görselini güncelle (Örn: Küçülen bir çember)
+            timingUiTransform.localScale = Vector3.Lerp(Vector3.one * 3f, Vector3.one * 0.5f, t);
+
+            // Zamanlama penceresi içinde miyiz kontrolü
+            if (t >= timingWindowStart && t <= timingWindowEnd)
+            {
+                isInTimingWindow = true;
+                timingUiTransform.GetComponent<SpriteRenderer>().color = Color.green; // Oyuncuya "þimdi bas" uyarýsý
+            }
+            else
+            {
+                isInTimingWindow = false;
+                timingUiTransform.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+
+            yield return null;
+        }
+
+        // Süre bittiðinde baþaramadýysa UI'ý kapat ve resetle
+        isInTimingWindow = false;
+        timingRoutineActive = false;
+        timingUiTransform.gameObject.SetActive(false);
+    }
 
     private IEnumerator AttackCoroutine(ITargetable target)
     {
         isAttacking = true;
-
         Vector3 startPos = transform.position;
         Vector3 endPos = target.GetTransform().position;
 
         float elapsed = 0f;
         bool hitstopActivated = false;
 
-        // FAZ 1: Düþmana Doðru Dash
         while (elapsed < dashDuration)
         {
-            // Zaman yavaþlamasýndan etkilenmemek için unscaledDeltaTime kullanýyoruz.
-            // Böylece oyun yavaþlasa bile bizim kameramýz/dashimiz akýcý kalýr.
             elapsed += Time.unscaledDeltaTime;
-
             float t = elapsed / dashDuration;
 
-            // Önceden belirlenen % (örn: %85) noktasýna gelince Hitstop tetikle
             if (t >= hitstopTriggerPercent && !hitstopActivated)
             {
                 hitstopActivated = true;
-                yield return StartCoroutine(HitstopCoroutine()); // Zamaný bük ve bekle
+                yield return StartCoroutine(HitstopCoroutine());
             }
 
-            // Çarpýþmayý hesapla (Curve kullanarak)
             float curveValue = dashCurve.Evaluate(t);
             transform.position = Vector3.LerpUnclamped(startPos, endPos, curveValue);
-
             yield return null;
         }
 
         transform.position = endPos;
-
-        // FAZ 2: Vuruþun Kesinleþmesi
         target.OnKilled();
         currentTarget = null;
         SetCircleColor(Color.white);
 
-        // FAZ 3: Sýçrama ile Dash'ten çýkýþ
         FinishAttack();
     }
 
     private IEnumerator HitstopCoroutine()
     {
-        Time.timeScale = hitstopTimeScale; // Evreni durdur/yavaþlat
-
+        Time.timeScale = hitstopTimeScale;
         float timer = 0f;
         while (timer < hitstopDuration)
         {
-            // Bizim bekleme süremiz gerçek saniyeler üzerinden iþlesin (TimeScale 0 olsa bile)
             timer += Time.unscaledDeltaTime;
             yield return null;
         }
-
-        Time.timeScale = 1f; // Evreni normale döndür
+        Time.timeScale = 1f;
     }
 
     private void FinishAttack()
@@ -168,46 +219,51 @@ public class PlayerAttack : MonoBehaviour
 
         if (TryGetComponent(out PlayerController player))
         {
-            // Yerçekimi sýfýrlandýktan sonra karaktere darbe (boost) ekle
+            // YENÝ: Move input'unu oku (InputManager'ýnýzda hareket vectorunu veren kýsýmla deðiþtirin)
+            // Varsayým: InputManager.Instance.moveInput.ReadValue<Vector2>() gibi bir kullanýmýnýz var. 
+            // Eðer InputAction ise þöyle okunabilir:
+            // Vector2 inputDir = InputManager.Instance.moveAction.ReadValue<Vector2>();
+
+            // Temsili olarak Vector2 kullandým, kendi Input manager'ýnýza göre entegre edin.
+            Vector3 jumpDirection = Vector3.up * postAttackJumpForce;
+
+            // Eðer bir input varsa (veya kameraya göre yön belirliyorsanýz ona uygun çevirim)
+            /*
+            Vector2 inputDir = InputManager.Instance.moveAction.ReadValue<Vector2>(); 
+            if (inputDir.magnitude > 0.1f)
+            {
+                Vector3 moveDir = new Vector3(inputDir.x, 0, inputDir.y).normalized;
+                jumpDirection += moveDir * postAttackForwardForce;
+            }
+            */
+
             Vector3 vel = player.Rb.linearVelocity;
             vel.y = 0;
             player.Rb.linearVelocity = vel;
 
-            player.Rb.AddForce(Vector3.up * 8f, ForceMode.VelocityChange);
-
+            player.Rb.AddForce(jumpDirection, ForceMode.VelocityChange);
             stateMachine.ChangeState<JumpingState>();
         }
     }
 
-    
-
+    // ... (SetCircleColor, OnDrawGizmos gibi diðer alt metotlar ayný kalýr)
     private void SetCircleColor(Color color)
     {
         if (scanCircleRenderer != null)
-        {
-            scanCircleRenderer.color = new Color(color.r, color.g, color.b, 0.3f); // %30 saydam
-        }
+            scanCircleRenderer.color = new Color(color.r, color.g, color.b, 0.3f);
     }
 
     private void UpdateScanCircleSize()
     {
         if (scanCircleTransform != null)
-        {
-            float diameter = scanRadius * 2f;
-            scanCircleTransform.localScale = new Vector3(diameter, diameter, 1f);
-        }
+            scanCircleTransform.localScale = new Vector3(scanRadius * 2f, scanRadius * 2f, 1f);
     }
 
     private void OnDrawGizmos()
     {
-        // Physics.OverlapSphere ve Vector3.Distance'ýn gerçekten taradýðý ALAN:
-        Gizmos.color = new Color(0, 1, 0, 0.2f); // Yarý saydam YEÞÝL
+        Gizmos.color = new Color(0, 1, 0, 0.2f);
         Gizmos.DrawSphere(transform.position, scanRadius);
-
-        // Kenar hatlarýný daha iyi görmek için bir tel çerçeve çizelim (WireSphere)
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, scanRadius);
     }
-
-    
 }
