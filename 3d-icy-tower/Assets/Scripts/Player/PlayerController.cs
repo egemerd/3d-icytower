@@ -160,6 +160,10 @@ public class PlayerController : MonoBehaviour, IStateMachine
     {
         return InputManager.Instance.ConsumeJumpPressed();
     }
+    public void SetZMomentum(float newMomentum)
+    {
+        zMomentum = newMomentum;
+    }
 
     public void Movement()
     {

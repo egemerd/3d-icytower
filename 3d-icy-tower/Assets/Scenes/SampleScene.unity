@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &77665262
 Transform:
   m_ObjectHideFlags: 0
@@ -2873,8 +2873,8 @@ MonoBehaviour:
   hitstopTriggerPercent: 0.7
   hitstopDuration: 0.13
   hitstopTimeScale: 0
-  postAttackJumpForce: 8
-  postAttackForwardForce: 15
+  postAttackJumpForce: 30
+  postAttackForwardForce: 20
 --- !u!1 &1758147501
 GameObject:
   m_ObjectHideFlags: 0

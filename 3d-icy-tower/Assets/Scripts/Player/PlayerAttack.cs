@@ -219,29 +219,34 @@ public class PlayerAttack : MonoBehaviour
 
         if (TryGetComponent(out PlayerController player))
         {
-            // YENÝ: Move input'unu oku (InputManager'ýnýzda hareket vectorunu veren kýsýmla deðiþtirin)
-            // Varsayým: InputManager.Instance.moveInput.ReadValue<Vector2>() gibi bir kullanýmýnýz var. 
-            // Eðer InputAction ise þöyle okunabilir:
-            // Vector2 inputDir = InputManager.Instance.moveAction.ReadValue<Vector2>();
+            // InputManager üzerinden Move deðerini alýyoruz
+            Vector2 inputDir = InputManager.Instance.moveInput;
 
-            // Temsili olarak Vector2 kullandým, kendi Input manager'ýnýza göre entegre edin.
             Vector3 jumpDirection = Vector3.up * postAttackJumpForce;
+            float targetZMomentum = 0f;
 
-            // Eðer bir input varsa (veya kameraya göre yön belirliyorsanýz ona uygun çevirim)
-            /*
-            Vector2 inputDir = InputManager.Instance.moveAction.ReadValue<Vector2>(); 
-            if (inputDir.magnitude > 0.1f)
+            // Eðer oyuncu bir yöne basýyorsa ileri/geri (zMomentum ekseni) ayarlamasýný yap
+            if (Mathf.Abs(inputDir.x) > 0.1f)
             {
-                Vector3 moveDir = new Vector3(inputDir.x, 0, inputDir.y).normalized;
-                jumpDirection += moveDir * postAttackForwardForce;
+                // Basýlan yönü belirle (1 veya -1)
+                float moveDirection = Mathf.Sign(inputDir.x);
+                // Yeni Z yön ve kuvveti hesapla
+                targetZMomentum = moveDirection * postAttackForwardForce;
             }
-            */
 
             Vector3 vel = player.Rb.linearVelocity;
-            vel.y = 0;
+            vel.y = 0; // Sadece Y'yi sýfýrlýyoruz.
             player.Rb.linearVelocity = vel;
 
+            // Dikey patlama (Zýplama) kuvvetini Rigidbody üzerinden anlýk olarak veriyoruz
             player.Rb.AddForce(jumpDirection, ForceMode.VelocityChange);
+
+            // Eðer oyuncu saldýrý sonunda hareket tuþuna basmýþsa, yatay patlama için Momentum mekaniðini tetikle
+            if (Mathf.Abs(targetZMomentum) > 0f)
+            {
+                player.SetZMomentum(targetZMomentum);
+            }
+
             stateMachine.ChangeState<JumpingState>();
         }
     }
