@@ -2376,7 +2376,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   attackAction:
-    m_Name: 
+    m_Name: Attack
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: e19f2e8f-d1f2-44f9-b847-87f9dee9e30e
@@ -2384,6 +2384,27 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  skill1Action:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 0086eaa7-8c36-456e-9f49-1cac9910373a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  skill2Action:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b58368ce-0237-4fc8-bca9-079307c5f22c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  skillActionNames:
+  - Skill1
+  - Skill2
   jumpPressed: 0
   attackPressed: 0
   isMoving: 0
@@ -2643,6 +2664,7 @@ GameObject:
   - component: {fileID: 1588544250}
   - component: {fileID: 1588544255}
   - component: {fileID: 1588544249}
+  - component: {fileID: 1588544256}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2875,6 +2897,23 @@ MonoBehaviour:
   hitstopTimeScale: 0
   postAttackJumpForce: 30
   postAttackForwardForce: 20
+--- !u!114 &1588544256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588544248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9738a6db01c83ff4f9bfc3e046c17c63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSkills
+  equippedSkills:
+  - slotName: InvinsibilitySkill
+    skill: {fileID: 11400000, guid: 92e8c053169fe294cadc9aa2f4b32351, type: 2}
+  - slotName: PogoStickSkill
+    skill: {fileID: 11400000, guid: a469e12cc781e474b9bafbe5409268e2, type: 2}
 --- !u!1 &1758147501
 GameObject:
   m_ObjectHideFlags: 0

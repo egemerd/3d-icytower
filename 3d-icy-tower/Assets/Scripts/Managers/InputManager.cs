@@ -12,6 +12,13 @@ public class InputManager : MonoBehaviour
     public InputAction jumpAction;
     public InputAction attackAction;
 
+    public InputAction skill1Action;
+    public InputAction skill2Action;
+
+    [Header("Skill Inputs")]
+    [SerializeField] private string[] skillActionNames = { "Skill1", "Skill2" }; // Input Action Asset'indeki isimler
+    private InputAction[] skillActions;
+
     public bool jumpPressed;
     public bool attackPressed;
 
@@ -39,7 +46,15 @@ public class InputManager : MonoBehaviour
         moveAction = playerInput.actions.FindAction("Move");
         jumpAction = playerInput.actions.FindAction("Jump");
         attackAction = playerInput.actions.FindAction("Attack");
+
+        //Skill actionlarýný dinamik olarak bul ve sakla
+        skillActions = new InputAction[skillActionNames.Length];
+        for(int i = 0; i < skillActionNames.Length; i++)
+        {
+            skillActions[i] = playerInput.actions.FindAction(skillActionNames[i]);
+        }
     }
+    
 
     private void Update()
     {
@@ -50,6 +65,19 @@ public class InputManager : MonoBehaviour
             jumpPressed = true;
         }
     }
+
+    public int GetSkillIndex()
+    {
+        for(int i = 0; i < skillActions.Length; i++)
+        {
+            if (skillActions[i].WasPressedThisFrame())
+            {
+                return i; // Hangi skill tuþuna basýldýðýný döndür
+            }
+        }
+        return -1;
+    }
+    
 
     public bool ConsumeJumpPressed()
     {

@@ -223,7 +223,7 @@ public class PlayerAttack : MonoBehaviour
             Vector2 inputDir = InputManager.Instance.moveInput;
 
             Vector3 jumpDirection = Vector3.up * postAttackJumpForce;
-            float targetZMomentum = 0f;
+            float targetZMomentum = 0f; 
 
             // Eðer oyuncu bir yöne basýyorsa ileri/geri (zMomentum ekseni) ayarlamasýný yap
             if (Mathf.Abs(inputDir.x) > 0.1f)
