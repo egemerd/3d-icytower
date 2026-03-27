@@ -33,6 +33,7 @@ public class PlayerSkills : MonoBehaviour
             if (currentSkill != null)
             {
                 currentSkill.UseSkill(this.gameObject);
+                Debug.Log($"oBJECT: {this.gameObject} (Slot: {equippedSkills[skillIndex].slotName})");
             }
             else
             {

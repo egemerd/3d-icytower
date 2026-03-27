@@ -12,3 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c3e961513decd4ba9f6b6d304a7ff4, type: 3}
   m_Name: PogoStickSkill
   m_EditorClassIdentifier: Assembly-CSharp::PogoStickSkill
+  pogoForce: 30
+  pogoDetectionHeight: 15
+  pogoDetectionDuration: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 17408
+  pogoVisualPrefab: {fileID: 6134329368349654844, guid: 2bd0023d6e365e54591ea260111fbd97, type: 3}
