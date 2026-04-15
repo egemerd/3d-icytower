@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     [SerializeField] private float minBounceSpeed = 5f;
     [SerializeField] private float bounceSpeedMultiplier = 1.0f;
     [SerializeField] private bool groundCheckerForBounce = true;
+    [SerializeField] private float bounceJumpForce = 2f;
 
     [Header("Mantling")]
     [SerializeField] private float mantleJumpBoost = 20f;
@@ -234,24 +235,36 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
         // Use the velocity recorded BEFORE the wall inevitably stopped the Rigidbody
         Vector3 incomingVelocity = lastFrameVelocity;
-        Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
 
-        if (incomingVelocity.magnitude > minBounceSpeed || Mathf.Abs(incomingVelocity.z) > 2f)
+        // 1. Velocity Check: You must be moving faster than the minBounceSpeed to trigger a bounce.
+        if (incomingVelocity.magnitude < minBounceSpeed )
         {
-            Vector3 finalBounce = reflectedVelocity * bounceSpeedMultiplier;
-
-            // Apply upward logic for Icy Tower feel
-            float upwardBounceForce = jumpForce * 1.2f;
-            finalBounce.y = upwardBounceForce;
-
-            rb.linearVelocity = finalBounce;
-
-            // Overwrite momentum tracker so Movement doesn't instantly fight the bounce
-            zMomentum = finalBounce.z;
-
-            // Switch to Jumping state automatically
-            ChangeState<JumpingState>();
+            return;
         }
+
+        // 2. Input Direction Check: Prevent bouncing if the player is holding the key INTO the wall.
+        
+            float inputDirection = Mathf.Sign(moveInput.x);
+            float wallFacingDirection = Mathf.Sign(normal.z); // normal.z points AWAY from the wall
+
+            // If the input direction is opposite to the normal, the player is pressing INTO the wall.
+        
+
+        // 3. Execute the bounce
+        Vector3 reflectedVelocity = Vector3.Reflect(incomingVelocity, normal);
+        Vector3 finalBounce = reflectedVelocity * bounceSpeedMultiplier;
+
+        // Apply upward logic for Icy Tower feel
+        float upwardBounceForce = jumpForce * bounceJumpForce;
+        finalBounce.y = upwardBounceForce;
+
+        rb.linearVelocity = finalBounce;
+
+        // Overwrite momentum tracker so Movement doesn't instantly fight the bounce
+        zMomentum = finalBounce.z;
+
+        // Switch to Jumping state automatically
+        ChangeState<JumpingState>();
 
         groundCheckerForBounce = false;
     }

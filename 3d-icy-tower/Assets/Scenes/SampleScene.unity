@@ -253,7 +253,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 30.8
-    OrthographicSize: 13.5
+    OrthographicSize: 17.1
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -380,7 +380,7 @@ Camera:
   far clip plane: 1000
   field of view: 30.8
   orthographic: 1
-  orthographic size: 13.5
+  orthographic size: 17.1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1178,7 +1178,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   skill1Action:
-    m_Name: 
+    m_Name: Skill 1
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 0086eaa7-8c36-456e-9f49-1cac9910373a
@@ -1187,7 +1187,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   skill2Action:
-    m_Name: 
+    m_Name: Skill 2
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: b58368ce-0237-4fc8-bca9-079307c5f22c
@@ -1349,10 +1349,11 @@ MonoBehaviour:
   wallMask:
     serializedVersion: 2
     m_Bits: 256
-  minBounceSpeed: 5
-  bounceSpeedMultiplier: 1
+  minBounceSpeed: 15
+  bounceSpeedMultiplier: 1.5
   groundCheckerForBounce: 1
-  mantleJumpBoost: 20
+  bounceJumpForce: 2
+  mantleJumpBoost: 25
   mantleBoostTimer: 0.5
   mantleDuration: 0.6
   mantleOffset: 4
@@ -1475,7 +1476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4100b4deea5b4a24d8c4631e5a866fd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  scanRadius: 10
+  scanRadius: 20
   targetLayer:
     serializedVersion: 2
     m_Bits: 131072
@@ -1507,13 +1508,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timingWindowStart: 0.4
+  timingWindowStart: 0.2
   timingWindowEnd: 0.6
   totalTimingDuration: 1
   hitstopTriggerPercent: 0.7
   hitstopDuration: 0.13
   hitstopTimeScale: 0
-  postAttackJumpForce: 30
+  postAttackJumpForce: 40
   postAttackForwardForce: 20
 --- !u!114 &1588544256
 MonoBehaviour:
@@ -1540,9 +1541,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3774065190837236354, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 18.287914
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774065190837236354, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 22.3
+      objectReference: {fileID: 0}
     - target: {fileID: 5739849352358355438, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_Name
       value: ChunkFirst
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378552175321161586, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -32.7
       objectReference: {fileID: 0}
     - target: {fileID: 9038825518957463177, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_LocalPosition.x
