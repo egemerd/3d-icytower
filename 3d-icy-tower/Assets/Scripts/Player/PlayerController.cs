@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
 
     private Vector3 lastFrameVelocity; //tracker for bounce calculations, recorded at the start of each FixedUpdate before any physics changes it.
-    private float zMomentum;
+    public float zMomentum { get; private set; }
     public Vector3 mantlePosition { get; private set; }
     public Vector3 mantleStartPosition { get; private set; }
 
@@ -85,6 +85,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
     {
         isMantling = false;
     }
+
+    
 
     private void Awake()
     {
@@ -102,6 +104,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     {
         moveInput = input.moveInput;
         isMoving = Mathf.Abs(moveInput.x) > 0.1f;
+        Debug.Log("Move Input: " + moveInput);
     }
 
     private void FixedUpdate()

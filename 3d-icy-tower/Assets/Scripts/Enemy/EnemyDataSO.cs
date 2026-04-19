@@ -7,5 +7,10 @@ public class EnemyDataSO : ScriptableObject
     public float reticleStartDistance = 2f;
     public float reticleEndDistance = 0.5f;
 
-    
+    [Header("Attack Settings")]
+    public float scanRadius = 5f;
+    public int attackDamage = 1;
+    public float projectileSpeed = 1f;
+    public float attackCooldown = 2f;   
+
 }

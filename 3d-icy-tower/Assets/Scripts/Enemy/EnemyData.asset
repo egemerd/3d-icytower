@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDataSO
   reticleStartDistance: 2
   reticleEndDistance: 0.5
-  currentLockTimer: 0
-  targetLockDelay: 1
+  scanRadius: 14.78
+  attackDamage: 1
+  projectileSpeed: 2
+  attackCooldown: 2

@@ -2,20 +2,25 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour, ITargetable
 {
-    [SerializeField] private EnemyDataSO enemyData;
-    [SerializeField] private Transform[] reticleCorners;
+    [SerializeField] protected EnemyDataSO enemyData;
+
+    [Header("UI Visuals")]
+    [SerializeField] private Transform timingUiTransform;
+
+    protected Transform playerTransform;
 
     private bool isLockedOn = false;
 
     private float currentLockTimer = 0f;
     private float targetLockDelay = 1f;
 
-    private void Update()
+    private void Awake()
     {
-        if (isLockedOn)
-        {
-            UpdateReticleAnimation();
-        }
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
+    private void Update()
+    {       
     }
 
     public Transform GetTransform()
@@ -28,22 +33,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         Debug.Log("OnKilled");
     }
 
-    private void UpdateReticleAnimation()
-    {
-        currentLockTimer += Time.deltaTime;
-        float progress = Mathf.Clamp01(currentLockTimer / targetLockDelay);
-
-        if (reticleCorners != null && reticleCorners.Length == 4)
-        {
-            float currentDist = Mathf.Lerp(enemyData.reticleStartDistance, enemyData.reticleEndDistance, progress);
-
-            // Yerel (Local) pozisyonlarý deðiþtirerek objeleri merkeze çeker
-            reticleCorners[0].localPosition = new Vector3(-currentDist, currentDist, 0); // Sol üst
-            reticleCorners[1].localPosition = new Vector3(currentDist, currentDist, 0);  // Sað üst
-            reticleCorners[2].localPosition = new Vector3(currentDist, -currentDist, 0); // Sað alt
-            reticleCorners[3].localPosition = new Vector3(-currentDist, -currentDist, 0);// Sol alt
-        }
-    }
+    
 
     public void OnLockOff()
     {
@@ -52,10 +42,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         currentLockTimer = 0f;
 
         // Görselleri tekrar sakla
-        foreach (var corner in reticleCorners)
-        {
-            if (corner != null) corner.gameObject.SetActive(false);
-        }
+        
     }
 
     public void OnLockOn(float lockOnDelay)
@@ -65,10 +52,11 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         currentLockTimer = 0f;
         targetLockDelay = lockOnDelay;
 
-        // Görselleri aktif et
-        foreach (var corner in reticleCorners)
-        {
-            if (corner != null) corner.gameObject.SetActive(true);
-        }
+        
     }
+
+    public abstract void EnemyAttack();
+    public abstract void EnemyMovement();
+
+
 }

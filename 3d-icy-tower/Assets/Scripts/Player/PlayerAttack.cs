@@ -219,33 +219,37 @@ public class PlayerAttack : MonoBehaviour
 
         if (TryGetComponent(out PlayerController player))
         {
-            // InputManager üzerinden Move deðerini alýyoruz
+            // Get the raw 2D input from the analog stick/keyboard
             Vector2 inputDir = InputManager.Instance.moveInput;
 
-            Vector3 jumpDirection = Vector3.up * postAttackJumpForce;
-            float targetZMomentum = 0f; 
+            // 1. HORIZONTAL MOMENTUM: 
+            // Accurately pushes left (-1) or right (1) depending on your input.
+            // If inputDir.x is 0, you won't drift horizontally.
+            float targetZMomentum = inputDir.x * postAttackForwardForce;
 
-            // Eðer oyuncu bir yöne basýyorsa ileri/geri (zMomentum ekseni) ayarlamasýný yap
-            if (Mathf.Abs(inputDir.x) > 0.1f)
+            // 2. ALWAYS UPPER DIRECTION:
+            // We lock in a base jump force so the character ALWAYS bounces upwards.
+            float finalJumpForce = postAttackJumpForce;
+
+            // If the player is pushing UP or UP-DIAGONALLY, give them extra height!
+            if (inputDir.y > 0.1f)
             {
-                // Basýlan yönü belirle (1 veya -1)
-                float moveDirection = Mathf.Sign(inputDir.x);
-                // Yeni Z yön ve kuvveti hesapla
-                targetZMomentum = moveDirection * postAttackForwardForce;
+                // Give a bonus 50% height based on how hard they push up
+                finalJumpForce += (inputDir.y * postAttackJumpForce * 0.5f);
             }
 
+            // Zero out current falling speed so the bounce is always perfectly consistent
             Vector3 vel = player.Rb.linearVelocity;
-            vel.y = 0; // Sadece Y'yi sýfýrlýyoruz.
+            vel.y = 0; 
             player.Rb.linearVelocity = vel;
 
-            // Dikey patlama (Zýplama) kuvvetini Rigidbody üzerinden anlýk olarak veriyoruz
+            // Apply the Vertical burst (Always Upwards)
+            Vector3 jumpDirection = Vector3.up * finalJumpForce;
             player.Rb.AddForce(jumpDirection, ForceMode.VelocityChange);
 
-            // Eðer oyuncu saldýrý sonunda hareket tuþuna basmýþsa, yatay patlama için Momentum mekaniðini tetikle
-            if (Mathf.Abs(targetZMomentum) > 0f)
-            {
-                player.SetZMomentum(targetZMomentum);
-            }
+            // Apply the Horizontal burst (Directly controlled by joystick X)
+            // Even if it's 0, we push it so the player stops drifting and goes straight up!
+            player.SetZMomentum(targetZMomentum);
 
             stateMachine.ChangeState<JumpingState>();
         }
