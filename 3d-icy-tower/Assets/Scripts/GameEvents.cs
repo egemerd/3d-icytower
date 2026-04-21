@@ -18,10 +18,14 @@ public class GameEvents : MonoBehaviour
     }
 
     public event Action onEnemyDetected;
-
+    public event Action onEnemyDead;    
     public void TriggerEnemyDetection()
     {
         Debug.Log("TriggerEnemyDetection called.");
         onEnemyDetected?.Invoke();
+    }
+    public void TriggerEnemyDeath()
+    {
+        onEnemyDead?.Invoke();
     }
 }

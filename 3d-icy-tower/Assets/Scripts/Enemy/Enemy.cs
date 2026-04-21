@@ -19,9 +19,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    private void Update()
-    {       
-    }
+ 
 
     public Transform GetTransform()
     {
@@ -39,10 +37,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
     {
         Debug.Log("Enemy lock lost!");
         isLockedOn = false;
-        currentLockTimer = 0f;
-
-        // Görselleri tekrar sakla
-        
+        currentLockTimer = 0f;       
     }
 
     public void OnLockOn(float lockOnDelay)
@@ -50,9 +45,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         Debug.Log("Enemy locked on!");
         isLockedOn = true;
         currentLockTimer = 0f;
-        targetLockDelay = lockOnDelay;
-
-        
+        targetLockDelay = lockOnDelay;       
     }
 
     public abstract void EnemyAttack();

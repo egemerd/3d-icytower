@@ -8,10 +8,12 @@ public class Enemy1 : Enemy
 
     private Transform playerTarget;
     private float attackTimer;
+    private Enemy1Projectile projectile;
 
     private void Start()
     {
         playerTarget = base.playerTransform;
+    
     }
 
     private void Update()
@@ -32,31 +34,24 @@ public class Enemy1 : Enemy
         {
             if (attackTimer <= 0f)
             {
+                Debug.LogError("enemy atttack");
                 EnemyAttack();
             }
         }
     }
     public override void EnemyAttack()
     {
-        // Reset the cooldown based on the ScriptableObject's data
         attackTimer = enemyData.attackCooldown;
 
         if (projectilePrefab != null && firePoint != null)
         {
-            // Spawn the projectile
-            GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-
-            // Calculate the direction towards the player
             Vector3 direction = (playerTarget.position - firePoint.position).normalized;
-
-            // Apply velocity to the projectile (Requires a Rigidbody on the projectile prefab)
-            if (proj.TryGetComponent(out Rigidbody rb))
+            
+            GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+            if (proj.TryGetComponent(out Enemy1Projectile projScript))
             {
-                rb.linearVelocity = direction * enemyData.projectileSpeed;
+                projScript.InitializeVariables(enemyData.attackDamage, enemyData.projectileSpeed, direction);
             }
-
-            // Optional: Make the projectile face the player
-            proj.transform.forward = direction;
         }
     }
 

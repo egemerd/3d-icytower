@@ -11,6 +11,9 @@ public class EnemyDataSO : ScriptableObject
     public float scanRadius = 5f;
     public int attackDamage = 1;
     public float projectileSpeed = 1f;
-    public float attackCooldown = 2f;   
+    public float attackCooldown = 2f;
+
+    [Header("Movement Settings")]
+    public float moveSpeed = 2f;
 
 }
