@@ -18,4 +18,4 @@ MonoBehaviour:
   attackDamage: 1
   projectileSpeed: 1
   attackCooldown: 2
-  moveSpeed: 50
+  moveSpeed: 5
