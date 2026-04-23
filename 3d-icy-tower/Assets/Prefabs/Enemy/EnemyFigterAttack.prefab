@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7358861590577329553}
   - component: {fileID: 3639645693166686638}
   - component: {fileID: 8075099047371258978}
+  - component: {fileID: 7379392689556484974}
   m_Layer: 0
   m_Name: EnemyFigterAttack
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.15, y: 16.8, z: -1.46}
-  m_LocalScale: {x: 1, y: 0.51048, z: 2.7065673}
+  m_LocalScale: {x: 0.43478262, y: 0.22194783, z: 1.1767684}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -106,9 +107,22 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7379392689556484974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4551737440520002654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef7520b766e1484cb4ffbff70d30877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFigterSword
+  damage: 0

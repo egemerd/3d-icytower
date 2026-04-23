@@ -13,7 +13,6 @@ public class Enemy1 : Enemy
     private void Start()
     {
         playerTarget = base.playerTransform;
-    
     }
 
     private void Update()
