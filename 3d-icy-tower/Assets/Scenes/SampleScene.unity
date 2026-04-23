@@ -144,6 +144,7 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 256
+  attackDamage: 0
 --- !u!4 &34890132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5115832233906470553, guid: 03011388a9d551140ad424ecd24861a4, type: 3}
@@ -347,6 +348,11 @@ MonoBehaviour:
     Time: 0
     Smoothing: 0
     IgnoreY: 0
+--- !u!1 &196652488 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4551737440520002654, guid: cade1b12a3574ab49859fe2a5ec78b67, type: 3}
+  m_PrefabInstance: {fileID: 4643162342189717186}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1109,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4307443179595717436, guid: cade1b12a3574ab49859fe2a5ec78b67, type: 3}
   m_PrefabInstance: {fileID: 4643162342189717186}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1059849952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196652488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef7520b766e1484cb4ffbff70d30877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFigterSword
+  damage: 0
 --- !u!1 &1454419059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,6 +1307,7 @@ GameObject:
   - component: {fileID: 1588544249}
   - component: {fileID: 1588544256}
   - component: {fileID: 1588544257}
+  - component: {fileID: 1588544258}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1556,6 +1576,22 @@ MonoBehaviour:
     m_Bits: 16384
   originOffset: {x: 0, y: 1, z: 0}
   minMomentumValueToCancelCollider: 25
+--- !u!114 &1588544258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588544248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca42a998a94252c4c9813a22ec1d9fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  canTakeDamage: 1
+  guiFontSize: 48
+  topPadding: 20
+  rightPadding: 30
 --- !u!4 &1901398528 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3329569335619645523, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
@@ -1625,10 +1661,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyFigterAttack
       objectReference: {fileID: 0}
+    - target: {fileID: 8075099047371258978, guid: cade1b12a3574ab49859fe2a5ec78b67, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4551737440520002654, guid: cade1b12a3574ab49859fe2a5ec78b67, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1059849952}
   m_SourcePrefab: {fileID: 100100000, guid: cade1b12a3574ab49859fe2a5ec78b67, type: 3}
 --- !u!1001 &4648355251521696213
 PrefabInstance:
@@ -1660,7 +1703,7 @@ PrefabInstance:
       objectReference: {fileID: 6184477996909171599, guid: 9903cd10edc719741a9e507412754a79, type: 3}
     - target: {fileID: 778254456507858173, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2400859315118625585, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_IsActive

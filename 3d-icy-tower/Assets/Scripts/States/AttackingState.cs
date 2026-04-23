@@ -7,6 +7,7 @@ public class AttackingState : IState
         player.isAttacking = true;
         player.Rb.linearVelocity = Vector3.zero;
         player.Rb.useGravity = false;
+        player.PlayerAttackUndamagableEnter();
     }
 
     public void UpdateState(PlayerController player)
@@ -19,5 +20,6 @@ public class AttackingState : IState
         // State'ten çýkarken yerçekimini geri aç
         player.Rb.useGravity = true;
         player.isAttacking = false;
+        player.PlayerAttackUndamagableExit();
     }
 }

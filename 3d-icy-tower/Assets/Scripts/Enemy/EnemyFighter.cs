@@ -12,10 +12,10 @@ public class EnemyFighter : Enemy
     private Vector3 startPoint;
     private Vector3 endPoint;
     float moveSpeed;
-
+    public int attackDamage;  
     private void Start()
     {
-        weapon.transform.position  = transform.position - new Vector3 (0,0,-6);
+        weapon.transform.position  = transform.position - new Vector3 (0,0,-6);      
     }
     private void Update()
     {
@@ -25,6 +25,7 @@ public class EnemyFighter : Enemy
     }
     private void Awake()
     {
+        attackDamage = enemyData.attackDamage;
         ShootRaycast();
         moveSpeed = enemyData.moveSpeed;
         
