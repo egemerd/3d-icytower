@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4550d12600fe444392e577b17290a6e, type: 3}
   m_Name: RicochetSkill
   m_EditorClassIdentifier: Assembly-CSharp::RicochetSkill
+  projectilePrefab: {fileID: 4456400742717836532, guid: d28de07bb76dc1942958e5159ee02ffd, type: 3}
+  projectileSpeed: 20
   firstTargetRadius: 12
   bounceRadius: 8
   targetLayer:

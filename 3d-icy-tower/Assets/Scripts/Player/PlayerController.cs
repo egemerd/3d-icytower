@@ -104,7 +104,6 @@ public class PlayerController : MonoBehaviour, IStateMachine
     {
         moveInput = input.moveInput;
         isMoving = Mathf.Abs(moveInput.x) > 0.1f;
-        Debug.Log("Move Input: " + moveInput);
     }
 
     private void FixedUpdate()
