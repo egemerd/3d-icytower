@@ -40,6 +40,8 @@ public class PlayerAttack : MonoBehaviour
     private bool isAttacking = false;
     float lockOnDelay = 1f;
 
+    ITargetable enemy;
+
     private void Awake()
     {
         stateMachine = GetComponent<IStateMachine>();
@@ -194,10 +196,10 @@ public class PlayerAttack : MonoBehaviour
         }
 
         transform.position = endPos;
-        target.OnKilled();
+        
         currentTarget = null;
         SetCircleColor(Color.white);
-
+        enemy = target;
         FinishAttack();
     }
 
@@ -216,7 +218,7 @@ public class PlayerAttack : MonoBehaviour
     private void FinishAttack()
     {
         isAttacking = false;
-
+        enemy.OnKilled();
         if (TryGetComponent(out PlayerController player))
         {
             // Get the raw 2D input from the analog stick/keyboard

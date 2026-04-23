@@ -14,9 +14,10 @@ public class InputManager : MonoBehaviour
 
     public InputAction skill1Action;
     public InputAction skill2Action;
+    public InputAction skill3Action;
 
     [Header("Skill Inputs")]
-    [SerializeField] private string[] skillActionNames = { "Skill1", "Skill2" }; // Input Action Asset'indeki isimler
+    [SerializeField] private string[] skillActionNames = { "Skill1", "Skill2", "Skill3" }; // Input Action Asset'indeki isimler
     private InputAction[] skillActions;
 
     public bool jumpPressed;
@@ -41,6 +42,11 @@ public class InputManager : MonoBehaviour
         InitializeActions();
     }
 
+    private void Start()
+    {
+        Debug.Log("skillActionNames.Length" + skillActionNames.Length);
+        Debug.Log("skillActions.Length" + skillActions.Length);
+    }
     private void InitializeActions()
     {
         moveAction = playerInput.actions.FindAction("Move");
@@ -52,6 +58,10 @@ public class InputManager : MonoBehaviour
         for(int i = 0; i < skillActionNames.Length; i++)
         {
             skillActions[i] = playerInput.actions.FindAction(skillActionNames[i]);
+            if (skillActions[i] == null)
+            {
+                Debug.LogError($"Skill action not found: {skillActionNames[i]}");
+            }
         }
     }
     
@@ -63,6 +73,14 @@ public class InputManager : MonoBehaviour
         if (jumpAction.WasPressedThisFrame())
         {
             jumpPressed = true;
+        }
+        if (skillActions[2].WasPressedThisFrame())
+        {
+            Debug.Log("Skill 3 was pressed this frame!");
+        }
+        if (skillActions != null && skillActions.Length > 1)
+        {
+            Debug.Log(skillActions[1] != null ? skillActions[1].name : "skillActions[1] is null");
         }
     }
 

@@ -28,6 +28,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
 
     public void OnKilled()
     {
+        Destroy(gameObject);
         Debug.Log("OnKilled");
     }
 

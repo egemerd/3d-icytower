@@ -34,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill1",
+                    "name": "PogoStick",
                     "type": "Button",
                     "id": "cdb5554e-c03f-4b79-bcc8-57839c35276d",
                     "expectedControlType": "",
@@ -43,9 +43,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill2",
+                    "name": "Ricochet",
                     "type": "Button",
                     "id": "67801e80-c429-4f2f-b410-9759853c2112",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Invincible",
+                    "type": "Button",
+                    "id": "0cb16781-b02e-4258-967b-f87a155caa3a",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -166,22 +175,22 @@
                 {
                     "name": "",
                     "id": "08d64f4b-555c-4571-bad9-55dbab0997dd",
-                    "path": "<Keyboard>/1",
+                    "path": "<XInputController>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill1",
+                    "action": "PogoStick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "a4f92ce3-61a8-4a94-8ee4-ece06a7846d7",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill1",
+                    "action": "PogoStick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -192,18 +201,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill2",
+                    "action": "Ricochet",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "951625ac-1685-4eae-aa10-044d1e16d0c8",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<XInputController>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill2",
+                    "action": "Ricochet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d923f12e-9b79-49f1-a47a-14f2320efe38",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Invincible",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b54d2ffd-a920-4f37-baf0-f0b7e50ecd44",
+                    "path": "<XInputController>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Invincible",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
