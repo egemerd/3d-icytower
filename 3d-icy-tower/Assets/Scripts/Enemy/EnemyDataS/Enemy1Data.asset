@@ -16,5 +16,6 @@ MonoBehaviour:
   reticleEndDistance: 0.5
   scanRadius: 14.78
   attackDamage: 1
-  projectileSpeed: 25
+  projectileSpeed: 20
   attackCooldown: 2
+  moveSpeed: 2
