@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4649777870761157353}
   - component: {fileID: 7483865589521323384}
   - component: {fileID: 2178478035733557277}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: EnemyFighter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,6 +186,10 @@ PrefabInstance:
     - target: {fileID: 4551737440520002654, guid: cade1b12a3574ab49859fe2a5ec78b67, type: 3}
       propertyPath: m_Name
       value: EnemyFigterAttack
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551737440520002654, guid: cade1b12a3574ab49859fe2a5ec78b67, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

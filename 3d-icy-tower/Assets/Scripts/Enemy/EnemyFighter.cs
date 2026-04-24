@@ -30,6 +30,10 @@ public class EnemyFighter : Enemy
         moveSpeed = enemyData.moveSpeed;
         
     }
+    private void OnEnable()
+    {
+        ShootRaycast(); 
+    }
     public override void EnemyAttack()
     {
         weapon.RotateAround(transform.position, Vector3.right, weaponTurnSpeed * Time.deltaTime);

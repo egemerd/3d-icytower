@@ -22,12 +22,9 @@ public class PlayerHealth : MonoBehaviour
     }
   
     public void GetDamage(int damage)
-    {
-        if (canTakeDamage)
-        {
-            health -= damage;
-            Debug.Log("Player Health: " + health);
-        }
+    {     
+        health -= damage;
+        Debug.Log("Player Health: " + health);       
     }
 
     private void OnGUI()
