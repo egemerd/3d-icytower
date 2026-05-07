@@ -24,6 +24,7 @@ public class PlayerHealth : MonoBehaviour
     public void GetDamage(int damage)
     {     
         health -= damage;
+        TimeStop.Instance.StopTime(0.2f, 0.05f); 
         Debug.Log("Player Health: " + health);       
     }
 
