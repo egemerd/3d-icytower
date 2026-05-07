@@ -4,11 +4,14 @@ public class JumpingState : IState
 {
     public void EnterState(PlayerController player)
     {   
+        player.animator.SetBool("isJumping",true);
         Debug.Log("Entered Jumping State");
     }
 
     public void ExitState(PlayerController player)
     {
+        player.animator.ResetTrigger("Jump");
+        player.animator.SetBool("isJumping", false);
         Debug.Log("Exited Jumping State");
     }
 

@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Can Take Damage: " + canTakeDamage);
+        //Debug.Log("Can Take Damage: " + canTakeDamage);
     }
     public float GetHealth()
     {
@@ -26,6 +26,8 @@ public class PlayerHealth : MonoBehaviour
         health -= damage;
         Debug.Log("Player Health: " + health);       
     }
+
+    
 
     private void OnGUI()
     {

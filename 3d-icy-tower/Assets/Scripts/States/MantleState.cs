@@ -5,6 +5,7 @@ public class MantleState : IState
     private float timeInMantle = 0f;
     public void EnterState(PlayerController player)
     {
+        player.ResetRotationToForward();
         Debug.Log("Entering Mantle State");
         timeInMantle = 0f;
         player.CallMantleJumpCoroutine();

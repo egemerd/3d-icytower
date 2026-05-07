@@ -11,6 +11,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     private Collider[] scanResults = new Collider[5];
     private ITargetable currentTarget;
+    private PlayerController playerController;
 
     [Header("UI Visuals")]
     [SerializeField] private Transform scanCircleTransform;
@@ -45,6 +46,7 @@ public class PlayerAttack : MonoBehaviour
     private void Awake()
     {
         stateMachine = GetComponent<IStateMachine>();
+        playerController = GetComponent<PlayerController>();
     }
 
     private void Start()
@@ -172,6 +174,7 @@ public class PlayerAttack : MonoBehaviour
 
     private IEnumerator AttackCoroutine(ITargetable target)
     {
+        playerController.animator.SetTrigger("Attack");
         isAttacking = true;
         Vector3 startPos = transform.position;
         Vector3 endPos = target.GetTransform().position;
@@ -218,6 +221,7 @@ public class PlayerAttack : MonoBehaviour
     private void FinishAttack()
     {
         isAttacking = false;
+        playerController.animator.ResetTrigger("Attack");
         enemy.OnKilled();
         if (TryGetComponent(out PlayerController player))
         {

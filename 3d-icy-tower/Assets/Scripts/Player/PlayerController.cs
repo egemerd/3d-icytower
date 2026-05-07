@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class PlayerController : MonoBehaviour, IStateMachine
 {
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     private Vector2 moveInput;
     private Rigidbody rb;
     private IState currentState;
+    [SerializeField] public Animator animator;
     public PlayerAttack playerAttack { get; private set; }
 
     private Dictionary<System.Type, IState> stateCache = new Dictionary<System.Type, IState>();
@@ -65,6 +67,13 @@ public class PlayerController : MonoBehaviour, IStateMachine
     [Header("Debug")]
     [SerializeField] private bool showCurrentStateOnScreen = true;
 
+    [Header("Rotation")]
+    private float rightFacingAngle = 90f;
+    private float leftFacingAngle = -90f;
+    private float rotationSpeed = 15f;
+
+    private float targetYRotation = 90f;
+
     private GUIStyle stateLabelStyle;
     public Rigidbody Rb => rb;
 
@@ -108,6 +117,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     private void FixedUpdate()
     {
+        HandleRotation();
+
         if (isMantling)
         {
             rb.linearVelocity = Vector3.zero;
@@ -119,6 +130,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
             currentState.UpdateState(this);
             return;
         }
+        
+        
 
         CheckForMantleOverlap();
         
@@ -200,6 +213,33 @@ public class PlayerController : MonoBehaviour, IStateMachine
         }
     }
 
+
+    private void HandleRotation()
+    {
+        float inputX = moveInput.x;
+
+        // 1. Only update the target direction if the player is pressing a button
+        if (Mathf.Abs(inputX) > 0.1f)
+        {
+            targetYRotation = inputX > 0 ? rightFacingAngle : leftFacingAngle;
+        }
+
+        // 2. ALWAYS smoothly rotate towards our target, even when inputX is 0
+        Quaternion targetRotation = Quaternion.Euler(0, targetYRotation, 0);
+
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            Time.deltaTime * rotationSpeed
+        );
+    }
+
+    public void ResetRotationToForward()
+    {
+        // Sets the target rotation to 0 (facing the original start direction).
+        // The existing HandleRotation() method will automatically and smoothly Slerp us there.
+        targetYRotation = 0f;
+    }
     public void HandleGravity()
     {
         Vector3 gravity = Physics.gravity * gravityScale;
@@ -275,11 +315,14 @@ public class PlayerController : MonoBehaviour, IStateMachine
     {
         // Instantaneous vertical forces can instantly overwrite rb.linearVelocity.y
         // without affecting the horizontal zMomentum pipeline.
+        animator.SetTrigger("Jump");
+
         Vector3 velocity = rb.linearVelocity;
         velocity.y = 0f;
         rb.linearVelocity = velocity;
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        
     }
 
     public void InAirMovement()
@@ -300,6 +343,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
     public void MantleBoostJump()
     {
         Debug.Log("Mantle Boost Jump Activated!");
+        
+
         // 1. Get input direction (-1, 0, or 1)
         float faceDirection = Mathf.Abs(moveInput.x) > 0.1f ? Mathf.Sign(moveInput.x) : 1f;
 
@@ -319,6 +364,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
     public void MantleNormalJump()
     {
         Debug.Log("Mantle Jump Activated!");
+       
+
         // Same as boost jump, but weaker. Or you can just call your standard jump!
         float faceDirection = Mathf.Abs(moveInput.x) > 0.1f ? Mathf.Sign(moveInput.x) : 1f;
 
@@ -430,6 +477,14 @@ public class PlayerController : MonoBehaviour, IStateMachine
         }
     }
 
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Chunk") && rb.linearVelocity.y < 0.1f)
+        {
+            Debug.LogError("Player Died.");
+        }
+    }
     private void OnGUI()
     {
         if (!showCurrentStateOnScreen || currentState == null) return;

@@ -80,7 +80,7 @@ public class InputManager : MonoBehaviour
         }
         if (skillActions != null && skillActions.Length > 1)
         {
-            Debug.Log(skillActions[1] != null ? skillActions[1].name : "skillActions[1] is null");
+            //Debug.Log(skillActions[1] != null ? skillActions[1].name : "skillActions[1] is null");
         }
     }
 
