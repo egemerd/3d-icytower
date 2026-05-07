@@ -60,20 +60,12 @@ public class PlayerAttack : MonoBehaviour
 
         ScanForTarget();
 
-        // Eðer bir hedefimiz varsa timing UI'ý baþlat
-        if (currentTarget != null && !timingRoutineActive)
-        {
-            StartCoroutine(TimingWindowCoroutine());
-        }
-
-        // Doðru zamanda tuþa basýldýysa attack baþlat
+        // Right timing window attack
         if (currentTarget != null && InputManager.Instance.attackAction.WasPressedThisFrame())
         {
-            if (isInTimingWindow)
+            if (currentTarget.IsInTimingWindow) // Check the ENEMY's window
             {
-                StopAllCoroutines(); // Timing'i durdur
-                timingRoutineActive = false;
-                timingUiTransform.gameObject.SetActive(false);
+                currentTarget.StopTimingUI(); // Stop the UI on the enemy
 
                 stateMachine.ChangeState<AttackingState>();
                 StartCoroutine(AttackCoroutine(currentTarget));
@@ -85,7 +77,7 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    
+
     public ITargetable GetFirstEntryTarget()
     {
         if (currentTarget != null)
@@ -97,6 +89,7 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
+                currentTarget.StopTimingUI(); // Stop Enemy UI on lock-off
                 currentTarget.OnLockOff();
                 currentTarget = null;
             }
@@ -107,8 +100,7 @@ public class PlayerAttack : MonoBehaviour
         {
             if (scanResults[i].TryGetComponent(out ITargetable target))
             {
-                currentTarget = target;
-                return currentTarget;
+                return target;
             }
         }
         return null;
@@ -120,56 +112,30 @@ public class PlayerAttack : MonoBehaviour
         if (target != currentTarget)
         {
             if (target != null)
+            {
                 SetCircleColor(Color.red);
+            }
             else
             {
                 SetCircleColor(Color.white);
-                timingUiTransform.gameObject.SetActive(false); // Hedef çýkarsa UI gizle
-                timingRoutineActive = false;
             }
 
-            currentTarget?.OnLockOff();
+            // Lock off old target
+            if (currentTarget != null)
+            {
+                currentTarget.StopTimingUI();
+                currentTarget.OnLockOff();
+            }
+
             currentTarget = target;
-            currentTarget?.OnLockOn(lockOnDelay);
-        }
-    }
 
-    // YENÝ: Zamanlama mantýðýný ve görselini yönetecek Coroutine
-    private IEnumerator TimingWindowCoroutine()
-    {
-        timingRoutineActive = true;
-        timingUiTransform.gameObject.SetActive(true);
-        float elapsed = 0f;
-
-        while (elapsed < totalTimingDuration && currentTarget != null)
-        {
-            timingUiTransform.position = currentTarget.GetTransform().position;
-
-            elapsed += Time.deltaTime;
-            float t = elapsed / totalTimingDuration;
-
-            // UI Görselini güncelle (Örn: Küçülen bir çember)
-            timingUiTransform.localScale = Vector3.Lerp(Vector3.one * 3f, Vector3.one * 0.5f, t);
-
-            // Zamanlama penceresi içinde miyiz kontrolü
-            if (t >= timingWindowStart && t <= timingWindowEnd)
+            // Lock on new target
+            if (currentTarget != null)
             {
-                isInTimingWindow = true;
-                timingUiTransform.GetComponent<SpriteRenderer>().color = Color.green; // Oyuncuya "þimdi bas" uyarýsý
+                currentTarget.OnLockOn(lockOnDelay);
+                currentTarget.StartTimingUI(); // YENÝ: Start timing UI over the enemy immediately!
             }
-            else
-            {
-                isInTimingWindow = false;
-                timingUiTransform.GetComponent<SpriteRenderer>().color = Color.yellow;
-            }
-
-            yield return null;
         }
-
-        // Süre bittiðinde baþaramadýysa UI'ý kapat ve resetle
-        isInTimingWindow = false;
-        timingRoutineActive = false;
-        timingUiTransform.gameObject.SetActive(false);
     }
 
     private IEnumerator AttackCoroutine(ITargetable target)
@@ -199,7 +165,7 @@ public class PlayerAttack : MonoBehaviour
         }
 
         transform.position = endPos;
-        
+
         currentTarget = null;
         SetCircleColor(Color.white);
         enemy = target;
@@ -225,43 +191,28 @@ public class PlayerAttack : MonoBehaviour
         enemy.OnKilled();
         if (TryGetComponent(out PlayerController player))
         {
-            // Get the raw 2D input from the analog stick/keyboard
             Vector2 inputDir = InputManager.Instance.moveInput;
 
-            // 1. HORIZONTAL MOMENTUM: 
-            // Accurately pushes left (-1) or right (1) depending on your input.
-            // If inputDir.x is 0, you won't drift horizontally.
             float targetZMomentum = inputDir.x * postAttackForwardForce;
-
-            // 2. ALWAYS UPPER DIRECTION:
-            // We lock in a base jump force so the character ALWAYS bounces upwards.
             float finalJumpForce = postAttackJumpForce;
 
-            // If the player is pushing UP or UP-DIAGONALLY, give them extra height!
             if (inputDir.y > 0.1f)
             {
-                // Give a bonus 50% height based on how hard they push up
                 finalJumpForce += (inputDir.y * postAttackJumpForce * 0.5f);
             }
 
-            // Zero out current falling speed so the bounce is always perfectly consistent
             Vector3 vel = player.Rb.linearVelocity;
-            vel.y = 0; 
+            vel.y = 0;
             player.Rb.linearVelocity = vel;
 
-            // Apply the Vertical burst (Always Upwards)
             Vector3 jumpDirection = Vector3.up * finalJumpForce;
             player.Rb.AddForce(jumpDirection, ForceMode.VelocityChange);
 
-            // Apply the Horizontal burst (Directly controlled by joystick X)
-            // Even if it's 0, we push it so the player stops drifting and goes straight up!
             player.SetZMomentum(targetZMomentum);
-
             stateMachine.ChangeState<JumpingState>();
         }
     }
 
-    // ... (SetCircleColor, OnDrawGizmos gibi diðer alt metotlar ayný kalýr)
     private void SetCircleColor(Color color)
     {
         if (scanCircleRenderer != null)

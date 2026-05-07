@@ -7,5 +7,9 @@ public interface ITargetable
     void OnLockOn(float lockOnDelay);
     void OnLockOff();
 
+    bool IsInTimingWindow { get; }
+    void StartTimingUI();
+    void StopTimingUI();
+
 
 }
