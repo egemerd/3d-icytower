@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // 1. ADD YOUR PARTICLE NAMES HERE
 public enum ParticleType
@@ -9,7 +10,8 @@ public enum ParticleType
     HitEffect,
     WalkDust,
     DashTrail,
-    Explosion
+    Explosion,
+    PlayerHit
 }
 
 // Struct to configure particles in the Inspector
@@ -123,7 +125,20 @@ public class ParticleEffects : MonoBehaviour
         if (ps == null) return;
 
         ps.transform.position = position;
-        ps.transform.rotation = rotation == default ? Quaternion.identity : rotation;
+        //ps.transform.rotation = rotation == default ? Quaternion.identity : rotation;
+        ps.Play();
+
+        StartCoroutine(ReturnWhenFinished(ps, type));
+    }
+
+    public void PlayOneShot(ParticleType type, Transform parent, Vector3 localOffset = default)
+    {
+        ParticleSystem ps = GetParticle(type);
+        if (ps == null) return;
+
+        ps.transform.SetParent(parent);
+        ps.transform.position = localOffset;
+        //ps.transform.rotation = rotation == default ? Quaternion.identity : rotation;
         ps.Play();
 
         StartCoroutine(ReturnWhenFinished(ps, type));

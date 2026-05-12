@@ -64,6 +64,9 @@ public class PlayerController : MonoBehaviour, IStateMachine
     [SerializeField] private float fallMultiplier = 1.5f;
     [SerializeField] private float maxFallSpeed = 40f;
 
+    [Header("Effects")]
+    [SerializeField] private ParticleSystem walkingEffect;
+
     [Header("Debug")]
     [SerializeField] private bool showCurrentStateOnScreen = true;
 
@@ -130,8 +133,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
             currentState.UpdateState(this);
             return;
         }
-        
-        
+
+        HandleWalkEffect();
 
         CheckForMantleOverlap();
         
@@ -452,6 +455,17 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     }
 
+    private void HandleWalkEffect()
+    {
+        if(currentState.GetType() == typeof(WalkingState))
+        {
+            walkingEffect.Play();
+        }
+        else
+        {
+            walkingEffect.Stop();
+        }
+    }
     private void OnDrawGizmos()
     {
         Vector3 origin = transform.position;
