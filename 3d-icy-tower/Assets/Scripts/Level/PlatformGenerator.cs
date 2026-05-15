@@ -3,13 +3,20 @@ using UnityEngine;
 
 public class PlatformGenerator : MonoBehaviour
 {
-    // Singleton - Diðer scriptlerden (PlayerHealth) kolayca eriþmek için
+    // Singleton - Diðer scriptlerden kolayca eriþmek için
     public static PlatformGenerator Instance { get; private set; }
 
     [Header("Core References")]
     [SerializeField] private Transform playerTransform;
     [Tooltip("Drag your handcrafted Chunk Prefabs here. They must have the PlatformChunk script attached.")]
     [SerializeField] private PlatformChunk[] chunkPrefabs;
+
+    [Header("Platform Visuals (2D Sprite Setup)")]
+    [Tooltip("Platformlarýn üzerini kaplayacak olan Sprite Renderer'a sahip Prefabýnýz.")]
+    [SerializeField] private GameObject platformSpritePrefab;
+    [Tooltip("Sprite görselinin, görünmez olan 3D platform küpüne kýyasla Z eksenindeki offset'i.")]
+    [SerializeField] private float spriteXOffset = -0.51f;
+    [SerializeField] private float spriteYOffset = -0.51f;
 
     [Header("Generation Bounds")]
     [SerializeField] private float spawnAheadDistance = 60f;
@@ -67,17 +74,12 @@ public class PlatformGenerator : MonoBehaviour
         }
     }
 
-    // YENÝ EKLENEN KISIM: Oyuncunun altýna düþerse öleceði birleþim yerini (En alt chunk'ýn Y noktasý) verir
     public float GetDeathLineY()
     {
         if (activeChunks.Count > 0)
         {
-            // activeChunks.Peek() her zaman sahnede var olan en alt chunk'týr. 
-            // transform.position.y ise bir önceki (silinmiþ olan) chunk ile birleþtiði yerdir.
             return activeChunks.Peek().transform.position.y;
         }
-        
-        // Eðer henüz chunk yoksa baþlangýç referans noktasýný ölüm bölgesi say
         return startReferencePoint != null ? startReferencePoint.position.y - 10f : -9999f;
     }
 
@@ -92,6 +94,9 @@ public class PlatformGenerator : MonoBehaviour
             for (int i = 0; i < poolSizePerChunk; i++)
             {
                 PlatformChunk instance = Instantiate(prefab, transform);
+                
+                DecorateChunkPlatforms(instance);
+                
                 instance.gameObject.SetActive(false);
                 poolQueue.Enqueue(instance);
                 instanceToPrefabMap[instance] = prefab;
@@ -113,6 +118,7 @@ public class PlatformGenerator : MonoBehaviour
         else
         {
             chunkToSpawn = Instantiate(randomlyChosenPrefab, transform);
+            DecorateChunkPlatforms(chunkToSpawn);
             instanceToPrefabMap[chunkToSpawn] = randomlyChosenPrefab;
         }
 
@@ -123,7 +129,7 @@ public class PlatformGenerator : MonoBehaviour
         if (chunkToSpawn.connectionPoint != null)
             nextSpawnY = chunkToSpawn.connectionPoint.position.y;
         else
-            nextSpawnY += 64f; // Senin objelerinin büyüklüðü 64 ise, fallback olarak 64 verilebilir
+            nextSpawnY += 64f; 
 
         activeChunks.Enqueue(chunkToSpawn);
     }
@@ -135,5 +141,70 @@ public class PlatformGenerator : MonoBehaviour
 
         if (instanceToPrefabMap.TryGetValue(chunk, out PlatformChunk prefab))
             chunkPools[prefab].Enqueue(chunk);
+    }
+
+    /// <summary>
+    /// Bir chunk içindeki "platform" kelimesi geçen objeleri bulur, üzerlerine sprite prefabýný ekler 
+    /// ve platform boyutuna göre tiled ayarýný dinamik olarak geniþletip merkezlerini kusursuzca hizalar.
+    /// </summary>
+    private void DecorateChunkPlatforms(PlatformChunk chunkInstance)
+    {
+        if (platformSpritePrefab == null) return;
+
+        Transform[] allChildren = chunkInstance.GetComponentsInChildren<Transform>(true);
+
+        foreach (Transform child in allChildren)
+        {
+            if (child.name.ToLower().Contains("platform") && child != chunkInstance.transform)
+            {
+                // 1. Orijinal 3D Küp görünümünü kapat (Ýsterseniz bu yorumu açýp orijinal küpleri gizleyebilirsiniz)
+                if (child.TryGetComponent<MeshRenderer>(out MeshRenderer mrDisable))
+                {
+                    mrDisable.enabled = false;
+                }
+
+                // 2. Prefabý platformun bir çocuðu olarak Instantiate et
+                GameObject spriteInstance = Instantiate(platformSpritePrefab, child);
+
+                // Dönüþünü orijinal prefabdaki gibi yapsýn
+                spriteInstance.transform.localRotation = platformSpritePrefab.transform.rotation; 
+
+                // Zýt scale iþlemini uyguluyoruz ki Sprite esneyip bozulmasýn
+                spriteInstance.transform.localScale = new Vector3(
+                    1f / child.localScale.x,
+                    1f / child.localScale.y,
+                    1f / child.localScale.z
+                );
+
+                // 3. Sprite Renderer Tiled Modunu ve Geniþliðini Ayarla
+                if (spriteInstance.TryGetComponent<SpriteRenderer>(out SpriteRenderer sr))
+                {
+                    if (sr.sprite != null)
+                    {
+                        sr.drawMode = SpriteDrawMode.Tiled;
+                        // Sadece X (Geniþlik) deðerini platforma eþitliyoruz
+                        sr.size = new Vector2(child.localScale.x, sr.sprite.bounds.size.y);
+                    }
+                }
+
+                // 4. KUSURSUZ HÝZALAMA (Gecikmeli Bounds deðerlerinden kaçýnarak)
+                
+                // Platformun DÜNYA üzerindeki gerçek ve fiziksel tam orta noktasýný alalým:
+                Vector3 platformWorldCenter = child.position;
+                if (child.TryGetComponent<Collider>(out Collider col))
+                    platformWorldCenter = col.bounds.center;
+                else if (child.TryGetComponent<MeshRenderer>(out MeshRenderer mr))
+                    platformWorldCenter = mr.bounds.center;
+
+                // Sprite'ýn pozisyonunu hiç tereddütsüz direkt o orta noktaya koyuyoruz
+                spriteInstance.transform.position = platformWorldCenter;
+
+                // 5. Z-Offset Ayarý
+                // Dünya pozisyonuna attýðýmýz için child'ýn local özellikleri de etkilendi.
+                // X ve Y deðerini koruyup, sadece baþtan ayarladýðýnýz Z ekseni ofsetini veriyoruz.
+                Vector3 currentLocal = spriteInstance.transform.localPosition;
+                spriteInstance.transform.localPosition = new Vector3(spriteXOffset,spriteYOffset,  currentLocal.z);
+            }
+        }
     }
 }
