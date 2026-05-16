@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     public bool isMantling { get; private set; }
     public bool isRocketActive { get; set; }
     public bool isAttacking { get; set; }
+    public LayerMask WallMask => wallMask;
 
     public void UnlockFromMantle()
     {
@@ -127,7 +128,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     private void FixedUpdate()
     {
-
+        
         HandleRotation();
         RotateCharacter();
 
@@ -143,7 +144,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
             return;
         }
 
-        
+        if (isRocketActive) return;
 
 
         HandleWalkEffect();
@@ -276,11 +277,9 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (isRocketActive) return;
         if ((wallMask.value & (1 << collision.gameObject.layer)) > 0)
-        {
-            if (isRocketActive)
-                BounceRocket(collision);  // Unlimited billiard bounce during ulti
-            else
+        {   
                 Bounce(collision);        // Original single bounce
         }
 
