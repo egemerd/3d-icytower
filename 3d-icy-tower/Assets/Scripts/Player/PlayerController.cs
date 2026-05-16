@@ -127,8 +127,10 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     private void FixedUpdate()
     {
+
         HandleRotation();
         RotateCharacter();
+
         if (isMantling)
         {
             rb.linearVelocity = Vector3.zero;
@@ -140,6 +142,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
             currentState.UpdateState(this);
             return;
         }
+
+        
 
         HandleWalkEffect();
 

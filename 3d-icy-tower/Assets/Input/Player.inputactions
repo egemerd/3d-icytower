@@ -59,6 +59,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Ulti",
+                    "type": "Button",
+                    "id": "b47cd5c6-f7f2-48ce-bde6-f6fca812032d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -235,6 +244,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Invincible",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f515e810-c1f5-45b1-a8a2-2e6bfcc72e58",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ulti",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6774832c-e75b-4957-b358-08816765d1ed",
+                    "path": "<XInputController>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ulti",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

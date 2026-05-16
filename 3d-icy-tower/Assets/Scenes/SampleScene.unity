@@ -13167,8 +13167,10 @@ MonoBehaviour:
   - PogoStick
   - Ricochet
   - Invincible
+  - Ulti
   jumpPressed: 0
   attackPressed: 0
+  skillPressed: 0
   isMoving: 0
 --- !u!4 &1454419062
 Transform:
@@ -26492,6 +26494,8 @@ MonoBehaviour:
     skill: {fileID: 11400000, guid: ec0cd3d1846083040896845e32c34226, type: 2}
   - slotName: InvinsibilitySkill
     skill: {fileID: 11400000, guid: 92e8c053169fe294cadc9aa2f4b32351, type: 2}
+  - slotName: UltiSkill
+    skill: {fileID: 11400000, guid: bd5bea45501760e488054fda0a992248, type: 2}
 --- !u!114 &1588544257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28823,6 +28827,63 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &1843278612
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 569357305587387220, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_Name
+      value: Arrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.106
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 16.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.607
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9074746136576253075, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
 --- !u!1 &1870895226
 GameObject:
   m_ObjectHideFlags: 0
@@ -33220,3 +33281,4 @@ SceneRoots:
   - {fileID: 1728016661}
   - {fileID: 1133120174}
   - {fileID: 893561821}
+  - {fileID: 1843278612}

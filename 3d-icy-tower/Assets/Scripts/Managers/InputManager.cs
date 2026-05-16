@@ -12,16 +12,15 @@ public class InputManager : MonoBehaviour
     public InputAction jumpAction;
     public InputAction attackAction;
 
-    public InputAction skill1Action;
-    public InputAction skill2Action;
-    public InputAction skill3Action;
-
     [Header("Skill Inputs")]
-    [SerializeField] private string[] skillActionNames = { "Skill1", "Skill2", "Skill3" }; // Input Action Asset'indeki isimler
+    [SerializeField] private string[] skillActionNames = { "Skill1", "Skill2", "Skill3", "Skill4" }; 
     private InputAction[] skillActions;
 
     public bool jumpPressed;
     public bool attackPressed;
+    
+    // NEW: Array to store the pressed state of each skill so FixedUpdate doesn't miss them
+    public bool[] skillsPressed; 
 
     public Vector2 moveInput { get; private set; }
 
@@ -47,14 +46,16 @@ public class InputManager : MonoBehaviour
         Debug.Log("skillActionNames.Length" + skillActionNames.Length);
         Debug.Log("skillActions.Length" + skillActions.Length);
     }
+    
     private void InitializeActions()
     {
         moveAction = playerInput.actions.FindAction("Move");
         jumpAction = playerInput.actions.FindAction("Jump");
         attackAction = playerInput.actions.FindAction("Attack");
 
-        //Skill actionlarýný dinamik olarak bul ve sakla
         skillActions = new InputAction[skillActionNames.Length];
+        skillsPressed = new bool[skillActionNames.Length]; // Initialize the boolean array
+
         for(int i = 0; i < skillActionNames.Length; i++)
         {
             skillActions[i] = playerInput.actions.FindAction(skillActionNames[i]);
@@ -64,38 +65,46 @@ public class InputManager : MonoBehaviour
             }
         }
     }
-    
 
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
         isMoving = moveInput.magnitude > 0.1f;
+
         if (jumpAction.WasPressedThisFrame())
         {
             jumpPressed = true;
         }
-        if (skillActions[2].WasPressedThisFrame())
+        
+        if (attackAction != null && attackAction.WasPressedThisFrame())
         {
-            Debug.Log("Skill 3 was pressed this frame!");
+            attackPressed = true;
         }
-        if (skillActions != null && skillActions.Length > 1)
+
+        // CAPTURE SKILLS IN UPDATE
+        if (skillActions != null)
         {
-            //Debug.Log(skillActions[1] != null ? skillActions[1].name : "skillActions[1] is null");
+            for (int i = 0; i < skillActions.Length; i++)
+            {
+                if (skillActions[i] != null && skillActions[i].WasPressedThisFrame())
+                {
+                    skillsPressed[i] = true;
+                }
+            }
         }
     }
 
     public int GetSkillIndex()
     {
-        for(int i = 0; i < skillActions.Length; i++)
+        for(int i = 0; i < skillsPressed.Length; i++)
         {
-            if (skillActions[i].WasPressedThisFrame())
+            if (skillsPressed[i])
             {
-                return i; // Hangi skill tuþuna basýldýðýný döndür
+                return i; 
             }
         }
         return -1;
     }
-    
 
     public bool ConsumeJumpPressed()
     {
@@ -104,10 +113,28 @@ public class InputManager : MonoBehaviour
         return wasPressed;
     }
 
+    public bool ConsumeSkillPressed(int index)
+    {
+        int arrayIndex = index - 1;
+
+        if (arrayIndex < 0 || arrayIndex >= skillsPressed.Length)
+            return false;
+
+        // READ FROM THE BOOLEAN ARRAY DONT READ ACTION DIRECTLY
+        bool wasPressed = skillsPressed[arrayIndex];
+        
+        if (wasPressed) 
+        {
+            skillsPressed[arrayIndex] = false; // Consume it
+        }
+
+        return wasPressed;
+    }
+
     public bool ConsumeAttackPressed()
     {
         bool wasPressed = attackPressed;
-        attackPressed = false; // Tüketildi, tekrar false yap!
+        attackPressed = false; 
         return wasPressed;
     }
 }
