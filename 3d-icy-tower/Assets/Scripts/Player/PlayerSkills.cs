@@ -22,23 +22,24 @@ public class PlayerSkills : MonoBehaviour
 
     void HandleSkillInput()
     {
+        // GetSkillIndex() now consumes the press, so this only fires ONCE
+        // per button press no matter how many frames Update() runs.
         int skillIndex = InputManager.Instance.GetSkillIndex();
 
         if (skillIndex >= 0 && skillIndex < equippedSkills.Count)
         {
-            // Ýlgili yapýdan (struct) sadece skill nesnesini alýyoruz
             var currentSkill = equippedSkills[skillIndex].skill;
 
-            // Null kontrolü, eðer boþ bir slot varsa atla.
             if (currentSkill != null)
             {
                 currentSkill.UseSkill(this.gameObject);
-                Debug.Log($"oBJECT: {this.gameObject} (Slot: {equippedSkills[skillIndex].slotName})");
+                Debug.Log($"Skill used: {equippedSkills[skillIndex].slotName}");
             }
             else
             {
-                Debug.LogWarning($"Yetenek slotu (Index: {skillIndex}) boþ!");
+                Debug.LogWarning($"Skill slot (Index: {skillIndex}) is empty!");
             }
         }
     }
+
 }

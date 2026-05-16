@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     public bool isMoving { get; private set; }
     public bool isMantling { get; private set; }
-
+    public bool isRocketActive { get; set; }
     public bool isAttacking { get; set; }
 
     public void UnlockFromMantle()
@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
         }
 
         
+
 
         HandleWalkEffect();
 
@@ -277,8 +278,12 @@ public class PlayerController : MonoBehaviour, IStateMachine
     {
         if ((wallMask.value & (1 << collision.gameObject.layer)) > 0)
         {
-            Bounce(collision);
+            if (isRocketActive)
+                BounceRocket(collision);  // Unlimited billiard bounce during ulti
+            else
+                Bounce(collision);        // Original single bounce
         }
+
     }
 
     private void Bounce(Collision collision)
@@ -324,6 +329,48 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
         groundCheckerForBounce = false;
     }
+
+    private void BounceRocket(Collision collision)
+    {
+        Vector3 normal = collision.contacts[0].normal;
+
+        // Flatten the normal to the Z/Y plane only.
+        // Your game has no real X movement — keeping X in the normal
+        // would produce a reflection with an X component that the
+        // pipeline would then zero out, breaking the angle.
+        normal.x = 0f;
+        if (normal.sqrMagnitude < 0.001f) return; // degenerate hit, ignore
+        normal = normal.normalized;
+
+        // Read current velocity and flatten to Z/Y as well.
+        // We use rb.linearVelocity directly here (not lastFrameVelocity)
+        // because OnCollisionEnter fires in the same physics step as the
+        // impact — the velocity is still the incoming velocity at this point.
+        Vector3 incoming = rb.linearVelocity;
+        incoming.x = 0f;
+
+        float speed = incoming.magnitude;
+        if (speed < 0.1f) speed = 1f; // fallback so we never reflect a zero vector
+
+        // Pure geometric reflection in the Z/Y plane.
+        // dot = how much of the incoming direction aligns with the wall normal.
+        // reflect = v - 2(v·n)n  — this is the billiard formula.
+        float dot = Vector3.Dot(incoming.normalized, normal);
+        Vector3 reflected = incoming.normalized - 2f * dot * normal;
+
+        // Preserve exact pre-impact speed — no gain, no loss.
+        Vector3 finalVelocity = reflected.normalized * speed;
+        finalVelocity.x = 0f; // belt-and-suspenders: guarantee no X drift
+
+        // Write velocity and sync zMomentum in one atomic step.
+        // RocketUltiHandler.FixedUpdate reads rb.linearVelocity.normalized
+        // next physics frame, so the direction is already correct and it
+        // simply scales it to currentSpeed.
+        rb.linearVelocity = finalVelocity;
+        zMomentum = finalVelocity.z;
+
+    }
+
 
     public void Jump()
     {

@@ -100,7 +100,7 @@ public class InputManager : MonoBehaviour
         {
             if (skillsPressed[i])
             {
-                return i; 
+                skillsPressed[i] = false; return i; 
             }
         }
         return -1;
@@ -129,6 +129,11 @@ public class InputManager : MonoBehaviour
         }
 
         return wasPressed;
+    }
+
+    public bool UltiPressed()
+    {
+        return skillActions[3].WasPressedThisFrame();
     }
 
     public bool ConsumeAttackPressed()
