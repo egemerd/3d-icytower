@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
     public PlayerAttack playerAttack { get; private set; }
 
     private Dictionary<System.Type, IState> stateCache = new Dictionary<System.Type, IState>();
+    [Header("References")]
+    [SerializeField] private Transform characterModel;
 
     [Header("Movement")]
     [SerializeField] private float startSpeed = 3f;
@@ -33,6 +35,11 @@ public class PlayerController : MonoBehaviour, IStateMachine
     [SerializeField] private float jumpForce = 7f;
     [SerializeField] private float coyoteTime = 0.12f;
     [SerializeField] private float jumpBufferTime = 0.12f;
+
+    [Header("Jump Spin (Icy Tower Effect)")]
+    [SerializeField] private float minUpwardSpeedForSpin = 5f;
+    [SerializeField] private float jumpSpinSpeed = 1200f; // Saniyede kaç derece döneceði
+    private float currentZRotation = 0f;
 
     [Header("Ground Check")]
     [SerializeField] private float groundCheckDistance = 0.25f;
@@ -121,7 +128,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     private void FixedUpdate()
     {
         HandleRotation();
-
+        RotateCharacter();
         if (isMantling)
         {
             rb.linearVelocity = Vector3.zero;
@@ -332,7 +339,26 @@ public class PlayerController : MonoBehaviour, IStateMachine
     {
         Movement();
     }
+    public void RotateCharacter()
+    {
 
+        if (rb.linearVelocity.y > minUpwardSpeedForSpin && !IsGrounded())
+        {
+            // Ýleri gidiyorsa ileri, geri gidiyorsa geriye doðru takla (spin) atsýn
+            float direction = zMomentum >= 0 ? -1f : 1f;
+            currentZRotation += jumpSpinSpeed * direction * Time.deltaTime;
+        }
+        else
+        {
+            // Yukarý hýzý azaldýðýnda veya yere düþtüðünde pürüzsüzce düz duruþa geri döner
+            currentZRotation = Mathf.LerpAngle(currentZRotation, 0f, 15f * Time.deltaTime);
+        }
+
+        // ÇÖZÜM: "*=" (çarpý eþittir) yerine doðrudan "=" (eþittir) kullanýyoruz ve localRotation'a atýyoruz.
+        // Eðer modelinizin taklasý yanlýþ eksende atýyorsa (X yerine Z ekseni gerekliyse):
+        // Quaternion.Euler(0, 0, currentZRotation) olarak deðiþtirebilirsiniz.
+        characterModel.localRotation = Quaternion.Euler(0, 0,currentZRotation) ;
+    }
     public bool IsGrounded()
     {
         bool grounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);

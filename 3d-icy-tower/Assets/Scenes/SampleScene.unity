@@ -298,7 +298,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &4690811
 SpriteRenderer:
   serializedVersion: 2
@@ -819,7 +819,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 30.8
-    OrthographicSize: 15.1
+    OrthographicSize: 15.5
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -846,7 +846,7 @@ Transform:
   m_GameObject: {fileID: 87592531}
   serializedVersion: 2
   m_LocalRotation: {x: 0.09964922, y: -0.70005, z: 0.09964925, w: 0.70005006}
-  m_LocalPosition: {x: 112.998726, y: 24.127975, z: -63.102707}
+  m_LocalPosition: {x: 117.08277, y: 30.858862, z: -63.1082}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -864,19 +864,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachinePositionComposer
-  CameraDistance: 57.4
+  CameraDistance: 63.2
   DeadZoneDepth: 5.8
   Composition:
-    ScreenPosition: {x: 0.0005208254, y: 0.03}
+    ScreenPosition: {x: 0.0005208254, y: 0.41}
     DeadZone:
       Enabled: 1
-      Size: {x: 2, y: 0.18}
+      Size: {x: 2, y: 0.12}
     HardLimits:
       Enabled: 0
       Size: {x: 2, y: 2}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0.37, z: 0}
+  TargetOffset: {x: 0, y: -8.57, z: 0}
   Damping: {x: 0, y: 1, z: 1}
   Lookahead:
     Enabled: 0
@@ -1390,7 +1390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &115678445
 SpriteRenderer:
   serializedVersion: 2
@@ -1481,7 +1481,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &124961062
 SpriteRenderer:
   serializedVersion: 2
@@ -1845,7 +1845,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &169250085
 SpriteRenderer:
   serializedVersion: 2
@@ -2300,7 +2300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &208706287
 SpriteRenderer:
   serializedVersion: 2
@@ -3395,8 +3395,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 30.8
-  orthographic: 1
-  orthographic size: 15.1
+  orthographic: 0
+  orthographic size: 15.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3421,12 +3421,12 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.09964922, y: -0.70005, z: 0.09964925, w: 0.70005006}
-  m_LocalPosition: {x: 41.578133, y: 24.127975, z: 0.4420327}
+  m_LocalPosition: {x: 45.662178, y: 30.858862, z: 0.43653825}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.952, y: -90, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4065,7 +4065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &401187298
 SpriteRenderer:
   serializedVersion: 2
@@ -4872,7 +4872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &469507755
 SpriteRenderer:
   serializedVersion: 2
@@ -5282,7 +5282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &501304089
 SpriteRenderer:
   serializedVersion: 2
@@ -5828,7 +5828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &534936362
 SpriteRenderer:
   serializedVersion: 2
@@ -6828,6 +6828,38 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &688876208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 688876209}
+  m_Layer: 12
+  m_Name: Character
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &688876209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688876208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 882107783}
+  m_Father: {fileID: 1588544254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &692061639
 GameObject:
   m_ObjectHideFlags: 0
@@ -6968,7 +7000,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1588544254}
+    m_TransformParent: {fileID: 688876209}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fe49066fb415f1647aabb62e54b15903, type: 3}
       propertyPath: m_LocalScale.x
@@ -6984,7 +7016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fe49066fb415f1647aabb62e54b15903, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.21
+      value: 0.21000004
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fe49066fb415f1647aabb62e54b15903, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6992,7 +7024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fe49066fb415f1647aabb62e54b15903, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.093
+      value: 0.09300001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fe49066fb415f1647aabb62e54b15903, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10171,7 +10203,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1088013050
 SpriteRenderer:
   serializedVersion: 2
@@ -11326,7 +11358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1225305835
 SpriteRenderer:
   serializedVersion: 2
@@ -12440,7 +12472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1374255540
 Transform:
   m_ObjectHideFlags: 0
@@ -26248,6 +26280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   animator: {fileID: 882107782}
+  characterModel: {fileID: 688876209}
   startSpeed: 12
   targetReachSpeed: 25
   accelerationTime: 1.5
@@ -26261,6 +26294,8 @@ MonoBehaviour:
   jumpForce: 30
   coyoteTime: 0.12
   jumpBufferTime: 0.12
+  minUpwardSpeedForSpin: 0.21
+  jumpSpinSpeed: 1200
   groundCheckDistance: 2.42
   groundMask:
     serializedVersion: 2
@@ -26382,8 +26417,8 @@ Transform:
   m_Children:
   - {fileID: 77665262}
   - {fileID: 531244699}
-  - {fileID: 882107783}
   - {fileID: 863582331}
+  - {fileID: 688876209}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1588544255
@@ -26436,7 +26471,7 @@ MonoBehaviour:
   hitstopTriggerPercent: 0.7
   hitstopDuration: 0.13
   hitstopTimeScale: 0
-  postAttackJumpForce: 40
+  postAttackJumpForce: 60
   postAttackForwardForce: 20
 --- !u!114 &1588544256
 MonoBehaviour:
@@ -27596,7 +27631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1747030102
 SpriteRenderer:
   serializedVersion: 2
@@ -31915,7 +31950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5739849352358355438, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9038825518957463177, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_LocalPosition.x

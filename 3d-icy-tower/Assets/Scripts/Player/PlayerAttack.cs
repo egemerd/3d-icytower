@@ -156,7 +156,7 @@ public class PlayerAttack : MonoBehaviour
             if (t >= hitstopTriggerPercent && !hitstopActivated)
             {
                 hitstopActivated = true;
-                yield return StartCoroutine(HitstopCoroutine());
+                //yield return StartCoroutine(HitstopCoroutine());
             }
 
             float curveValue = dashCurve.Evaluate(t);
@@ -166,7 +166,7 @@ public class PlayerAttack : MonoBehaviour
 
         transform.position = endPos;
         ParticleEffects.Instance.PlayOneShot(ParticleType.HitEffect, target.GetTransform().position);
-        TimeStop.Instance.StopTime(0.08f, 0.1f);
+        TimeStop.Instance.StopTime(0.04f, 0.1f);
         currentTarget = null;
         SetCircleColor(Color.white);
         enemy = target;

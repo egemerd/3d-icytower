@@ -32,10 +32,11 @@ public class PlayerHealth : MonoBehaviour
     }
   
     public void GetDamage(int damage)
-    {     
+    {
+        if (canTakeDamage == false) return;
         health -= damage;
         ParticleEffects.Instance.PlayOneShot(ParticleType.PlayerHit,transform.position + new Vector3(2,0,0));
-        TimeStop.Instance.StopTime(0.2f, 0.05f); 
+        TimeStop.Instance.StopTime(0.1f, 0.1f); 
         Debug.Log("Player Health: " + health);       
     }
 
