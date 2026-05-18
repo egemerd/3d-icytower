@@ -166,6 +166,7 @@ public class PlayerAttack : MonoBehaviour
 
         transform.position = endPos;
         ParticleEffects.Instance.PlayOneShot(ParticleType.HitEffect, target.GetTransform().position);
+        ParticleEffects.Instance.PlayOneShot(ParticleType.HitEffect2, target.GetTransform().position);
         TimeStop.Instance.StopTime(0.04f, 0.1f);
         currentTarget = null;
         SetCircleColor(Color.white);

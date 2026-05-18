@@ -95,7 +95,7 @@ public class PlatformGenerator : MonoBehaviour
             {
                 PlatformChunk instance = Instantiate(prefab, transform);
                 
-                DecorateChunkPlatforms(instance);
+                //DecorateChunkPlatforms(instance);
                 
                 instance.gameObject.SetActive(false);
                 poolQueue.Enqueue(instance);
@@ -118,7 +118,7 @@ public class PlatformGenerator : MonoBehaviour
         else
         {
             chunkToSpawn = Instantiate(randomlyChosenPrefab, transform);
-            DecorateChunkPlatforms(chunkToSpawn);
+            //DecorateChunkPlatforms(chunkToSpawn);
             instanceToPrefabMap[chunkToSpawn] = randomlyChosenPrefab;
         }
 

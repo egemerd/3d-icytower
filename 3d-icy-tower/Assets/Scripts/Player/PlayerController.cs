@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -27,8 +27,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     [Header("Air Movement")]
     [SerializeField] private float maxAirSpeed = 12f;
-    [SerializeField] private float airAcceleration = 8f;   // Yavaş hızlanma
-    [SerializeField] private float airTurnSpeed = 15f;      // Havada dönüş keskinliği
+    [SerializeField] private float airAcceleration = 8f;   // YavaÅŸ hÄ±zlanma
+    [SerializeField] private float airTurnSpeed = 15f;      // Havada dÃ¶nÃ¼ÅŸ keskinliÄŸi
     [SerializeField] private float airFriction = 0.5f;
 
     [Header("Jump")]
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     [Header("Jump Spin (Icy Tower Effect)")]
     [SerializeField] private float minUpwardSpeedForSpin = 5f;
-    [SerializeField] private float jumpSpinSpeed = 1200f; // Saniyede kaç derece döneceği
+    [SerializeField] private float jumpSpinSpeed = 1200f; // Saniyede kaÃ§ derece dÃ¶neceÄŸi
     private float currentZRotation = 0f;
 
     [Header("Ground Check")]
@@ -278,9 +278,11 @@ public class PlayerController : MonoBehaviour, IStateMachine
     private void OnCollisionEnter(Collision collision)
     {
         if (isRocketActive) return;
+        
         if ((wallMask.value & (1 << collision.gameObject.layer)) > 0)
-        {   
-                Bounce(collision);        // Original single bounce
+        {
+            ParticleEffects.Instance.PlayOneShot(ParticleType.WallBounce, collision.contacts[0].point);
+            Bounce(collision);        // Original single bounce
         }
 
     }
@@ -334,7 +336,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
         Vector3 normal = collision.contacts[0].normal;
 
         // Flatten the normal to the Z/Y plane only.
-        // Your game has no real X movement — keeping X in the normal
+        // Your game has no real X movement â€” keeping X in the normal
         // would produce a reflection with an X component that the
         // pipeline would then zero out, breaking the angle.
         normal.x = 0f;
@@ -344,7 +346,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
         // Read current velocity and flatten to Z/Y as well.
         // We use rb.linearVelocity directly here (not lastFrameVelocity)
         // because OnCollisionEnter fires in the same physics step as the
-        // impact — the velocity is still the incoming velocity at this point.
+        // impact â€” the velocity is still the incoming velocity at this point.
         Vector3 incoming = rb.linearVelocity;
         incoming.x = 0f;
 
@@ -353,11 +355,11 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
         // Pure geometric reflection in the Z/Y plane.
         // dot = how much of the incoming direction aligns with the wall normal.
-        // reflect = v - 2(v·n)n  — this is the billiard formula.
+        // reflect = v - 2(vÂ·n)n  â€” this is the billiard formula.
         float dot = Vector3.Dot(incoming.normalized, normal);
         Vector3 reflected = incoming.normalized - 2f * dot * normal;
 
-        // Preserve exact pre-impact speed — no gain, no loss.
+        // Preserve exact pre-impact speed â€” no gain, no loss.
         Vector3 finalVelocity = reflected.normalized * speed;
         finalVelocity.x = 0f; // belt-and-suspenders: guarantee no X drift
 
@@ -394,19 +396,19 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
         if (rb.linearVelocity.y > minUpwardSpeedForSpin && !IsGrounded())
         {
-            // İleri gidiyorsa ileri, geri gidiyorsa geriye doğru takla (spin) atsın
+            // Ä°leri gidiyorsa ileri, geri gidiyorsa geriye doÄŸru takla (spin) atsÄ±n
             float direction = zMomentum >= 0 ? -1f : 1f;
             currentZRotation += jumpSpinSpeed * direction * Time.deltaTime;
         }
         else
         {
-            // Yukarı hızı azaldığında veya yere düştüğünde pürüzsüzce düz duruşa geri döner
+            // YukarÄ± hÄ±zÄ± azaldÄ±ÄŸÄ±nda veya yere dÃ¼ÅŸtÃ¼ÄŸÃ¼nde pÃ¼rÃ¼zsÃ¼zce dÃ¼z duruÅŸa geri dÃ¶ner
             currentZRotation = Mathf.LerpAngle(currentZRotation, 0f, 15f * Time.deltaTime);
         }
 
-        // ÇÖZÜM: "*=" (çarpı eşittir) yerine doğrudan "=" (eşittir) kullanıyoruz ve localRotation'a atıyoruz.
-        // Eğer modelinizin taklası yanlış eksende atıyorsa (X yerine Z ekseni gerekliyse):
-        // Quaternion.Euler(0, 0, currentZRotation) olarak değiştirebilirsiniz.
+        // Ã‡Ã–ZÃœM: "*=" (Ã§arpÄ± eÅŸittir) yerine doÄŸrudan "=" (eÅŸittir) kullanÄ±yoruz ve localRotation'a atÄ±yoruz.
+        // EÄŸer modelinizin taklasÄ± yanlÄ±ÅŸ eksende atÄ±yorsa (X yerine Z ekseni gerekliyse):
+        // Quaternion.Euler(0, 0, currentZRotation) olarak deÄŸiÅŸtirebilirsiniz.
         characterModel.localRotation = Quaternion.Euler(0, 0,currentZRotation) ;
     }
     public bool IsGrounded()
