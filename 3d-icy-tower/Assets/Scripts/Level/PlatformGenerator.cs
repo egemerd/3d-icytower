@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlatformGenerator : MonoBehaviour
 {
-    // Singleton - Diðer scriptlerden kolayca eriþmek için
+    // Singleton - Dier scriptlerden kolayca eriþmek için
     public static PlatformGenerator Instance { get; private set; }
 
     [Header("Core References")]
