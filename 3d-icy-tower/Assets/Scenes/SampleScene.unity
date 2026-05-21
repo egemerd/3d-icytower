@@ -7358,17 +7358,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9038825518957463177, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
   m_PrefabInstance: {fileID: 4648355251521696213}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &750345884 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8917520950974080137, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
-  m_PrefabInstance: {fileID: 4648355251521696213}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20a52d3041d107043a662ca6595dd49c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlatformChunk
 --- !u!1 &758257751
 GameObject:
   m_ObjectHideFlags: 0
@@ -30527,7 +30516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlatformGenerator
   playerTransform: {fileID: 1588544254}
   chunkPrefabs:
-  - {fileID: 750345884}
+  - {fileID: 8917520950974080137, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
   - {fileID: 1352277081294643031, guid: 1af4bb5afacbfac46874135ae9458215, type: 3}
   - {fileID: 7709156743490240897, guid: 33f6caf1be2655d4c83f3cca6ba1ffca, type: 3}
   - {fileID: 5965968616221457439, guid: 5f0fde261a14ab544994b14af15ece97, type: 3}
@@ -37767,7 +37756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3049076999745812137, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3510927118531501900, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_IsActive
@@ -37779,11 +37768,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5739849352358355438, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6985126052844914132, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9038825518957463177, guid: 554ba9dfceb8c0a4eaea75856d6f417c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -38870,6 +38859,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Biom01Meshes
       objectReference: {fileID: 0}
+    - target: {fileID: 4399682353519431230, guid: 0ffff1f15b4cf1c4db3ca802cc5f1f27, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -39022,6 +39015,10 @@ PrefabInstance:
     - target: {fileID: 553942855491616473, guid: cb0f04d21ba98c241b8921837974de8c, type: 3}
       propertyPath: m_Name
       value: Biom01Meshes
+      objectReference: {fileID: 0}
+    - target: {fileID: 553942855491616473, guid: cb0f04d21ba98c241b8921837974de8c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4515952602638821409, guid: cb0f04d21ba98c241b8921837974de8c, type: 3}
       propertyPath: m_LocalPosition.x

@@ -15,7 +15,7 @@ public class EnemyFighter : Enemy
     public int attackDamage;  
     private void Start()
     {
-        weapon.transform.position  = transform.position - new Vector3 (0,0,-6);      
+        //weapon.transform.position  = transform.position - new Vector3 (0,0,-6);      
     }
     private void Update()
     {
