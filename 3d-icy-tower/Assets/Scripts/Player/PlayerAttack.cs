@@ -51,7 +51,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start()
     {
-        UpdateScanCircleSize();
+        //UpdateScanCircleSize();
     }
 
     private void Update()

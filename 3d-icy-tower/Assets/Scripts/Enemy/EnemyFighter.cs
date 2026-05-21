@@ -25,6 +25,7 @@ public class EnemyFighter : Enemy
     }
     private void Awake()
     {
+        base.Awake();
         attackDamage = enemyData.attackDamage;
         ShootRaycast();
         moveSpeed = enemyData.moveSpeed;
