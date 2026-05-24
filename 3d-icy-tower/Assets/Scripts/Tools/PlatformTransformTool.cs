@@ -140,7 +140,7 @@ public class PlatformTransformTool : EditorWindow
             Undo.RecordObject(platform, "Apply Platform Transforms");
             platform.position = target.position;
             platform.rotation = target.rotation;
-            platform.localScale = target.lossyScale;
+            //platform.localScale = target.lossyScale;
             EditorUtility.SetDirty(platform);
         }
     }
