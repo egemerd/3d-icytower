@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UltiSkill
   arrowPrefab: {fileID: 569357305587387220, guid: 30af3b6dfeb4e5e45ac8b6200bd68a4b, type: 3}
   aimOscillationSpeed: 100
-  rocketSpeed: 60
-  rocketDuration: 5
-  rocketMaxSpeed: 100
-  rocketAccelerationDuration: 3
-  rocketPeakHoldDuration: 0.2
+  rocketSpeed: 100
+  rocketDuration: 0.4
+  rocketMaxSpeed: 120
+  rocketAccelerationDuration: 2
+  rocketPeakHoldDuration: 0.5
