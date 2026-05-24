@@ -87,12 +87,6 @@ public class PlayerAttack : MonoBehaviour
             {
                 return currentTarget;
             }
-            else
-            {
-                currentTarget.StopTimingUI(); // Stop Enemy UI on lock-off
-                currentTarget.OnLockOff();
-                currentTarget = null;
-            }
         }
 
         int count = Physics.OverlapSphereNonAlloc(transform.position, scanRadius, scanResults, targetLayer);

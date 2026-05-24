@@ -100,6 +100,10 @@ public abstract class Enemy : MonoBehaviour, ITargetable
     // Call this if the player looks away or attacks successfully
     public void StopTimingUI()
     {
+        IsInTimingWindow = false;
+        if (timingUiTransform != null) timingUiTransform.gameObject.SetActive(false);
+        SetCursorActivation(false);
+
         if (timingCoroutine != null)
         {
             StopCoroutine(timingCoroutine);
@@ -111,9 +115,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
             cursorMoveCoroutine = null;
         }
 
-        IsInTimingWindow = false;
-        if (timingUiTransform != null) timingUiTransform.gameObject.SetActive(false);
-        SetCursorActivation(false);
+        
 
         if (cursors != null && defaultCursorPositions != null)
         {
