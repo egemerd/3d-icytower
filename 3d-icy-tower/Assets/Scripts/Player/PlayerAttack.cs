@@ -71,14 +71,14 @@ public class PlayerAttack : MonoBehaviour
                 currentTarget.PerfectAttack();
                 currentTarget.StopTimingUI();
                 stateMachine.ChangeState<AttackingState>();
-                StartCoroutine(AttackCoroutine(currentTarget)); // Belki extra parametre geçebilirsin bool isPerfect
+                StartCoroutine(AttackCoroutine(currentTarget,true)); // Belki extra parametre geçebilirsin bool isPerfect
             }
             else if (currentTarget.IsInTimingWindow)
             {
                 Debug.Log("NORMAL ATTACK!");
                 currentTarget.StopTimingUI();
                 stateMachine.ChangeState<AttackingState>();
-                StartCoroutine(AttackCoroutine(currentTarget));
+                StartCoroutine(AttackCoroutine(currentTarget,false));
             }
             else
             {
@@ -169,7 +169,7 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackCoroutine(ITargetable target)
+    private IEnumerator AttackCoroutine(ITargetable target, bool isPerfect = false)
     {
         playerController.animator.SetTrigger("Attack");
         isAttacking = true;
@@ -202,7 +202,7 @@ public class PlayerAttack : MonoBehaviour
         currentTarget = null;
         SetCircleColor(Color.white);
         enemy = target;
-        FinishAttack();
+        FinishAttack(isPerfect);
     }
 
     private IEnumerator HitstopCoroutine()
@@ -217,7 +217,7 @@ public class PlayerAttack : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    private void FinishAttack()
+    private void FinishAttack(bool isPerfect)
     {
         isAttacking = false;
         playerController.animator.ResetTrigger("Attack");
@@ -242,6 +242,7 @@ public class PlayerAttack : MonoBehaviour
             player.Rb.AddForce(jumpDirection, ForceMode.VelocityChange);
 
             player.SetZMomentum(targetZMomentum);
+            player.EnableJumpTrail(isPerfect);
             stateMachine.ChangeState<JumpingState>();
         }
     }

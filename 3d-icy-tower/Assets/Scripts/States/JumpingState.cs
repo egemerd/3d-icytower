@@ -12,6 +12,7 @@ public class JumpingState : IState
     {
         player.animator.ResetTrigger("Jump");
         player.animator.SetBool("isJumping", false);
+        player.DisableJumpTrail();
         Debug.Log("Exited Jumping State");
     }
 

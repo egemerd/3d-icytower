@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     [Header("Effects")]
     [SerializeField] private ParticleSystem walkingEffect;
+    [SerializeField] private GameObject jumpTrailObject;
 
     [Header("Debug")]
     [SerializeField] private bool showCurrentStateOnScreen = true;
@@ -197,6 +198,26 @@ public class PlayerController : MonoBehaviour, IStateMachine
         zMomentum = newMomentum;
     }
 
+    public void EnableJumpTrail(bool isPerfect)
+    {
+        TrailRenderer[] trails = jumpTrailObject.GetComponentsInChildren<TrailRenderer>(true);
+
+        foreach (TrailRenderer trail in trails)
+        {
+            trail.emitting = isPerfect;
+            trail.Clear(); // Eski kalan "kuyrukları" temizler
+        }
+    }
+
+    public void DisableJumpTrail()
+    {
+        TrailRenderer[] trails = jumpTrailObject.GetComponentsInChildren<TrailRenderer>(true);
+
+        foreach (TrailRenderer trail in trails)
+        {
+            trail.emitting = false;
+        }
+    }
     public void Movement()
     {
         // Notice how there are no rb.linearVelocity assignments here anymore.
@@ -384,7 +405,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
         rb.linearVelocity = velocity;
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
-        
+        EnableJumpTrail(false);
     }
 
     public void InAirMovement()
