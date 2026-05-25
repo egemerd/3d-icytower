@@ -455,6 +455,7 @@ MonoBehaviour:
   perfectHitObj: {fileID: 2343180861846895243, guid: 1d9cea6991c31c243be373808671b41e, type: 3}
   perfectHitSprite: {fileID: 4397784260274677407}
   timingUiTransform: {fileID: 6408824494667081937}
+  useOldUiSystem: 1
   projectilePrefab: {fileID: 6184477996909171599, guid: 9903cd10edc719741a9e507412754a79, type: 3}
   firePoint: {fileID: 1393785499652260337}
 --- !u!1 &4812207450899114641

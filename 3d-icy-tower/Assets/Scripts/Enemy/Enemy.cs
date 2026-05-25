@@ -34,7 +34,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
     protected Transform playerTransform;
 
     private bool isLockedOn = false;
-
+    public bool useOldUiSystem = false;
     private float currentLockTimer = 0f;
     private float targetLockDelay = 1f;
 
@@ -122,7 +122,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
     public void StopTimingUI()
     {
         IsInTimingWindow = false;
-        if (timingUiTransform != null) timingUiTransform.gameObject.SetActive(false);
+        if (timingUiTransform != null && useOldUiSystem) timingUiTransform.gameObject.SetActive(false);
         SetCursorActivation(false);
         //SetPerfectActive(false);
 
@@ -237,7 +237,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         while (isLockedOn)
         {
             timingUiTransform.gameObject.transform.position = transform.position;
-            timingUiTransform.gameObject.SetActive(true);
+            if (useOldUiSystem) timingUiTransform.gameObject.SetActive(true);
 
             SetCursorActivation(true);
             //SetPerfectActive(true);
@@ -249,9 +249,10 @@ public abstract class Enemy : MonoBehaviour, ITargetable
                 elapsed += Time.deltaTime;
                 float t = elapsed / totalTimingDuration;
 
-                // Update UI visual (shrinking local scale)
-                timingUiTransform.localScale = Vector3.Lerp(Vector3.one * 3f, Vector3.one * 0.5f, t);
-                
+                if(useOldUiSystem)
+                {
+                    timingUiTransform.localScale = Vector3.Lerp(Vector3.one * 3f, Vector3.one * 0.5f, t);
+                }
 
                 if (t >= timingWindowStart && t <= timingWindowEnd)
                 {
@@ -290,7 +291,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         }
 
         // If the enemy is no longer locked on, shut down the UI
-        timingUiTransform.gameObject.SetActive(false);
+        if (useOldUiSystem) timingUiTransform.gameObject.SetActive(false);
         SetCursorActivation(false);
         //SetPerfectActive(false);
         timingCoroutine = null;

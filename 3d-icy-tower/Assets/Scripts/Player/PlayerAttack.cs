@@ -43,6 +43,7 @@ public class PlayerAttack : MonoBehaviour
     private Camera mainCamera;
 
     ITargetable enemy;
+    
 
     private void Awake()
     {
