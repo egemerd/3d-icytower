@@ -40,6 +40,7 @@ public class PlayerAttack : MonoBehaviour
 
     private bool isAttacking = false;
     float lockOnDelay = 1f;
+    private Camera mainCamera;
 
     ITargetable enemy;
 
@@ -47,6 +48,7 @@ public class PlayerAttack : MonoBehaviour
     {
         stateMachine = GetComponent<IStateMachine>();
         playerController = GetComponent<PlayerController>();
+        mainCamera = Camera.main;
     }
 
     private void Start()
@@ -86,25 +88,52 @@ public class PlayerAttack : MonoBehaviour
 
 
     public ITargetable GetFirstEntryTarget()
-    {
+    { 
         if (currentTarget != null)
         {
-            float dist = Vector3.Distance(transform.position, currentTarget.GetTransform().position);
-            if (dist <= scanRadius)
+            Transform targetTransform = currentTarget.GetTransform();
+            if (targetTransform != null)
             {
-                return currentTarget;
+                float dist = Vector3.Distance(transform.position, targetTransform.position);
+
+                // Hem menzil içinde hem de ekranda hala görünüyorsa tut
+                if (dist <= scanRadius && IsTargetInCameraView(targetTransform.position))
+                {
+                    return currentTarget;
+                }
             }
         }
 
         int count = Physics.OverlapSphereNonAlloc(transform.position, scanRadius, scanResults, targetLayer);
+
         for (int i = 0; i < count; i++)
         {
             if (scanResults[i].TryGetComponent(out ITargetable target))
             {
-                return target;
+                Transform t = target.GetTransform();
+                if (t != null && IsTargetInCameraView(t.position))
+                {
+                    return target;
+                }
             }
         }
         return null;
+    }
+
+    private bool IsTargetInCameraView(Vector3 targetPosition)
+    {
+        if (mainCamera == null) return false;
+
+        // Dünya pozisyonunu ekran Viewport (0-1 arasý) pozisyonuna çevir
+        Vector3 viewportPoint = mainCamera.WorldToViewportPoint(targetPosition);
+
+        // x ve y 0 ile 1 arasýndaysa ekranýn içindedir.
+        // z > 0 olmasý kameranýn "önünde" olduðunu, arkasýnda kalmadýðýný belirtir.
+        bool inScreenBounds = viewportPoint.z > 0f
+                           && viewportPoint.x > 0f && viewportPoint.x < 1f
+                           && viewportPoint.y > 0f && viewportPoint.y < 1f;
+
+        return inScreenBounds;
     }
 
     private void ScanForTarget()
