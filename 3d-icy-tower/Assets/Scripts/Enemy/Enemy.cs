@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public abstract class Enemy : MonoBehaviour, ITargetable
 {
@@ -14,10 +15,15 @@ public abstract class Enemy : MonoBehaviour, ITargetable
     [SerializeField] private Transform[] cursors;
     [SerializeField] protected Transform cursorTarget;
     [SerializeField] private float cursorMoveDuration = 0.25f;
+    [SerializeField] private GameObject uiPerfectSquare;
+    [SerializeField] private GameObject perfectHitObj;
+    [SerializeField] private SpriteRenderer perfectHitSprite;
 
     private Vector3[] defaultCursorPositions;
 
     public bool IsInTimingWindow { get; private set; }
+    public bool IsInPerfectWindow { get; private set; }
+
     private Coroutine timingCoroutine;
     private Coroutine cursorMoveCoroutine;
 
@@ -63,6 +69,21 @@ public abstract class Enemy : MonoBehaviour, ITargetable
             cursors[i].gameObject.SetActive(active);
         }
     }
+    private void SetPerfectActive(bool active)
+    {   
+        uiPerfectSquare.SetActive(active);    
+    }
+
+    private void SetCursorColor(Color color)
+    {
+        for(int i = 0; i < cursors.Length; i++)
+        {
+            if (cursors[i].TryGetComponent<SpriteRenderer>(out SpriteRenderer sr))
+            {
+                sr.color = color;
+            }
+        }
+    }
 
     public void OnKilled()
     {
@@ -103,6 +124,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         IsInTimingWindow = false;
         if (timingUiTransform != null) timingUiTransform.gameObject.SetActive(false);
         SetCursorActivation(false);
+        //SetPerfectActive(false);
 
         if (timingCoroutine != null)
         {
@@ -218,6 +240,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
             timingUiTransform.gameObject.SetActive(true);
 
             SetCursorActivation(true);
+            //SetPerfectActive(true);
 
             float elapsed = 0f;
 
@@ -233,11 +256,25 @@ public abstract class Enemy : MonoBehaviour, ITargetable
                 if (t >= timingWindowStart && t <= timingWindowEnd)
                 {
                     IsInTimingWindow = true;
+                    IsInPerfectWindow = true;
+                    perfectHitSprite.color = Color.green;
+                    SetCursorColor(Color.green);
                     if (renderer != null) renderer.color = Color.green;
+                }
+                else if (t <= timingWindowStart)
+                {
+                    IsInTimingWindow = false;
+                    IsInPerfectWindow = false;
+                    perfectHitSprite.color = Color.white;
+                    SetCursorColor(Color.red);
+                    if (renderer != null) renderer.color = Color.red;
                 }
                 else
                 {
-                    IsInTimingWindow = false;
+                    IsInTimingWindow = true;
+                    IsInPerfectWindow = false;
+                    perfectHitSprite.color = Color.white;
+                    SetCursorColor(Color.yellow);
                     if (renderer != null) renderer.color = Color.yellow;
                 }
 
@@ -255,7 +292,38 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         // If the enemy is no longer locked on, shut down the UI
         timingUiTransform.gameObject.SetActive(false);
         SetCursorActivation(false);
+        //SetPerfectActive(false);
         timingCoroutine = null;
+    }
+
+    public void PerfectAttack()
+    {
+        Debug.Log("Perfect Attack!");
+        Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
+
+        // 1. Obje Instantiate edilir
+        GameObject hitEffect = Instantiate(perfectHitObj, uiPerfectSquare.transform.position, rotation);
+
+        // 2. Eðer üzerinde SpriteRenderer varsa direkt onun rengini solduralým (Fade)
+        if (hitEffect.TryGetComponent<SpriteRenderer>(out SpriteRenderer sr))
+        {
+            // Rengini alýp tam görünürden (alpha = 1) baþlatmak güvenlidir
+            Color c = sr.color;
+            c.a = 1f;
+            sr.color = c;
+
+            // Sýfýr transparanlýða (alpha = 0) DOFade ile in. (Süre: 0.5 saniye)
+            sr.DOFade(0f, 0.5f).SetEase(Ease.InQuad);
+        }
+
+        // 3. Orijinal pozisyonundan 1 birim kadar yukarý Smooth þekilde ilerlesin
+        hitEffect.transform.DOMoveY(hitEffect.transform.position.y + 1f, 0.5f)
+            .SetEase(Ease.OutCubic)
+            .OnComplete(() =>
+            {
+                // Animasyon bitince sahnede yer kaplamasýn, sil
+                Destroy(hitEffect);
+            });
     }
 
     public abstract void EnemyAttack();

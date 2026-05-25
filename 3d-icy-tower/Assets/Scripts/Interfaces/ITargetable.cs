@@ -8,6 +8,9 @@ public interface ITargetable
     void OnLockOff();
 
     bool IsInTimingWindow { get; }
+    bool IsInPerfectWindow { get; }
+
+    void PerfectAttack();
     void StartTimingUI();
     void StopTimingUI();
 

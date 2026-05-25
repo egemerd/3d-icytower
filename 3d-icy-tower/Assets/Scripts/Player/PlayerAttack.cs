@@ -60,19 +60,26 @@ public class PlayerAttack : MonoBehaviour
 
         ScanForTarget();
 
-        // Right timing window attack
         if (currentTarget != null && InputManager.Instance.attackAction.WasPressedThisFrame())
         {
-            if (currentTarget.IsInTimingWindow) // Check the ENEMY's window
+            if (currentTarget.IsInPerfectWindow)
             {
-                currentTarget.StopTimingUI(); // Stop the UI on the enemy
-
+                Debug.Log("PERFECT ATTACK!");
+                currentTarget.PerfectAttack();
+                currentTarget.StopTimingUI();
+                stateMachine.ChangeState<AttackingState>();
+                StartCoroutine(AttackCoroutine(currentTarget)); // Belki extra parametre geçebilirsin bool isPerfect
+            }
+            else if (currentTarget.IsInTimingWindow)
+            {
+                Debug.Log("NORMAL ATTACK!");
+                currentTarget.StopTimingUI();
                 stateMachine.ChangeState<AttackingState>();
                 StartCoroutine(AttackCoroutine(currentTarget));
             }
             else
             {
-                Debug.Log("Yanlýþ zamanlama!");
+                Debug.Log("Miss!"); // Çok erken veya çok geç basýldý.
             }
         }
     }
