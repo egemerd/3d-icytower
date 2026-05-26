@@ -35,6 +35,8 @@ public abstract class Enemy : MonoBehaviour, ITargetable
 
     private bool isLockedOn = false;
     public bool useOldUiSystem = false;
+    public bool isBoss;
+
     private float currentLockTimer = 0f;
     private float targetLockDelay = 1f;
 
@@ -87,8 +89,11 @@ public abstract class Enemy : MonoBehaviour, ITargetable
 
     public void OnKilled()
     {
-        Destroy(gameObject);
-        Debug.Log("OnKilled");
+        if(!isBoss)
+        {
+            Destroy(gameObject);
+            Debug.Log("OnKilled");
+        }
     }
 
     

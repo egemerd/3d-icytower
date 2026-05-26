@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
 
     [Header("Wall Bounce")]
     [SerializeField] private LayerMask wallMask;
+    [SerializeField] private LayerMask ultiWallMask;
     [SerializeField] private float minBounceSpeed = 5f;
     [SerializeField] private float bounceSpeedMultiplier = 1.0f;
     [SerializeField] private bool groundCheckerForBounce = true;
@@ -101,6 +102,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     public bool isRocketActive { get; set; }
     public bool isAttacking { get; set; }
     public LayerMask WallMask => wallMask;
+    public LayerMask UltiWallMask => ultiWallMask;
 
     public void UnlockFromMantle()
     {

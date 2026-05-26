@@ -66,7 +66,7 @@ public class RocketUltiHandler : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (!isFlying) return;
-        if ((player.WallMask.value & (1 << collision.gameObject.layer)) == 0) return;
+        if ((player.UltiWallMask.value & (1 << collision.gameObject.layer)) == 0) return;
 
         // Get the wall normal
         Vector3 normal = collision.contacts[0].normal;
