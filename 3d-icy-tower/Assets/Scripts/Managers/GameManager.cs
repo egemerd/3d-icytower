@@ -18,8 +18,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // For example: Freeze time until tutorial is done
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
 
     public void StartGame()
