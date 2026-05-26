@@ -8056,52 +8056,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!21 &877263621
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_ShaderGraph GrassUnlitBasic(Clone)
-  m_Shader: {fileID: -6465566751694194690, guid: 99e21a4823144ba47a502a2f65b53afd, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses:
-  - MOTIONVECTORS
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _Blend: 0
-    - _BlendMult: 1
-    - _BlendOff: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &884769922
 GameObject:
   m_ObjectHideFlags: 0
@@ -12901,7 +12855,7 @@ MonoBehaviour:
     normal: {x: 0, y: 1, z: 2.2204462e-17}
     length: {x: 0.064, y: 1.588}
     color: {x: 1, y: 1, z: 1}
-  m_InstantiatedMaterial: {fileID: 877263621}
+  m_InstantiatedMaterial: {fileID: 2041785960}
 --- !u!4 &1155947548
 Transform:
   m_ObjectHideFlags: 0
@@ -32626,6 +32580,52 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!21 &2041785960
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_ShaderGraph GrassUnlitBasic(Clone)
+  m_Shader: {fileID: -6465566751694194690, guid: 99e21a4823144ba47a502a2f65b53afd, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blend: 0
+    - _BlendMult: 1
+    - _BlendOff: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &2060500632
 GameObject:
   m_ObjectHideFlags: 0
@@ -33106,6 +33106,63 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &2145137931
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.3520985
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -18.93326
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.98249614
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.18628305
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 21.472
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197536174833729542, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9095496739871634191, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
+      propertyPath: m_Name
+      value: Lantern
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e5b83ea89404bf24d8b4df5fd1d40f42, type: 3}
 --- !u!1 &2145992935
 GameObject:
   m_ObjectHideFlags: 0
@@ -35815,3 +35872,4 @@ SceneRoots:
   - {fileID: 1535139791}
   - {fileID: 1026183346}
   - {fileID: 1155947548}
+  - {fileID: 2145137931}
