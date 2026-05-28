@@ -6,13 +6,11 @@ public class IdleState : IState
     {
         player.ResetRotationToForward();
         player.animator.SetBool("isIdle", true);    
-        Debug.Log("Entered Idle State");
     }
 
     public void ExitState(PlayerController player)
     {
         player.animator.SetBool("isIdle", false);
-        Debug.Log("Exited Idle State");
     }
 
     public void UpdateState(PlayerController player)

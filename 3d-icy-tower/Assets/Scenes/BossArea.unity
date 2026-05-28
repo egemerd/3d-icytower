@@ -33647,19 +33647,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 214701069415553869, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 1848207244864610706, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: isBoss
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: bounceSpeed
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: bounceRadius
+      value: 3.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: bounceDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: wallMask.m_Bits
+      value: 1280
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: maxGroundBounces
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: playerMask.m_Bits
+      value: 4096
+      objectReference: {fileID: 0}
     - target: {fileID: 2635971615081661363, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 2997241023192927001, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_LocalPosition.x
@@ -33703,23 +33727,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3905509791184646974, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 21
       objectReference: {fileID: 0}
+    - target: {fileID: 4535505634776892077, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: af34130655dc5df4580c4f5164e7b1c6, type: 2}
     - target: {fileID: 5002728544858787096, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 6978825073069859438, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 8005997247769064721, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 8217028261734887679, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 8907801078566123456, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: m_Constraints
+      value: 114
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -33918,7 +33950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5925667882882157276, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 29.27
+      value: -19.39
       objectReference: {fileID: 0}
     - target: {fileID: 5925667882882157276, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -33955,6 +33987,10 @@ PrefabInstance:
     - target: {fileID: 6439712955111281218, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532808689543905617, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
+      propertyPath: targetLayer.m_Bits
+      value: 2228224
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -9,7 +9,6 @@ public class WalkingState : IState
         player.animator.SetBool("isWalking", true);
         walkDust = ParticleEffects.Instance.PlayLooping(ParticleType.WalkDust, player.transform, new Vector3(0, -1f, 0));
 
-        Debug.Log("Entered Walking State");
     }
 
     public void ExitState(PlayerController player)
@@ -17,7 +16,6 @@ public class WalkingState : IState
         player.animator.SetBool("isWalking", false);
         ParticleEffects.Instance.StopLooping(walkDust, ParticleType.WalkDust);
 
-        Debug.Log("Exited Walking State");
     }
 
     public void UpdateState(PlayerController player)

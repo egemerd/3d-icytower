@@ -115,7 +115,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
 
     public void StartTimingUI()
     {
-        Debug.Log("Starting Timing UI");
+        //Debug.Log("Starting Timing UI");
         if (timingCoroutine != null) StopCoroutine(timingCoroutine);
         timingCoroutine = StartCoroutine(TimingWindowCoroutine());
 
