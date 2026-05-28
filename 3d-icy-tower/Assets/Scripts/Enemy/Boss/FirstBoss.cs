@@ -16,7 +16,8 @@ public class FirstBoss : Boss
 
     [Header("Bounce Settings")]
     [SerializeField] private float bounceSpeed = 8f;
-    [SerializeField] private float maxBounceAngle = 45f;    // Maximum angle from "up" (normal) to launch
+    [SerializeField] private float minBounceAngle = 20f;    // En dik (yukarıya) açı
+    [SerializeField] private float maxBounceAngle = 60f;    // En yatay açı
     [SerializeField] private int maxGroundBounces = 2;      // End state after hitting the ground this many times
     [SerializeField] private float bounceDamage = 10f;
     [SerializeField] private LayerMask wallMask;
@@ -77,10 +78,18 @@ public class FirstBoss : Boss
             case FirstBossState.Bounce:
                 currentGroundBounces = 0;
 
-                // Create a launch direction from the normal (upwards). 
+                // 1. Min ve Max açılar arasından rastgele bir fırlama açısı (yukarıdan sapma payı) seç
+                float randomAngle = Random.Range(minBounceAngle, maxBounceAngle);
+
+                // 2. Oyuncunun konumuna göre Yön bul (Sağa mı sola mı?)
+                // Eğer oyuncu benden daha ileri Z konumundaysa, sağa (Z pozitif) doğru uçmalıyım.
                 // Y=Cos(angle) points up, Z=Sin(angle) points forward/backward
-                float randomAngle = Random.Range(-maxBounceAngle, maxBounceAngle);
-                
+                if (playerTransform != null && playerTransform.position.z < transform.position.z)
+                {
+                    // Oyuncu boss'un solundaysa / arkasındaysa, açıyı negatife çevir (Sola -Z'ye zıpla)
+                    randomAngle = -randomAngle;
+                }
+
                 bounceDirection = new Vector3(
                     0f,
                     Mathf.Cos(randomAngle * Mathf.Deg2Rad),
