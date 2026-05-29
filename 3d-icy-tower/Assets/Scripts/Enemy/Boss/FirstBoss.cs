@@ -36,9 +36,13 @@ public class FirstBoss : Boss
     private Vector3 dashDirection;
     private bool dashHit;
 
+    [Header("State Change Logic")]
+    [SerializeField] private float maxVertical = 4f;
+    [SerializeField] private float minHorizantal = 10f;
+
+
     private Rigidbody rb;
 
-    // Gizmos
     private Vector3 gizmoBounceDir;
     private Vector3 gizmoDashDir;
 
@@ -218,12 +222,27 @@ public class FirstBoss : Boss
     // ── WEIGHTED RANDOM ─────────────────────────────────────────
     private FirstBossState PickNextState()
     {
-        float total = weightBounce + weightDash;
-        float roll = Random.Range(0f, total);
+        // Sadece Z ekseni farklılıklarını alarak tamamen "Yatay uzaklığı" buluyoruz. (2.5D için X kullanılmaz)
+        float horizontalDistance = Mathf.Abs(playerTransform.position.z - transform.position.z);
 
-        // This ensures the boss natively selects an attack
-        if (roll < weightBounce) return FirstBossState.Bounce;
-        else return FirstBossState.Dash;
+        // Sadece Y ekseni farklılıklarını alarak "Dikey uzaklığı" (Yükseklik farkı) buluyoruz.
+        float verticalDistance = playerTransform.position.y;
+
+        // ŞARTINIZ: Player belli bir yükseklikten (örn: 2 birim) küçük VE yeterince uzak (örn: 10 birim) ise:
+        if (verticalDistance < maxVertical && horizontalDistance > minHorizantal)
+        {
+            Debug.Log($"[FirstBoss] Player şartlara uyuyor (Yatay: {horizontalDistance:F1}, Dikey: {verticalDistance:F1}). Otomatik DASH!");
+            return FirstBossState.Dash;
+        }
+
+        return FirstBossState.Bounce;
+
+        //float total = weightBounce + weightDash;
+        //float roll = Random.Range(0f, total);
+
+        //// This ensures the boss natively selects an attack
+        //if (roll < weightBounce) return FirstBossState.Bounce;
+        //else return FirstBossState.Dash;
     }
 
     public override void EnemyAttack() { }

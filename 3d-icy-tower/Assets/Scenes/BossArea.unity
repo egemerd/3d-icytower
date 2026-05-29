@@ -33662,8 +33662,16 @@ PrefabInstance:
       value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: maxVertical
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: bounceRadius
       value: 3.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: minHorizantal
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: bossLayerIndex
@@ -33696,6 +33704,10 @@ PrefabInstance:
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: playerMask.m_Bits
       value: 4096
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: bounceKnockbackForce
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2635971615081661363, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_Layer
