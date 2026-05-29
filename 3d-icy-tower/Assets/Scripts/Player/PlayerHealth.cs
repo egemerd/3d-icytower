@@ -40,6 +40,15 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player Health: " + health);       
     }
 
+    public void BossGetDamage(int damage)
+    {
+        if (canTakeDamage == false) return;
+        health -= damage;
+        ParticleEffects.Instance.PlayOneShot(ParticleType.PlayerHit, transform.position + new Vector3(2, 0, 0));
+        TimeStop.Instance.StopTime(0.15f, 0f);
+        Debug.Log("Player Health: " + health);
+    }
+
     private void GameOver()
     {
         Debug.Log("Player fell past the active chunk limits! Game Over.");

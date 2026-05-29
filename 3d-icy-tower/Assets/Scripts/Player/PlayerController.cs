@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class PlayerController : MonoBehaviour, IStateMachine
+public class PlayerController : MonoBehaviour, IStateMachine, IDamagable
 {
     private InputManager input;
     private Vector2 moveInput;
@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour, IStateMachine
     private IState currentState;
     [SerializeField] public Animator animator;
     public PlayerAttack playerAttack { get; private set; }
+    public PlayerHealth playerHealth { get; private set; }
+
 
     private Dictionary<System.Type, IState> stateCache = new Dictionary<System.Type, IState>();
     [Header("References")]
@@ -115,6 +117,7 @@ public class PlayerController : MonoBehaviour, IStateMachine
     {
         rb = GetComponent<Rigidbody>();
         playerAttack = GetComponent<PlayerAttack>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void Start()
@@ -518,7 +521,35 @@ public class PlayerController : MonoBehaviour, IStateMachine
         StartCoroutine(MantleCoroutine(mantlePosition));    
     }
 
-    
+    public void TakeDamage(int amount)
+    {
+        playerHealth.BossGetDamage(amount);
+    }
+
+    // Interface'in getirdiği zorunlu metod 2
+    public void ApplyKnockback(Vector3 hitDirection, float knockbackForce)
+    {
+        Debug.Log("Player Geri Tepti!");
+
+        // Z eksenindeki momentumumuzu ve Y (yukarı) eksenini ezerek player'ı fırlatalım
+        // Vuruş yönünü biraz "yukarı" doğru açılı yapalım ki havaya fırlasın
+        Vector3 knockbackDir = hitDirection.normalized;
+        knockbackDir.y = 1f; // Yukarı doğru fırlatma garantisi
+        knockbackDir.x = 0f; // 2.5D için X'i sabitle
+        knockbackDir = knockbackDir.normalized;
+
+        // O anki fizik hareketini durdurup fırlat
+        rb.linearVelocity = Vector3.zero;
+
+        // ZMomentum'u ez ki hareket scripti fırlamayı engellemesin
+        SetZMomentum(knockbackDir.z * knockbackForce);
+
+        rb.AddForce(knockbackDir * knockbackForce, ForceMode.VelocityChange);
+
+        // Fırlatılınca otomatik zıplama state'ine geçsin ki havadaki davranışları sağlansın
+        ChangeState<JumpingState>();
+    }
+
     public void PlayerAttackUndamagableEnter()
     {
         GetComponent<PlayerHealth>().canTakeDamage = false;

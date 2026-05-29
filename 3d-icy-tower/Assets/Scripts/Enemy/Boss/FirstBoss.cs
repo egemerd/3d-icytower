@@ -19,7 +19,7 @@ public class FirstBoss : Boss
     [SerializeField] private float minBounceAngle = 20f;    // En dik (yukarıya) açı
     [SerializeField] private float maxBounceAngle = 60f;    // En yatay açı
     [SerializeField] private int maxGroundBounces = 2;      // End state after hitting the ground this many times
-    [SerializeField] private float bounceDamage = 10f;
+    [SerializeField] private int bounceDamage = 10;
     [SerializeField] private LayerMask wallMask;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private float bounceRadius = 0.5f;
@@ -143,17 +143,19 @@ public class FirstBoss : Boss
     private void OnCollisionEnter(Collision collision)
     {
         if (currentState != FirstBossState.Bounce) return;
-
+        if (isBouncing) return;
         if ((wallMask.value & (1 << collision.gameObject.layer)) == 0) return;
+        
+
+        // --- BURADAN AŞAĞISI STANDART SEKME (WALL BOUNCE VEYA PLAYER BOUNCE) MANTIĞI ---
 
         
 
         Vector3 normal = collision.contacts[0].normal;
         normal.x = 0f; // Force entirely onto the 2.5D plane
-        if (normal.sqrMagnitude < 0.001f) return;       
+        if (normal.sqrMagnitude < 0.001f) return;
         normal = normal.normalized;
 
-        
         // Has it hit the ground? (Normal pointing straight up)
         if (normal.y > 0.5f)
         {
@@ -175,8 +177,6 @@ public class FirstBoss : Boss
         gizmoBounceDir = bounceDirection;
 
         rb.linearVelocity = bounceDirection * bounceSpeed;
-
-        Debug.Log($"[FirstBoss] Bounce → Duvara çarptı, yeni yön: {bounceDirection} | Zıplama sayısı: {currentGroundBounces}");
     }
 
     private IEnumerator BounceGuard()

@@ -33666,6 +33666,10 @@ PrefabInstance:
       value: 3.68
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: bossLayerIndex
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: bounceDuration
       value: 2
       objectReference: {fileID: 0}
@@ -33684,6 +33688,10 @@ PrefabInstance:
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: maxGroundBounces
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: playerLayerIndex
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: playerMask.m_Bits
