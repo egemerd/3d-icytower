@@ -29,11 +29,13 @@ public class FirstBoss : Boss
     private bool isBouncing = false;
 
     [Header("Dash Settings")]
-    [SerializeField] private float dashSpeed = 20f;
-    [SerializeField] private float dashDuration = 0.4f;
+    [SerializeField] private float dashDuration = 0.8f;      // Toplam fırlama süresi
     [SerializeField] private float dashDamage = 20f;
-    private float dashTimer;
-    private Vector3 dashDirection;
+    [SerializeField] private float pastPlayerMinDist = 2f;   // Player'ı minimum bu kadar geçsin
+    [SerializeField] private float pastPlayerMaxDist = 6f;   // Player'ı maksimum bu kadar geçsin
+    [SerializeField] private AnimationCurve dashCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+    private Coroutine dashCoroutine;
     private bool dashHit;
 
     [Header("State Change Logic")]
@@ -105,13 +107,65 @@ public class FirstBoss : Boss
                 break;
 
             case FirstBossState.Dash:
-                dashTimer = dashDuration;
                 dashHit = false;
-                dashDirection = (playerTransform.position - transform.position).normalized;
-                dashDirection.x = 0f;
-                dashDirection = dashDirection.normalized;
-                gizmoDashDir = dashDirection;
-                rb.linearVelocity = dashDirection * dashSpeed;
+                rb.linearVelocity = Vector3.zero;
+
+                if (playerTransform == null)
+                {
+                    EnterState(FirstBossState.Idle);
+                    break;
+                }
+
+                // 2.5D için yön tayini (Sadece Z ekseninde ileri veya geri)
+                float startZ = transform.position.z;
+                float playerZ = playerTransform.position.z;
+                float directionToPlayer = Mathf.Sign(playerZ - startZ);
+                Vector3 dashDir = new Vector3(0f, 0f, directionToPlayer);
+
+                // Default olarak oyuncunun epeyce arkasını hedef alıyoruz
+                float extraDistance = Random.Range(pastPlayerMinDist, pastPlayerMaxDist);
+                float desiredTargetZ = playerZ + (directionToPlayer * extraDistance);
+
+                // --- DUVAR KONTROLÜ (Raycast) ---
+                // Boss'tan dümdüz oyuncu yönüne doğru sonsuz ışın atalım ki arkasındaki duvarı bulalım
+                float maxAllowedZ = desiredTargetZ; // Şimdilik varsayılan hedef
+
+                if (Physics.Raycast(transform.position, dashDir, out RaycastHit hit, 100f, wallMask))
+                {
+                    // Duvarın Z koordinatı
+                    float wallZ = hit.point.z;
+
+                    // Bossun içine girmemesi için Duvar'dan "bounceRadius" (kendi genişliğimiz) kadar GERİ çekiliyoruz
+                    float safeWallZ = wallZ - (directionToPlayer * (bounceRadius + 0.1f));
+
+                    // Acaba istediğimiz hedef, duvarı aşıyor mu?
+                    // Pozitif z yönündeysek (İleri gidiyorsak):
+                    if (directionToPlayer > 0 && desiredTargetZ > safeWallZ)
+                    {
+                        maxAllowedZ = safeWallZ;
+                    }
+                    // Negatif z yönündeysek (Geri gidiyorsak):
+                    else if (directionToPlayer < 0 && desiredTargetZ < safeWallZ)
+                    {
+                        maxAllowedZ = safeWallZ;
+                    }
+                    else
+                    {
+                        // İsteğimiz zaten duvarın içindeyse ve player ile duvar arasındaysa onu kullan
+                        maxAllowedZ = desiredTargetZ;
+                    }
+                }
+                else
+                {
+                    maxAllowedZ = desiredTargetZ; // Duvar bulunamazsa direkt atadığımız son noktaya uç
+                }
+
+                // Elde edilen güvenli Hedef Noktası (Y'si uçmamak için sabit tutulur)
+                Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, maxAllowedZ);
+                gizmoDashDir = (targetPos - transform.position).normalized;
+
+                // Eski Update/FixedUpdate akışını bypass edip pürüzsüz coroutine ile fırlatma başlat
+                dashCoroutine = StartCoroutine(DashRoutine(transform.position, targetPos));
                 break;
         }
     }
@@ -141,6 +195,34 @@ public class FirstBoss : Boss
             // If you want the bounce to stop early when it hits the player, uncomment this:
             // EnterState(FirstBossState.Idle);
         }
+    }
+
+    private IEnumerator DashRoutine(Vector3 startPos, Vector3 targetPos)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < dashDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / dashDuration;
+
+            // Eğri üzerinden yumuşatılmış t değerini al (Yavaş başlayıp hızlansın diye)
+            float curveT = dashCurve.Evaluate(t);
+
+            // MovePosition fizikleri hesaba katarak Boss'u ışınlar/sürükler
+            rb.MovePosition(Vector3.LerpUnclamped(startPos, targetPos, curveT));
+
+            // Eğer dash sırasındayken bir fiziksel kuvvet olursa, es geç
+            rb.linearVelocity = Vector3.zero;
+
+            yield return null;
+        }
+
+        // Kesin hedefe oturt ve bitir
+        rb.MovePosition(targetPos);
+
+        Debug.Log("[FirstBoss] Dash → Hedefe vardı, süre doldu. Back to Idle.");
+        EnterState(FirstBossState.Idle);
     }
 
     // Bounce yansıması — OnCollisionEnter
@@ -193,28 +275,24 @@ public class FirstBoss : Boss
     // ── DASH ────────────────────────────────────────────────────
     private void StateDash()
     {
-        dashTimer -= Time.deltaTime;
-        rb.linearVelocity = dashDirection * dashSpeed;
-
-        // When dash time is up, return to Idle instead of immediately attacking again
-        if (dashTimer <= 0f)
-        {
-            Debug.Log("[FirstBoss] Dash → Süre doldu. Back to Idle.");
-            EnterState(FirstBossState.Idle); 
-            return;
-        }
-
+        // Hareket tamamen DashRoutine (Coroutine) tarafından yapılıyor.
+        // Burada SADECE Player'a çarpıp çarpmadığı check ediliyor:
         if (!dashHit)
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, bounceRadius, playerMask);
             if (hits.Length > 0)
             {
                 dashHit = true;
-                Debug.Log($"[FirstBoss] Dash → Player'a çarptı! {dashDamage} hasar");
-                // hits[0].GetComponent<PlayerHealth>()?.TakeDamage(dashDamage);
-                
-                // Finished dash attack, return to Idle
-                EnterState(FirstBossState.Idle); 
+                Collider playerCol = hits[0];
+
+                IDamagable damageableTarget = playerCol.GetComponent<IDamagable>();
+                if (damageableTarget != null)
+                {
+                    Vector3 pushDirection = gizmoDashDir;
+                    damageableTarget.TakeDamage(1);
+                }
+
+                Debug.Log($"[FirstBoss] Dash → Player'a Sanal çarptı! {dashDamage} hasar");
             }
         }
     }
