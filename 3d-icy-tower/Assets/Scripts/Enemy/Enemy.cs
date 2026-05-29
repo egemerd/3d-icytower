@@ -40,6 +40,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
     private float currentLockTimer = 0f;
     private float targetLockDelay = 1f;
     private int health;
+
     protected virtual void Awake()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -88,7 +89,12 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         }
     }
 
-    public void OnKilled(int damage)
+    public virtual bool CanBeAttackedFrom(Vector3 attackerPosition)
+    {
+        return true;
+    }
+
+    public virtual void OnKilled(int damage)
     {
         //if(!isBoss)
         //{
@@ -96,6 +102,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         //    Debug.Log("OnKilled");
         //}
         GetDamage(damage);
+
     }
 
     private void GetDamage(int damage)

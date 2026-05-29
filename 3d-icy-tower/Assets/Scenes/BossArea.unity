@@ -33759,22 +33759,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstBoss
       objectReference: {fileID: 0}
-    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
-      propertyPath: bounceRadius
-      value: 3.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 2997241023192927001, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 9.501905
-      objectReference: {fileID: 0}
-    - target: {fileID: 2997241023192927001, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 9.501905
-      objectReference: {fileID: 0}
-    - target: {fileID: 2997241023192927001, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 9.501905
-      objectReference: {fileID: 0}
     - target: {fileID: 2997241023192927001, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.74

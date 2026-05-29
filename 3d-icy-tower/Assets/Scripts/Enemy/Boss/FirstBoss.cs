@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class FirstBoss : Boss
@@ -42,6 +43,26 @@ public class FirstBoss : Boss
     [SerializeField] private float maxVertical = 4f;
     [SerializeField] private float minHorizantal = 10f;
 
+    [Header("Boss Detection")]
+    [SerializeField] private float coneAngle = 100f;
+
+    [Header("Vulnerability Settings")]
+    [SerializeField] private float minVulnDuration = 1f;    // En az kaç sn Vurulabilir kalsın?
+    [SerializeField] private float maxVulnDuration = 3f;    // En çok kaç sn Vurulabilir kalsın?
+    [SerializeField] private float minImmuneDuration = 1f;  // En az kaç sn Vurulamaz (Zırhlı) kalsın?
+    [SerializeField] private float maxImmuneDuration = 2f;  // En çok kaç sn Vurulamaz (Zırhlı) kalsın?
+
+    [Header("Weak Point Indicator (Vulnerable Visual)")]
+    // Boss'un kafasına ekleyeceğiniz çocuk(child) objeyi buraya sürükleyin
+    [SerializeField] private Transform weakPointObj;
+
+    // Objenin saklandığı ve çıktığı Yükseklik (Local Y) değerleri
+    [SerializeField] private float hiddenYPos = -0.5f;
+    [SerializeField] private float exposedYPos = 1.0f;
+    [SerializeField] private float exposeAnimationDuration = 0.5f;
+
+    private Coroutine vulnerabilityCoroutine;
+    protected bool IsVulnerable { get; private set; }
 
     private Rigidbody rb;
 
@@ -53,6 +74,18 @@ public class FirstBoss : Boss
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
 
+        if (weakPointObj != null)
+        {
+            Vector3 startLocal = weakPointObj.localPosition;
+            startLocal.y = hiddenYPos;
+            weakPointObj.localPosition = startLocal;
+
+            // İsterseniz görünmez de yapabilirsiniz ama gömülü olması yetiyorsa kapamayın.
+            // weakPointObj.gameObject.SetActive(false); 
+        }
+
+        vulnerabilityCoroutine = StartCoroutine(VulnerabilityRoutine());
+
         EnterState(FirstBossState.Idle);
     }
 
@@ -63,6 +96,34 @@ public class FirstBoss : Boss
             case FirstBossState.Idle: StateIdle(); break;
             case FirstBossState.Bounce: StateBounce(); break;
             case FirstBossState.Dash: StateDash(); break;
+        }
+    }
+
+    public override void OnKilled(int damage)
+    {
+        if (IsVulnerable && CanBeAttackedFrom(playerTransform.position))
+        {
+            TakeDamage(damage);
+            Debug.Log("[FirstBoss] Attack yapıldı!");
+        }
+        else
+        {
+            Debug.Log("[FirstBoss] Vurulmaya çalışıldı ama saldırı etkisizdi! (Vulnerable: " + IsVulnerable + ", CanBeAttacked: " + CanBeAttackedFrom(playerTransform.position) + ")");
+        }
+    }
+
+    public override bool CanBeAttackedFrom(Vector3 attackerPosition)
+    {
+        Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
+        float angle = Vector3.Angle(transform.up, directionToPlayer);
+
+        if (angle < coneAngle / 2f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -167,6 +228,51 @@ public class FirstBoss : Boss
                 // Eski Update/FixedUpdate akışını bypass edip pürüzsüz coroutine ile fırlatma başlat
                 dashCoroutine = StartCoroutine(DashRoutine(transform.position, targetPos));
                 break;
+        }
+    }
+
+    private IEnumerator VulnerabilityRoutine()
+    {
+        while (true)
+        {
+            // -----------------------------------------------------
+            // 1. Durum: VURULABİLİR YAPIYORUZ (Zırh kırıldı / Çıktı)
+            // -----------------------------------------------------
+            IsVulnerable = true;
+            float vulnTime = Random.Range(minVulnDuration, maxVulnDuration);
+            Debug.Log($"[FirstBoss] Boss is VULNERABLE for {vulnTime:F1} seconds!");
+
+            // Objeyi yukarıya doğru çıkart (Animasyonlu)
+            if (weakPointObj != null)
+            {
+                // weakPointObj.gameObject.SetActive(true); // Görünmez ise görünür yap
+                weakPointObj.DOLocalMoveY(exposedYPos, exposeAnimationDuration).SetEase(Ease.OutBack);
+
+                // Opsiyonel: Çıkarken yeşil/kırmızı oynamak isterseniz (Eğer material'i varsa)
+                // weakPointObj.GetComponent<MeshRenderer>().material.DOColor(Color.red, exposeAnimationDuration);
+            }
+
+            yield return new WaitForSeconds(vulnTime);
+
+
+            // -----------------------------------------------------
+            // 2. Durum: KORUMAYA GEÇİYORUZ (Zırh geldi / Gömüldü)
+            // -----------------------------------------------------
+            IsVulnerable = false;
+            float immuneTime = Random.Range(minImmuneDuration, maxImmuneDuration);
+            Debug.Log($"[FirstBoss] Boss is IMMUNE for {immuneTime:F1} seconds!");
+
+            // Objeyi tekrar kafanın içine doğru göm (Animasyonlu)
+            if (weakPointObj != null)
+            {
+                // Boss'un vücuduna Local y ekseninde saklanacak
+                weakPointObj.DOLocalMoveY(hiddenYPos, exposeAnimationDuration).SetEase(Ease.InBack);
+
+                // Opsiyonel: Gömülürken Gri/Sönük renge dönmesini isterseniz
+                // weakPointObj.GetComponent<MeshRenderer>().material.DOColor(Color.gray, exposeAnimationDuration);
+            }
+
+            yield return new WaitForSeconds(immuneTime);
         }
     }
 

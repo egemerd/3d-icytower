@@ -10,6 +10,9 @@ public interface ITargetable
     bool IsInTimingWindow { get; }
     bool IsInPerfectWindow { get; }
 
+    bool CanBeAttackedFrom(Vector3 attackerPosition);
+
+
     void PerfectAttack();
     void StartTimingUI();
     void StopTimingUI();

@@ -28,5 +28,6 @@ public abstract class Boss : Enemy
     {
         currentHp -= amount;
         if (currentHp <= 0) OnKilled(amount);
+        Debug.Log($"Boss took {amount} damage, current HP: {currentHp}");
     }
 }
