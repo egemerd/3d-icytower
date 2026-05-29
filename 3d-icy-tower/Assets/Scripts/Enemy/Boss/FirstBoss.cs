@@ -46,6 +46,10 @@ public class FirstBoss : Boss
     [Header("Boss Detection")]
     [SerializeField] private float coneAngle = 100f;
 
+    [Header("Plater Attack Offset")]
+    [SerializeField] private Transform targetPoint; // boş child obje
+    [SerializeField] private float offsetAmount = 1.5f;
+
     [Header("Vulnerability Settings")]
     [SerializeField] private float minVulnDuration = 1f;    // En az kaç sn Vurulabilir kalsın?
     [SerializeField] private float maxVulnDuration = 3f;    // En çok kaç sn Vurulabilir kalsın?
@@ -124,6 +128,23 @@ public class FirstBoss : Boss
         else
         {
             return false;
+        }
+    }
+
+    public override Transform GetTransform()
+    {
+        if (currentState == FirstBossState.Bounce)
+        {
+            Debug.Log("bounce attack, no offset");
+            return transform;
+        }
+        else
+        {
+            Debug.Log("attack with offset");
+            Vector3 offset = (playerTransform.position - transform.position).normalized * offsetAmount;
+            targetPoint.position = transform.position + offset;
+
+            return targetPoint;
         }
     }
 

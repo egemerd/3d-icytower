@@ -61,7 +61,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         //StartCoroutine(TimingWindowCoroutine());
     }
 
-    public Transform GetTransform()
+    public virtual Transform GetTransform()
     {
         return transform;
     }
