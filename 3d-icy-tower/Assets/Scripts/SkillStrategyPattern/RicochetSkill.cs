@@ -78,7 +78,7 @@ public class RicochetSkill : SkillStrategy
             // Vardýktan (veya hedefsiz anýnda ise) hasar vur
             if (nextTarget != null)
             {
-                nextTarget.OnKilled();
+                nextTarget.OnKilled(1);
                 hitTargets.Add(nextTarget); // Tekrar ayný hedefe sekmemesi için listeye ekle
                 
                 if (targetTransform != null)

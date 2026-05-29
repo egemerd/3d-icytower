@@ -38,6 +38,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float postAttackJumpForce = 8f;
     [SerializeField] private float postAttackForwardForce = 15f; // Hareket yönüne uygulanacak itme
 
+    [Header("Attack Damage")]
+    [SerializeField] private int attackDamage = 1;
+
     private bool isAttacking = false;
     float lockOnDelay = 1f;
     private Camera mainCamera;
@@ -221,7 +224,7 @@ public class PlayerAttack : MonoBehaviour
     {
         isAttacking = false;
         playerController.animator.ResetTrigger("Attack");
-        enemy.OnKilled();
+        enemy.OnKilled(attackDamage);
         if (TryGetComponent(out PlayerController player))
         {
             Vector2 inputDir = InputManager.Instance.moveInput;

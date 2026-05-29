@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5df00683b37cb14a9975bde9cb7d40f, type: 3}
   m_Name: FirstBossData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDataSO
+  health: 5
   reticleStartDistance: 2
   reticleEndDistance: 0.5
   scanRadius: 5

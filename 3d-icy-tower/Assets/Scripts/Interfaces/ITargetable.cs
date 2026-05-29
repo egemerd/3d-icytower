@@ -3,7 +3,7 @@ using UnityEngine;
 public interface ITargetable 
 {
     Transform GetTransform();
-    void OnKilled();
+    void OnKilled(int damage);
     void OnLockOn(float lockOnDelay);
     void OnLockOff();
 

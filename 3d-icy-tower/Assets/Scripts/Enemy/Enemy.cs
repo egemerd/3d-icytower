@@ -39,7 +39,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
 
     private float currentLockTimer = 0f;
     private float targetLockDelay = 1f;
-
+    private int health;
     protected virtual void Awake()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -56,6 +56,7 @@ public abstract class Enemy : MonoBehaviour, ITargetable
 
     private void Start()
     {
+        health = enemyData.health;  
         //StartCoroutine(TimingWindowCoroutine());
     }
 
@@ -87,12 +88,23 @@ public abstract class Enemy : MonoBehaviour, ITargetable
         }
     }
 
-    public void OnKilled()
+    public void OnKilled(int damage)
     {
-        if(!isBoss)
+        //if(!isBoss)
+        //{
+        //    Destroy(gameObject);
+        //    Debug.Log("OnKilled");
+        //}
+        GetDamage(damage);
+    }
+
+    private void GetDamage(int damage)
+    {
+        health -= damage;
+        Debug.Log($"Enemy took {damage} damage, remaining health: {health}");
+        if (health <= 0)
         {
             Destroy(gameObject);
-            Debug.Log("OnKilled");
         }
     }
 

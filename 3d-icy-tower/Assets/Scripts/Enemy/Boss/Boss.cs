@@ -24,9 +24,9 @@ public abstract class Boss : Enemy
     protected abstract void RunStateMachine();        
     protected virtual void OnBossStart() { }  
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(int amount)
     {
         currentHp -= amount;
-        if (currentHp <= 0) OnKilled();
+        if (currentHp <= 0) OnKilled(amount);
     }
 }
