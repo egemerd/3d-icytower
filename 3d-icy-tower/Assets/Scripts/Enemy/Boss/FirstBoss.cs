@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.VFX;
 public class FirstBoss : Boss
 {
     private enum FirstBossState { Idle, Bounce, Dash }
@@ -70,6 +70,9 @@ public class FirstBoss : Boss
     [SerializeField] private float exposedYPos = 1.0f;
     [SerializeField] private float exposeAnimationDuration = 0.5f;
 
+    [Header("Boss Hit VFX")] 
+    [SerializeField] private VisualEffect bossHitVFX;
+
     private Coroutine vulnerabilityCoroutine;
     protected bool IsVulnerable { get; private set; }
 
@@ -82,7 +85,7 @@ public class FirstBoss : Boss
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-
+        bossHitVFX.Stop();
         if (weakPointObj != null)
         {
             Vector3 startLocal = weakPointObj.localPosition;
@@ -113,6 +116,8 @@ public class FirstBoss : Boss
         if (IsVulnerable && CanBeAttackedFrom(playerTransform.position))
         {
             TakeDamage(damage);
+            bossHitVFX.transform.position = transform.position + new Vector3(0, 1f, 0); // VFX'i boss'un kafasının biraz üstünde oynat
+            bossHitVFX.Play();
             Debug.Log("[FirstBoss] Attack yapıldı!");
         }
         else
@@ -168,7 +173,7 @@ public class FirstBoss : Boss
                 idleTimer = idleDuration;
                 break;
 
-            case FirstBossState.Bounce:
+            case FirstBossState.Bounce:             
                 currentGroundBounces = 0;
 
                 // 1. Min ve Max açılar arasından rastgele bir fırlama açısı (yukarıdan sapma payı) seç
@@ -372,11 +377,11 @@ public class FirstBoss : Boss
         if (currentState != FirstBossState.Bounce) return;
         if (isBouncing) return;
         if ((wallMask.value & (1 << collision.gameObject.layer)) == 0) return;
-        
+
 
         // --- BURADAN AŞAĞISI STANDART SEKME (WALL BOUNCE VEYA PLAYER BOUNCE) MANTIĞI ---
 
-        
+        bounceHit = false;
 
         Vector3 normal = collision.contacts[0].normal;
         normal.x = 0f; // Force entirely onto the 2.5D plane

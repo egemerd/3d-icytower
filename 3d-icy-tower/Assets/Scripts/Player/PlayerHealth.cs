@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    private int health = 3;
+    [SerializeField]private int health = 3;
     public bool canTakeDamage = true;
 
     [SerializeField] private int guiFontSize = 48;
@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (canTakeDamage == false) return;
         health -= damage;
-        ParticleEffects.Instance.PlayOneShot(ParticleType.PlayerHit, transform.position + new Vector3(2, 0, 0));
+        ParticleEffects.Instance.PlayOneShot(ParticleType.BossHitEffect, transform.position + new Vector3(2, 0, 0));
         TimeStop.Instance.StopTime(duration,timeScale);
         Debug.Log("Player Health: " + health);
     }

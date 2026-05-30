@@ -11,7 +11,8 @@ public enum ParticleType
     WalkDust,
     PlayerHit,
     WallBounce,
-    HitEffect2
+    HitEffect2,
+    BossHitEffect
 }
 
 // Struct to configure particles in the Inspector
