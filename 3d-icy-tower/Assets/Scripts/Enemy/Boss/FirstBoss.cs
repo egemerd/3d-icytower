@@ -20,7 +20,6 @@ public class FirstBoss : Boss
     [SerializeField] private float minBounceAngle = 20f;    // En dik (yukarıya) açı
     [SerializeField] private float maxBounceAngle = 60f;    // En yatay açı
     [SerializeField] private int maxGroundBounces = 2;      // End state after hitting the ground this many times
-    [SerializeField] private int bounceDamage = 10;
     [SerializeField] private LayerMask wallMask;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private float bounceRadius = 0.5f;
@@ -28,6 +27,7 @@ public class FirstBoss : Boss
     private int currentGroundBounces = 0;
     private Vector3 bounceDirection;
     private bool isBouncing = false;
+    private bool bounceHit;
 
     [Header("Dash Settings")]
     [SerializeField] private float dashDuration = 0.8f;      // Toplam fırlama süresi
@@ -60,7 +60,12 @@ public class FirstBoss : Boss
     // Boss'un kafasına ekleyeceğiniz çocuk(child) objeyi buraya sürükleyin
     [SerializeField] private Transform weakPointObj;
 
-    // Objenin saklandığı ve çıktığı Yükseklik (Local Y) değerleri
+    [Header("Boss Damage Settings")]
+    [SerializeField] private int attackDamage = 1;
+    [SerializeField] private float timeStopScale = 0f;
+    [SerializeField] private float timeStopDuration = 0.3f;
+
+    [Header("HeadBump Settings")]
     [SerializeField] private float hiddenYPos = -0.5f;
     [SerializeField] private float exposedYPos = 1.0f;
     [SerializeField] private float exposeAnimationDuration = 0.5f;
@@ -313,14 +318,23 @@ public class FirstBoss : Boss
         // Enforce velocity strictly to our direction to prevent mid-air slow downs
         rb.linearVelocity = bounceDirection * bounceSpeed;
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, bounceRadius, playerMask);
-        if (hits.Length > 0)
+        if (!bounceHit)
         {
-            Debug.Log($"[FirstBoss] Bounce → Player'a çarptı! {bounceDamage} hasar");
-            // hits[0].GetComponent<PlayerHealth>()?.TakeDamage(bounceDamage);
-            
-            // If you want the bounce to stop early when it hits the player, uncomment this:
-            // EnterState(FirstBossState.Idle);
+            Collider[] hits = Physics.OverlapSphere(transform.position, bounceRadius, playerMask);
+            if (hits.Length > 0)
+            {
+                bounceHit = true;
+                Collider playerCol = hits[0];
+
+                IDamagable damageableTarget = playerCol.GetComponent<IDamagable>();
+                if (damageableTarget != null)
+                {
+                    Vector3 pushDirection = gizmoDashDir;
+                    damageableTarget.TakeDamage(attackDamage, timeStopScale, timeStopDuration);
+                }
+
+                Debug.Log($"[FirstBoss] Bounce → Player'a Sanal çarptı! {attackDamage} hasar");
+            }
         }
     }
 
@@ -416,10 +430,10 @@ public class FirstBoss : Boss
                 if (damageableTarget != null)
                 {
                     Vector3 pushDirection = gizmoDashDir;
-                    damageableTarget.TakeDamage(1);
+                    damageableTarget.TakeDamage(attackDamage, timeStopScale, timeStopDuration);
                 }
 
-                Debug.Log($"[FirstBoss] Dash → Player'a Sanal çarptı! {dashDamage} hasar");
+                Debug.Log($"[FirstBoss] Dash → Player'a Sanal çarptı! {attackDamage} hasar");
             }
         }
     }

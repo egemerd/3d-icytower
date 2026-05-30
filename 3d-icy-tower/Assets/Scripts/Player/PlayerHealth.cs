@@ -40,12 +40,12 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player Health: " + health);       
     }
 
-    public void BossGetDamage(int damage)
+    public void BossGetDamage(int damage, float timeScale, float duration)
     {
         if (canTakeDamage == false) return;
         health -= damage;
         ParticleEffects.Instance.PlayOneShot(ParticleType.PlayerHit, transform.position + new Vector3(2, 0, 0));
-        TimeStop.Instance.StopTime(0.15f, 0f);
+        TimeStop.Instance.StopTime(duration,timeScale);
         Debug.Log("Player Health: " + health);
     }
 

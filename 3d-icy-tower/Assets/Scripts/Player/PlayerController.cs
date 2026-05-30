@@ -521,9 +521,9 @@ public class PlayerController : MonoBehaviour, IStateMachine, IDamagable
         StartCoroutine(MantleCoroutine(mantlePosition));    
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount,float scale, float duration)
     {
-        playerHealth.BossGetDamage(amount);
+        playerHealth.BossGetDamage(amount,scale ,duration);
     }
 
     // Interface'in getirdiği zorunlu metod 2
