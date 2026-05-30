@@ -28916,11 +28916,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5925667882882157276, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
   m_PrefabInstance: {fileID: 9126628913582742764}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1607174447 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3641524643914679791, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-  m_PrefabInstance: {fileID: 9126628913582742764}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1611667288
 GameObject:
   m_ObjectHideFlags: 0
@@ -34108,33 +34103,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1098757893350353029, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: jumpTrailObject
-      value: 
-      objectReference: {fileID: 1607174447}
-    - target: {fileID: 1098757893350353029, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: ultiWallMask.m_Bits
-      value: 1280
-      objectReference: {fileID: 0}
-    - target: {fileID: 3077783325694739013, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3077783325694739013, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: wallMask.m_Bits
-      value: 1280
-      objectReference: {fileID: 0}
-    - target: {fileID: 3958501766160055021, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: health
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 5268541147257347994, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5268541147257347994, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5925667882882157276, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34175,18 +34146,6 @@ PrefabInstance:
     - target: {fileID: 5925667882882157276, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6110001953695224072, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 013fe2876eb304d44a310b97eddcc2be, type: 2}
-    - target: {fileID: 6439712955111281218, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7532808689543905617, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
-      propertyPath: targetLayer.m_Bits
-      value: 2228224
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -145,7 +145,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d7e993393e3e7094f80089d0c47eb515, type: 2}
+  - {fileID: 2100000, guid: 013fe2876eb304d44a310b97eddcc2be, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -230,7 +230,7 @@ MonoBehaviour:
     m_Bits: 256
   ultiWallMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1280
   minBounceSpeed: 15
   bounceSpeedMultiplier: 1.3
   groundCheckerForBounce: 1
@@ -249,7 +249,7 @@ MonoBehaviour:
   fallMultiplier: 2.5
   maxFallSpeed: 40
   walkingEffect: {fileID: 7136631467646754132}
-  jumpTrailObject: {fileID: 0}
+  jumpTrailObject: {fileID: 3641524643914679791}
   showCurrentStateOnScreen: 1
 --- !u!114 &7532808689543905617
 MonoBehaviour:
@@ -266,7 +266,7 @@ MonoBehaviour:
   scanRadius: 20
   targetLayer:
     serializedVersion: 2
-    m_Bits: 131072
+    m_Bits: 2228224
   scanCircleTransform: {fileID: 4191676133841804246}
   scanCircleRenderer: {fileID: 8689425306447992686}
   timingUiTransform: {fileID: 8523855773246245930}
@@ -382,6 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca42a998a94252c4c9813a22ec1d9fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  health: 5
   canTakeDamage: 1
   guiFontSize: 48
   topPadding: 20
@@ -393,14 +394,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5268541147257347994}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82a6b4404d33d1644b644c4620e1fc2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RocketBounceModule
   wallMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
 --- !u!1 &7416810984372956911
 GameObject:
   m_ObjectHideFlags: 0
@@ -5668,6 +5669,10 @@ PrefabInstance:
     - target: {fileID: 2569218984280955904, guid: ae4fe9a7911d45345aa605d0e5010f5f, type: 3}
       propertyPath: m_Name
       value: vfx_spriteSheet1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569218984280955904, guid: ae4fe9a7911d45345aa605d0e5010f5f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4457094713201767327, guid: ae4fe9a7911d45345aa605d0e5010f5f, type: 3}
       propertyPath: m_LocalScale.x
