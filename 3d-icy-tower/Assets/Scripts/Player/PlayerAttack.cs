@@ -1,6 +1,6 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
-// Input sistemi kütüphanenizin ekli olduðundan emin olun (örn: using UnityEngine.InputSystem;)
+// Input sistemi kÃ¼tÃ¼phanenizin ekli olduÄŸundan emin olun (Ã¶rn: using UnityEngine.InputSystem;)
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -16,16 +16,16 @@ public class PlayerAttack : MonoBehaviour
     [Header("UI Visuals")]
     [SerializeField] private Transform scanCircleTransform;
     [SerializeField] private SpriteRenderer scanCircleRenderer;
-    [SerializeField] private Transform timingUiTransform; // Yeni: Daralan veya büyüyen zamanlama halkasý
+    [SerializeField] private Transform timingUiTransform; // Yeni: Daralan veya bÃ¼yÃ¼yen zamanlama halkasÄ±
 
     [Header("Attack Feel Settings")]
     [SerializeField] private float dashDuration = 0.15f;
     [SerializeField] private AnimationCurve dashCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     [Header("Timing Attack Settings")]
-    [SerializeField] private float timingWindowStart = 0.4f; // Saniyenin % kaçýnda pencere açýlsýn?
-    [SerializeField] private float timingWindowEnd = 0.6f;   // Saniyenin % kaçýnda pencere kapansýn?
-    [SerializeField] private float totalTimingDuration = 1f; // Tüm sürecin tamamlanma süresi
+    [SerializeField] private float timingWindowStart = 0.4f; // Saniyenin % kaÃ§Ä±nda pencere aÃ§Ä±lsÄ±n?
+    [SerializeField] private float timingWindowEnd = 0.6f;   // Saniyenin % kaÃ§Ä±nda pencere kapansÄ±n?
+    [SerializeField] private float totalTimingDuration = 1f; // TÃ¼m sÃ¼recin tamamlanma sÃ¼resi
     private bool isInTimingWindow = false;
     private bool timingRoutineActive = false;
 
@@ -36,7 +36,7 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Post Attack Movement")]
     [SerializeField] private float postAttackJumpForce = 8f;
-    [SerializeField] private float postAttackForwardForce = 15f; // Hareket yönüne uygulanacak itme
+    [SerializeField] private float postAttackForwardForce = 15f; // Hareket yÃ¶nÃ¼ne uygulanacak itme
 
     [Header("Attack Damage")]
     [SerializeField] private int attackDamage = 1;
@@ -74,7 +74,7 @@ public class PlayerAttack : MonoBehaviour
                 currentTarget.PerfectAttack();
                 currentTarget.StopTimingUI();
                 stateMachine.ChangeState<AttackingState>();
-                StartCoroutine(AttackCoroutine(currentTarget,true)); // Belki extra parametre geçebilirsin bool isPerfect
+                StartCoroutine(AttackCoroutine(currentTarget,true)); // Belki extra parametre geÃ§ebilirsin bool isPerfect
             }
             else if (currentTarget.IsInTimingWindow)
             {
@@ -85,7 +85,7 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                Debug.Log("Miss!"); // Çok erken veya çok geç basýldý.
+                Debug.Log("Miss!"); // Ã‡ok erken veya Ã§ok geÃ§ basÄ±ldÄ±.
             }
         }
     }
@@ -100,7 +100,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 float dist = Vector3.Distance(transform.position, targetTransform.position);
 
-                // Hem menzil içinde hem de ekranda hala görünüyorsa tut
+                // Hem menzil iÃ§inde hem de ekranda hala gÃ¶rÃ¼nÃ¼yorsa tut
                 if (dist <= scanRadius && IsTargetInCameraView(targetTransform.position))
                 {
                     return currentTarget;
@@ -128,11 +128,11 @@ public class PlayerAttack : MonoBehaviour
     {
         if (mainCamera == null) return false;
 
-        // Dünya pozisyonunu ekran Viewport (0-1 arasý) pozisyonuna çevir
+        // DÃ¼nya pozisyonunu ekran Viewport (0-1 arasÄ±) pozisyonuna Ã§evir
         Vector3 viewportPoint = mainCamera.WorldToViewportPoint(targetPosition);
 
-        // x ve y 0 ile 1 arasýndaysa ekranýn içindedir.
-        // z > 0 olmasý kameranýn "önünde" olduðunu, arkasýnda kalmadýðýný belirtir.
+        // x ve y 0 ile 1 arasÄ±ndaysa ekranÄ±n iÃ§indedir.
+        // z > 0 olmasÄ± kameranÄ±n "Ã¶nÃ¼nde" olduÄŸunu, arkasÄ±nda kalmadÄ±ÄŸÄ±nÄ± belirtir.
         bool inScreenBounds = viewportPoint.z > 0f
                            && viewportPoint.x > 0f && viewportPoint.x < 1f
                            && viewportPoint.y > 0f && viewportPoint.y < 1f;
@@ -167,7 +167,7 @@ public class PlayerAttack : MonoBehaviour
             if (currentTarget != null)
             {
                 currentTarget.OnLockOn(lockOnDelay);
-                currentTarget.StartTimingUI(); // YENÝ: Start timing UI over the enemy immediately!
+                currentTarget.StartTimingUI(); // YENÄ°: Start timing UI over the enemy immediately!
             }
         }
     }
@@ -199,6 +199,12 @@ public class PlayerAttack : MonoBehaviour
         }
 
         transform.position = endPos;
+        playerController.Rb.position = endPos;  // â† ekle
+        playerController.Rb.linearVelocity = Vector3.zero;  // â† ekle
+        playerController.SetZMomentum(0f);  // â† ekle
+
+        
+
         ParticleEffects.Instance.PlayOneShot(ParticleType.HitEffect, target.GetTransform().position);
         //ParticleEffects.Instance.PlayOneShot(ParticleType.HitEffect2, target.GetTransform().position);
         TimeStop.Instance.StopTime(0.04f, 0.1f);

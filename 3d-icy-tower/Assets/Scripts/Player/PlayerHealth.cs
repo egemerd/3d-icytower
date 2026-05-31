@@ -37,7 +37,10 @@ public class PlayerHealth : MonoBehaviour
         health -= damage;
         ParticleEffects.Instance.PlayOneShot(ParticleType.PlayerHit,transform.position + new Vector3(2,0,0));
         TimeStop.Instance.StopTime(0.1f, 0.1f); 
-        Debug.Log("Player Health: " + health);       
+        Debug.Log("Player Health: " + health);
+
+        if (health <= 0)
+            GameOver();
     }
 
     public void BossGetDamage(int damage, float timeScale, float duration)
@@ -47,12 +50,21 @@ public class PlayerHealth : MonoBehaviour
         ParticleEffects.Instance.PlayOneShot(ParticleType.BossHitEffect, transform.position + new Vector3(2, 0, 0));
         TimeStop.Instance.StopTime(duration,timeScale);
         Debug.Log("Player Health: " + health);
+
+        if (health <= 0)
+            GameOver();
     }
 
     private void GameOver()
     {
+        GameEvents.current.TriggerGameOver();
         Debug.Log("Player fell past the active chunk limits! Game Over.");
         // Add your game over logic here (restart level, show UI, etc.)
+    }
+
+    private void PlayerDead()
+    {
+
     }
 
     private void OnGUI()

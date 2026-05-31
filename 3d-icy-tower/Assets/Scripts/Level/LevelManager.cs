@@ -15,6 +15,19 @@ public class LevelManager : MonoBehaviour
 
 
     public float NextLevelHeight => nextLevelHeight;
+
+
+    private void OnEnable()
+    {
+            GameEvents.current.onGameOver += RestartScene;
+    }
+
+    private void OnDisable()
+    {
+            GameEvents.current.onGameOver -= RestartScene;
+    }
+
+
     private void Update()
     {
         if (isEndlessLevel)
@@ -28,5 +41,10 @@ public class LevelManager : MonoBehaviour
         {
             
         }
+    }
+
+    private void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

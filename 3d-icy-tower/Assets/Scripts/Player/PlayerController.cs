@@ -194,6 +194,8 @@ public class PlayerController : MonoBehaviour, IStateMachine, IDamagable
         currentState.EnterState(this);
     }
 
+    
+
     public bool CheckJumpInput()
     {
         return InputManager.Instance.ConsumeJumpPressed();
