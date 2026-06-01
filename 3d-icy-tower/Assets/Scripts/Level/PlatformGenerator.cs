@@ -57,6 +57,24 @@ public class PlatformGenerator : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+
+        foreach (PlatformChunk chunk in activeChunks)
+            if (chunk != null) Destroy(chunk.gameObject);
+        activeChunks.Clear();
+
+        foreach (var pool in chunkPools.Values)
+        {
+            foreach (PlatformChunk chunk in pool)
+                if (chunk != null) Destroy(chunk.gameObject);
+            pool.Clear();
+        }
+
+        chunkPools.Clear();
+        instanceToPrefabMap.Clear();
+    }
     private void Update()
     {
         if (playerTransform.position.y + spawnAheadDistance > nextSpawnY)

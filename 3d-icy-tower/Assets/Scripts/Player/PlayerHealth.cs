@@ -36,7 +36,7 @@ public class PlayerHealth : MonoBehaviour
         if (canTakeDamage == false) return;
         health -= damage;
         ParticleEffects.Instance.PlayOneShot(ParticleType.PlayerHit,transform.position + new Vector3(2,0,0));
-        TimeStop.Instance.StopTime(0.1f, 0.1f); 
+        //TimeStop.Instance.StopTime(0.1f, 0.1f); 
         Debug.Log("Player Health: " + health);
 
         if (health <= 0)

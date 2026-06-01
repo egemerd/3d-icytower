@@ -14,7 +14,10 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
+        
+        Time.fixedDeltaTime = 0.02f; // enforces 50Hz physics, every scene        
     }
+
 
     private void Start()
     {

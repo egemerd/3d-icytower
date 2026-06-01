@@ -59,6 +59,36 @@ public class MeshGenerator : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        // Aktif chunk'larý destroy et
+        foreach (PlatformChunk chunk in activeChunks)
+        {
+            if (chunk != null)
+                Destroy(chunk.gameObject);
+        }
+        activeChunks.Clear();
+
+        // Pool'daki chunk'larý destroy et
+        if (chunkPools != null)
+        {
+            foreach (var pool in chunkPools.Values)
+            {
+                foreach (PlatformChunk chunk in pool)
+                {
+                    if (chunk != null)
+                        Destroy(chunk.gameObject);
+                }
+                pool.Clear();
+            }
+            chunkPools.Clear();
+        }
+
+        if (instanceToPrefabMap != null)
+            instanceToPrefabMap.Clear();
+
+        Debug.Log("[MeshGenerator] Destroyed, all chunks cleaned.");
+    }
     public float GetDeathLineY()
     {
         if (activeChunks.Count > 0)
