@@ -98,15 +98,13 @@ public class FirstBoss : Boss
     {
         base.Start();
         originalScale = transform.localScale;
-    }
-
-    private void OnEnable()
-    {
         GameEvents.current.onBossDead += TriggerFirstBossDeath;
     }
 
-    private void OnDisable()
+
+    private void OnDestroy()
     {
+
         GameEvents.current.onBossDead -= TriggerFirstBossDeath;
     }
 
@@ -543,7 +541,8 @@ public class FirstBoss : Boss
 
         PlayVFX();
 
-        Destroy(gameObject);
+        Destroy(gameObject , 0.2f);
+        GameEvents.current.TriggerBossDeathAnimationEnd();
     }
 
     private void PlayVFX()

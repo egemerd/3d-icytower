@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BossArea.unity
     guid: b913134152f7d9a46a9899f31ab9d9ac
+  - enabled: 1
+    path: Assets/Scenes/ThirdBiom.unity
+    guid: d122ff92262bdd546bc3f39f6081af27
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

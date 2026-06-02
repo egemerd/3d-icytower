@@ -22,6 +22,7 @@ public class GameEvents : MonoBehaviour
     public event Action onGameOver;
     public event Action onPlayerDead;
     public event Action onBossDead;
+    public event Action onBossDeathAnimationEnd;
 
     public void TriggerEnemyDetection()
     {
@@ -48,5 +49,10 @@ public class GameEvents : MonoBehaviour
     {
         Debug.Log("TriggerBossDeath triggered.");
         onBossDead?.Invoke();
+    }
+    public void TriggerBossDeathAnimationEnd()
+    {
+        Debug.Log("TriggerBossDeathAnimationEnd triggered.");
+        onBossDeathAnimationEnd?.Invoke();
     }
 }

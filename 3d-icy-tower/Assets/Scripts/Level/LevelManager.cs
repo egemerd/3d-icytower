@@ -13,18 +13,35 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private bool isBossLevel = false;
     [SerializeField] private bool isEndlessLevel = false;
 
+    [Header("Boss Level Settings")]
+    [SerializeField] private bool loadNextSceneOnBossDeath = true;
+
+    private bool bossDefeated;
+    private bool isLoadingScene;
 
     public float NextLevelHeight => nextLevelHeight;
 
 
+    private void Start()
+    {
+        GameEvents.current.onBossDeathAnimationEnd += OnBossDead;
+
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.current.onBossDeathAnimationEnd -= OnBossDead;
+    }
     private void OnEnable()
     {
-            GameEvents.current.onGameOver += RestartScene;
+        GameEvents.current.onGameOver += RestartScene;
+        
     }
 
     private void OnDisable()
     {
-            GameEvents.current.onGameOver -= RestartScene;
+        GameEvents.current.onGameOver -= RestartScene;
+
     }
 
 
@@ -34,13 +51,26 @@ public class LevelManager : MonoBehaviour
         {
             if (playerTransform.position.y > nextLevelHeight)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                LoadNextScene();
             }
         }
-        if (isBossLevel)
+        if (isBossLevel && bossDefeated && loadNextSceneOnBossDeath)
         {
-            
+            LoadNextScene();
         }
+    }
+
+    private void OnBossDead()
+    {
+        bossDefeated = true;
+    }
+
+    private void LoadNextScene()
+    {
+        if (isLoadingScene) return;
+
+        isLoadingScene = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private void RestartScene()
