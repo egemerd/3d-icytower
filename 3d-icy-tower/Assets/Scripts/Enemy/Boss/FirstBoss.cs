@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.VFX;
 public class FirstBoss : Boss
 {
-    private enum FirstBossState { Idle, Bounce, Dash }
+    private enum FirstBossState { Idle, Bounce, Dash , Death}
     private FirstBossState currentState;
 
     [Header("Weighted Random (Attacks only)")]
@@ -78,6 +78,10 @@ public class FirstBoss : Boss
     [SerializeField] private int vfxSpawnCount = 4;
     [SerializeField] private float vfxMinInterval = 0.1f;
     [SerializeField] private float vfxMaxInterval = 0.4f;
+    [SerializeField] private float shakeVfxInterval = 0.15f;
+    [SerializeField] private float shrinkDuration = 1f;
+    [SerializeField] private Ease shrinkEase = Ease.InBack;
+    private float vfxTimer = 0f;
 
 
     private Coroutine vulnerabilityCoroutine;
@@ -133,6 +137,7 @@ public class FirstBoss : Boss
             case FirstBossState.Idle: StateIdle(); break;
             case FirstBossState.Bounce: StateBounce(); break;
             case FirstBossState.Dash: StateDash(); break;
+            case FirstBossState.Death: break; 
         }
     }
 
@@ -505,33 +510,38 @@ public class FirstBoss : Boss
     {
         // 1. Titreme
         Debug.Log("boss death animation started ");
+        EnterState(FirstBossState.Death);
         float elapsed = 0f;
         Vector3 originalPos = transform.position;
         while (elapsed < 1f)
         {
             transform.position = originalPos + Random.insideUnitSphere * 0.1f;
+
+            if (shakeVfxInterval > 0f)
+            {
+                vfxTimer += Time.deltaTime;
+                if (vfxTimer >= shakeVfxInterval)
+                {
+                    PlayVFX();
+                    vfxTimer = 0f;
+                }
+            }
+
             elapsed += Time.deltaTime;
             yield return null;
         }
         transform.position = originalPos;
 
-        // 2. Aralıklarla VFX oynat
-        for (int i = 0; i < vfxSpawnCount; i++)
-        {
-            PlayVFX();
-            yield return new WaitForSeconds(Random.Range(vfxMinInterval, vfxMaxInterval));
-        }
+        
 
         // 3. Küçülme + son VFX
         PlayVFX();
-        elapsed = 0f;
-        while (elapsed < 1f)
-        {
-            float t = elapsed / 1f;
-            transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, t);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
+        transform.localScale = originalScale;
+        Tween shrinkTween = transform.DOScale(Vector3.zero, shrinkDuration).SetEase(shrinkEase);
+        PlayVFX();
+        yield return shrinkTween.WaitForCompletion();
+
+        PlayVFX();
 
         Destroy(gameObject);
     }
