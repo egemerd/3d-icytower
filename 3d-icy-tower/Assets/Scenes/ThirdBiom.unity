@@ -2157,7 +2157,7 @@ MonoBehaviour:
   spawnAheadDistance: 30
   despawnBehindDistance: 200
   poolSizePerChunk: 10
-  startReferencePoint: {fileID: 346934954973141267}
+  startReferencePoint: {fileID: 2155768093518194268}
 --- !u!1 &263875046
 GameObject:
   m_ObjectHideFlags: 0
@@ -30571,11 +30571,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &346934954973141267 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1022802437562489088, guid: 0ffff1f15b4cf1c4db3ca802cc5f1f27, type: 3}
-  m_PrefabInstance: {fileID: 8518776107538991219}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &382807098370062724
 Transform:
   m_ObjectHideFlags: 0
@@ -30959,6 +30954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformChunk
   connectionPoint: {fileID: 5600245600331145927}
+  entryPoint: {fileID: 0}
 --- !u!23 &1289817718034051910
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -31144,6 +31140,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4636435930665788701}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &2155768093518194268 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4568590299575460555, guid: 0cfea38a2b2c1cd41a97d3c8ceaa4de5, type: 3}
+  m_PrefabInstance: {fileID: 2926189418434875364}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2180034991587626182
 Transform:
   m_ObjectHideFlags: 0

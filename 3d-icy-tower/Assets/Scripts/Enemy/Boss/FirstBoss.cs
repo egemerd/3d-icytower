@@ -73,6 +73,13 @@ public class FirstBoss : Boss
     [Header("Boss Hit VFX")] 
     [SerializeField] private VisualEffect bossHitVFX;
 
+    [Header("Boss Death VFX")]
+    [SerializeField] private VisualEffect bossDeathVFX;
+    [SerializeField] private int vfxSpawnCount = 4;
+    [SerializeField] private float vfxMinInterval = 0.1f;
+    [SerializeField] private float vfxMaxInterval = 0.4f;
+
+
     private Coroutine vulnerabilityCoroutine;
     protected bool IsVulnerable { get; private set; }
 
@@ -80,6 +87,24 @@ public class FirstBoss : Boss
 
     private Vector3 gizmoBounceDir;
     private Vector3 gizmoDashDir;
+
+    private Vector3 originalScale;
+
+    protected override void Start()
+    {
+        base.Start();
+        originalScale = transform.localScale;
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.current.onBossDead += TriggerFirstBossDeath;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.current.onBossDead -= TriggerFirstBossDeath;
+    }
 
     protected override void OnBossStart()
     {
@@ -145,12 +170,12 @@ public class FirstBoss : Boss
     {
         if (currentState == FirstBossState.Bounce)
         {
-            Debug.Log("bounce attack, no offset");
+            //Debug.Log("bounce attack, no offset");
             return transform;
         }
         else
         {
-            Debug.Log("attack with offset");
+            //Debug.Log("attack with offset");
             Vector3 offset = (playerTransform.position - transform.position).normalized * offsetAmount;
             targetPoint.position = transform.position + offset;
 
@@ -346,7 +371,7 @@ public class FirstBoss : Boss
     private IEnumerator DashRoutine(Vector3 startPos, Vector3 targetPos)
     {
         float elapsed = 0f;
-
+        Debug.Log($"[FirstBoss] Dash → Başladı! Hedef Z: {targetPos.z:F1}, Mesafe: {(targetPos - startPos).magnitude:F1}");
         while (elapsed < dashDuration)
         {
             elapsed += Time.deltaTime;
@@ -467,6 +492,61 @@ public class FirstBoss : Boss
         //// This ensures the boss natively selects an attack
         //if (roll < weightBounce) return FirstBossState.Bounce;
         //else return FirstBossState.Dash;
+    }
+
+
+    public void TriggerFirstBossDeath()
+    {
+        StartCoroutine(BossDeathAnimation());
+    }
+
+    
+    private IEnumerator BossDeathAnimation()
+    {
+        // 1. Titreme
+        Debug.Log("boss death animation started ");
+        float elapsed = 0f;
+        Vector3 originalPos = transform.position;
+        while (elapsed < 1f)
+        {
+            transform.position = originalPos + Random.insideUnitSphere * 0.1f;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = originalPos;
+
+        // 2. Aralıklarla VFX oynat
+        for (int i = 0; i < vfxSpawnCount; i++)
+        {
+            PlayVFX();
+            yield return new WaitForSeconds(Random.Range(vfxMinInterval, vfxMaxInterval));
+        }
+
+        // 3. Küçülme + son VFX
+        PlayVFX();
+        elapsed = 0f;
+        while (elapsed < 1f)
+        {
+            float t = elapsed / 1f;
+            transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(gameObject);
+    }
+
+    private void PlayVFX()
+    {
+        VisualEffect vfxInstance = Instantiate(
+            bossDeathVFX,
+            transform.position,
+            Quaternion.identity
+        );
+        vfxInstance.Play();
+
+        // Bittikten sonra otomatik sil
+        Destroy(vfxInstance.gameObject, 3f);
     }
 
     public override void EnemyAttack() { }

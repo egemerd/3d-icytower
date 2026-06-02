@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public abstract class Boss : Enemy
 {
@@ -9,7 +10,7 @@ public abstract class Boss : Enemy
     protected enum BossPhase { Phase1, Phase2, Phase3 }
     protected BossPhase currentPhase;
 
-    private void Start()
+    protected virtual void Start()
     {
         currentHp = maxHp;
         OnBossStart(); // child'ın kendi Start'ı
@@ -27,7 +28,22 @@ public abstract class Boss : Enemy
     public void TakeDamage(int amount)
     {
         currentHp -= amount;
-        if (currentHp <= 0) OnKilled(amount);
+        if(currentHp <= 0) BossDeath();
+        //if (currentHp <= 0) OnKilled(amount);
         Debug.Log($"Boss took {amount} damage, current HP: {currentHp}");
     }
+
+    public void BossDeath()
+    {
+        //IsDead = true;
+        Debug.Log("Boss defeated!");
+        StartCoroutine(DelayedDeath());
+    }
+
+    private IEnumerator DelayedDeath()
+    {
+        yield return new WaitForSeconds(0.3f); // oyuncunun jump'ı tamamlaması için bekle
+        GameEvents.current.TriggerBossDeath();
+    }
 }
+

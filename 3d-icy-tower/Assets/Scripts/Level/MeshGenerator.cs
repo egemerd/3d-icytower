@@ -127,19 +127,30 @@ public class MeshGenerator : MonoBehaviour
 
         PlatformChunk chunkToSpawn;
         if (pool.Count > 0)
-        {
             chunkToSpawn = pool.Dequeue();
-        }
         else
         {
             chunkToSpawn = Instantiate(randomlyChosenPrefab, transform);
-            //DecorateChunkPlatforms(chunkToSpawn);
             instanceToPrefabMap[chunkToSpawn] = randomlyChosenPrefab;
         }
 
-        chunkToSpawn.transform.position = new Vector3(startReferencePoint.position.x, nextSpawnY, startReferencePoint.position.z);
-        chunkToSpawn.ResetChunk();
+        // Önce default pozisyona koy
+        chunkToSpawn.transform.position = Vector3.zero;
         chunkToSpawn.gameObject.SetActive(true);
+
+        // entryPoint ile connectionPoint arasýndaki offset'i hesapla
+        float entryOffset = 0f;
+        if (chunkToSpawn.entryPoint != null)
+            entryOffset = chunkToSpawn.transform.position.y - chunkToSpawn.entryPoint.position.y;
+
+        // Pozisyonu offset'e göre ayarla
+        chunkToSpawn.transform.position = new Vector3(
+            startReferencePoint.position.x,
+            nextSpawnY + entryOffset,
+            startReferencePoint.position.z
+        );
+
+        chunkToSpawn.ResetChunk();
 
         if (chunkToSpawn.connectionPoint != null)
             nextSpawnY = chunkToSpawn.connectionPoint.position.y;
