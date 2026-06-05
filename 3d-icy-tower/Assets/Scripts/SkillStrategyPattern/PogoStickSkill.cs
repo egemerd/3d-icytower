@@ -1,6 +1,5 @@
-using UnityEngine;
-using System.Threading.Tasks;
-
+﻿using UnityEngine;
+using System.Collections;
 
 [CreateAssetMenu(fileName = "PogoStickSkill", menuName = "Skills/PogoStick")]
 public class PogoStickSkill : SkillStrategy
@@ -11,100 +10,123 @@ public class PogoStickSkill : SkillStrategy
     public float pogoDetectionDuration = 0.5f;
     public LayerMask groundLayer;
 
-    [Header("Visuals")]
-    [Tooltip("A�a�� do�ru uzayacak g�rsel (�rn: �ubuk sprite'� i�eren bir Prefab)")]
-    public GameObject pogoVisualPrefab;
+    [Header("Pogo Model")]
+    [Tooltip("Tüm pogo stick modeli (parent prefab)")]
+    public GameObject pogoModelPrefab;
+
+    [Tooltip("Prefab içinde scale'i uzayacak child'ın adı")]
+    public string rodChildName = "PogoRod";
+
+    [Tooltip("Spawn pozisyonu için oyuncu ayak offset'i")]
+    public Vector3 spawnOffset = new Vector3(0f, -0.5f, 0f);
+
+    [Header("Rod Scale")]
+    [Tooltip("Çubuğun başlangıç Z scale'i")]
+    public float rodStartScaleZ = 0.1f;
+
+    [Tooltip("Çubuğun maksimum uzayacağı Z scale değeri")]
+    public float rodMaxScaleZ = 3f;
+
+    [Header("Retract Settings")]
+    [Tooltip("Çarpma sonrası çubuğun geri çekilme süresi")]
+    public float retractDuration = 0.3f;
 
     public override void UseSkill(GameObject obj)
     {
-        Debug.Log($"{obj.name} is now using a pogo stick!");
-        // Metodu �a��r ve ana thread'i bloklamadan �al��mas�n� sa�la
-        ExecutePogoAsync(obj);
-    }
-
-    private async void ExecutePogoAsync(GameObject obj)
-    {
-        if (obj == null) return;
-
         PlayerController controller = obj.GetComponent<PlayerController>();
         if (controller == null) return;
 
-        float elapsed = 0f;
-        GameObject visualInstance = null;
-        Transform visualTransform = null;
+        // MonoBehaviour olmadığımız için controller üzerinden coroutine başlatıyoruz
+        controller.StartCoroutine(PogoRoutine(obj, controller));
+    }
 
-        // G�rseli olu�tur
-        if (pogoVisualPrefab != null)
+    private IEnumerator PogoRoutine(GameObject obj, PlayerController controller)
+    {
+        // ── 1. Modeli oyuncunun ayağında spawn et ────────────────────────
+        GameObject modelInstance = Instantiate(
+            pogoModelPrefab,
+            obj.transform.position + spawnOffset,
+            obj.transform.rotation,
+            obj.transform  // oyuncuya attach
+        );
+        modelInstance.transform.localPosition = spawnOffset;
+
+        // ── 2. Rod child'ını bul ─────────────────────────────────────────
+        Transform rod = modelInstance.transform.Find(rodChildName);
+        if (rod == null)
         {
-            // Quaternion.identity yerine Quaternion.Euler(0, 90, 0) vererek ba�tan 90 derece d�nd�r�lm�� spawn ediyoruz.
-            visualInstance = Instantiate(pogoVisualPrefab, obj.transform.position, Quaternion.Euler(0, 90, 0), obj.transform);
-            visualTransform = visualInstance.transform;
-
-            // Opsiyonel: E�er rotasyonun Player'a g�re her zaman lokal olarak (0, 90, 0) kalmas�n� istiyorsan bu sat�r� da kullanabilirsin:
-            visualTransform.localRotation = Quaternion.Euler(0, 90, 0);
-
-            visualTransform.localScale = new Vector3(0.3f, 0f, 1f);
-
-
+            Debug.LogWarning($"PogoStickSkill: '{rodChildName}' adlı child bulunamadı!");
+            Destroy(modelInstance);
+            yield break;
         }
 
-        bool hasHitTarget = false;
+        // Rod'un başlangıç local scale'ini kaydet, sadece Z'yi değiştireceğiz
+        Vector3 originalScale = rod.localScale;
+        rod.localScale = new Vector3(originalScale.x, originalScale.y, rodStartScaleZ);
 
-        // Belirlenen s�re boyunca d�ng�y� i�let
+        // ── 3. Extend: çubuğu Z yönünde uzat, raycast ile yer kontrol et ─
+        float elapsed = 0f;
+        bool hitGround = false;
+
         while (elapsed < pogoDetectionDuration)
         {
-            // E�er obje yok edildiyse i�lemi g�venli bir �ekilde iptal et
-            if (obj == null) break;
+            if (obj == null) { Destroy(modelInstance); yield break; }
 
             elapsed += Time.deltaTime;
             float t = elapsed / pogoDetectionDuration;
-            float currentLength = Mathf.Lerp(0f, pogoDetectionHeight, t);
 
-            // G�rseli a�a��ya do�ru uzat
-            if (visualTransform != null)
+            float currentScaleZ = Mathf.Lerp(rodStartScaleZ, rodMaxScaleZ, t);
+            rod.localScale = new Vector3(originalScale.x, originalScale.y, currentScaleZ);
+
+            // Z scale'den gerçek dünya uzunluğunu hesapla
+            float worldLength = currentScaleZ * originalScale.z;
+
+            // Oyuncudan aşağı raycast
+            if (Physics.Raycast(obj.transform.position, Vector3.down, out RaycastHit hit, worldLength, groundLayer))
             {
-                visualTransform.localScale = new Vector3(0.3f, currentLength, 1f);
-                visualTransform.localPosition = new Vector3(0f, -currentLength / 2f, 0f); // Uzad�k�a a�a�� kayd�r
+                Debug.Log($"Pogo hit: {hit.collider.name}");
+                hitGround = true;
+                break;
             }
 
-            // Raycast ile yeri kontrol et
-            if (Physics.Raycast(obj.transform.position, Vector3.down, out RaycastHit hit, currentLength, groundLayer))
-            {
-                Debug.Log("Pogo stick hit the ground!");
-                Destroy(visualInstance);
-                PerformPogoJump(controller);
-                hasHitTarget = true;
-                break; // Hedefe ula�t�, d�ng�y� bitir
-            }
-
-            // Unity'nin bir sonraki frame'e ge�mesini bekle (yield return null ile ayn� i�i yapar)
-            await Task.Yield();
+            yield return null;
         }
 
-        // G�rselin an�nda yok olmamas� i�in ufak bir bekleme s�resi (opsiyonel)
-        if (hasHitTarget)
+        // ── 4. Zıplama ───────────────────────────────────────────────────
+        if (hitGround)
         {
-            await Task.Delay(200); // 0.2 saniye bekle
+            PerformPogoJump(controller);
         }
 
-        // ��lem bittikten sonra g�rseli temizle
-        if (visualInstance != null)
+        // ── 5. Retract: çubuğu geri çek ─────────────────────────────────
+        float currentZ = rod.localScale.z;
+        float retractElapsed = 0f;
+
+        while (retractElapsed < retractDuration)
         {
-            Destroy(visualInstance);
+            if (modelInstance == null) yield break;
+
+            retractElapsed += Time.deltaTime;
+            float t = retractElapsed / retractDuration;
+
+            float scaleZ = Mathf.Lerp(currentZ, rodStartScaleZ, t);
+            rod.localScale = new Vector3(originalScale.x, originalScale.y, scaleZ);
+
+            yield return null;
         }
+
+        // ── 6. Temizle ───────────────────────────────────────────────────
+        if (modelInstance != null)
+            Destroy(modelInstance);
     }
 
     private void PerformPogoJump(PlayerController controller)
     {
-        // Oyuncunun dikey h�z�n� s�f�rla ki mevcut d��me h�z� z�plamay� yava�latmas�n
         Vector3 vel = controller.Rb.linearVelocity;
         vel.y = 0f;
         controller.Rb.linearVelocity = vel;
 
-        // Pogo kuvvetini uygula
         controller.Rb.AddForce(Vector3.up * pogoForce, ForceMode.VelocityChange);
-
-        // Z�plama state'ine ge�i� yap
         controller.ChangeState<JumpingState>();
     }
-}  
+}

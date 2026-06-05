@@ -25,22 +25,23 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         GameEvents.current.onBossDeathAnimationEnd += OnBossDead;
+        GameEvents.current.onGameOver += RestartScene;
 
     }
 
     private void OnDestroy()
     {
         GameEvents.current.onBossDeathAnimationEnd -= OnBossDead;
+        GameEvents.current.onGameOver -= RestartScene;
+
     }
     private void OnEnable()
     {
-        GameEvents.current.onGameOver += RestartScene;
         
     }
 
     private void OnDisable()
     {
-        GameEvents.current.onGameOver -= RestartScene;
 
     }
 

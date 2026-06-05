@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c3e961513decd4ba9f6b6d304a7ff4, type: 3}
   m_Name: PogoStickSkill
   m_EditorClassIdentifier: Assembly-CSharp::PogoStickSkill
-  pogoForce: 30
+  pogoForce: 60
   pogoDetectionHeight: 15
   pogoDetectionDuration: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 17408
-  pogoVisualPrefab: {fileID: 6134329368349654844, guid: 2bd0023d6e365e54591ea260111fbd97, type: 3}
+  pogoModelPrefab: {fileID: 7150234660408798792, guid: a49f9d2acbc15474f9eacaa652d1aa0c, type: 3}
+  rodChildName: Rod
+  spawnOffset: {x: -0.3, y: -1.7, z: 0}
+  rodStartScaleZ: 0.1
+  rodMaxScaleZ: 9
+  retractDuration: 0.5

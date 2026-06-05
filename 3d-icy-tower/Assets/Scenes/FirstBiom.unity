@@ -755,7 +755,7 @@ Transform:
   m_GameObject: {fileID: 87592531}
   serializedVersion: 2
   m_LocalRotation: {x: 0.09964922, y: -0.70005, z: 0.09964925, w: 0.70005006}
-  m_LocalPosition: {x: 124.06972, y: 36.654694, z: -63.112488}
+  m_LocalPosition: {x: 124.06972, y: 33.79469, z: -63.112488}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3307,6 +3307,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585549}
+  - component: {fileID: 330585550}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3382,7 +3383,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.09964922, y: -0.70005, z: 0.09964925, w: 0.70005006}
-  m_LocalPosition: {x: 52.64912, y: 36.654694, z: 0.43224967}
+  m_LocalPosition: {x: 52.64912, y: 33.79469, z: 0.43224967}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3477,6 +3478,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PixelateEffect
   pixelTexture: {fileID: 8400000, guid: e09bf4af7a4a6f74582f21a82c5a1c1e, type: 2}
+--- !u!114 &330585550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e5939904c898694d9b563586f0a5c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CircleMaskEffect
+  circleMaskMaterial: {fileID: 2100000, guid: a673272982521c240b51e3c3bfe6e083, type: 2}
 --- !u!1 &333142906
 GameObject:
   m_ObjectHideFlags: 0
@@ -4557,6 +4571,52 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!21 &438439328
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_ShaderGraph GrassUnlitBasic(Clone)
+  m_Shader: {fileID: -6465566751694194690, guid: 99e21a4823144ba47a502a2f65b53afd, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blend: 0
+    - _BlendMult: 1
+    - _BlendOff: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &440923324
 GameObject:
   m_ObjectHideFlags: 0
@@ -7653,52 +7713,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &834548488
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_ShaderGraph GrassUnlitBasic(Clone)
-  m_Shader: {fileID: -6465566751694194690, guid: 99e21a4823144ba47a502a2f65b53afd, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses:
-  - MOTIONVECTORS
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _Blend: 0
-    - _BlendMult: 1
-    - _BlendOff: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &838031179
 GameObject:
   m_ObjectHideFlags: 0
@@ -12901,7 +12915,7 @@ MonoBehaviour:
     normal: {x: 0, y: 1, z: 2.2204462e-17}
     length: {x: 0.064, y: 1.588}
     color: {x: 1, y: 1, z: 1}
-  m_InstantiatedMaterial: {fileID: 834548488}
+  m_InstantiatedMaterial: {fileID: 438439328}
 --- !u!4 &1155947548
 Transform:
   m_ObjectHideFlags: 0
@@ -32023,6 +32037,53 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1940782270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1940782272}
+  - component: {fileID: 1940782271}
+  m_Layer: 0
+  m_Name: TransitionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1940782271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940782270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c28b821e694b7e41b0e815027283e3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TransitionManager
+  circleMaskMaterial: {fileID: 2100000, guid: a673272982521c240b51e3c3bfe6e083, type: 2}
+  closeTime: 1
+  openTime: 0.7
+--- !u!4 &1940782272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940782270}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.53, y: 29.16123, z: 6.01831}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1966423509
 GameObject:
   m_ObjectHideFlags: 0
@@ -35541,6 +35602,10 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1588544254}
+    - target: {fileID: 2391427943564540062, guid: 4d2211c5743e81947995e456499533f0, type: 3}
+      propertyPath: circleMaskMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: a673272982521c240b51e3c3bfe6e083, type: 2}
     - target: {fileID: 6020805559411760628, guid: 4d2211c5743e81947995e456499533f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -71.42059
@@ -36064,7 +36129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5925667882882157276, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.53
+      value: 5.67
       objectReference: {fileID: 0}
     - target: {fileID: 5925667882882157276, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36156,6 +36221,7 @@ SceneRoots:
   - {fileID: 254077754}
   - {fileID: 8117655887231408565}
   - {fileID: 1236961074}
+  - {fileID: 1940782272}
   - {fileID: 2016769989}
   - {fileID: 1571772546}
   - {fileID: 1374255540}
