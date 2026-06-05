@@ -422,7 +422,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -456,6 +456,7 @@ MonoBehaviour:
   perfectHitSprite: {fileID: 4397784260274677407}
   timingUiTransform: {fileID: 6408824494667081937}
   useOldUiSystem: 1
+  isBoss: 0
   projectilePrefab: {fileID: 6184477996909171599, guid: 9903cd10edc719741a9e507412754a79, type: 3}
   firePoint: {fileID: 1393785499652260337}
 --- !u!1 &4812207450899114641
