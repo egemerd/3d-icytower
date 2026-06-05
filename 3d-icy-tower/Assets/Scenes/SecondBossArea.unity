@@ -13764,11 +13764,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!4 &1234644613 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6755047856852812280, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
-  m_PrefabInstance: {fileID: 5113975718225513663}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1245267949
 GameObject:
   m_ObjectHideFlags: 0
@@ -32409,6 +32404,67 @@ Transform:
   - {fileID: 93292585}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 276.195}
+--- !u!1001 &1918247549
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3302892909065874605, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_Name
+      value: LaserSecond
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302892909065874605, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -12.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 25.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525951044047612926, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
 --- !u!1 &1919749111
 GameObject:
   m_ObjectHideFlags: 0
@@ -34038,11 +34094,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &214701068841056059 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4790688315064530445, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
-  m_PrefabInstance: {fileID: 5113975718225513663}
-  m_PrefabAsset: {fileID: 0}
 --- !u!23 &1019276455735946578
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -34892,21 +34943,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8850146846267573391, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
-      propertyPath: spreadAngle
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 8850146846267573391, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
-      propertyPath: projectileCount
-      value: 12
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4790688315064530445, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8907801078058556345}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
 --- !u!4 &5296223479503535856
 Transform:
@@ -35769,30 +35809,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4782075389687316276}
   m_LocalEulerAnglesHint: {x: -0.188, y: 0.129, z: -25.687}
---- !u!114 &8907801078058556345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214701068841056059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64da9bc8fe8cd8840b114699cd66768b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossAttackTwo
-  firePoint: {fileID: 1234644613}
-  laserPrefab: {fileID: 558023934131477379, guid: a9df656335b8c62419dcfc6066f9fd0f, type: 3}
-  startAngle: -95
-  endAngle: 95
-  sweepSpeed: 45
-  pauseBetweenSweeps: 0.4
-  laserLength: 12
-  damage: 1
-  damageRadius: 0.15
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 4096
 --- !u!23 &8913468968651055848
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -36026,3 +36042,4 @@ SceneRoots:
   - {fileID: 4782075389687316276}
   - {fileID: 2974516684218360737}
   - {fileID: 5113975718225513663}
+  - {fileID: 1918247549}

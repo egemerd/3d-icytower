@@ -408,6 +408,7 @@ GameObject:
   - component: {fileID: 8696131594026578008}
   - component: {fileID: 6016541926037091802}
   - component: {fileID: 8850146846267573391}
+  - component: {fileID: 5377389411102924093}
   m_Layer: 21
   m_Name: SecondBoss
   m_TagString: Untagged
@@ -594,8 +595,8 @@ MonoBehaviour:
   firePoint: {fileID: 6755047856852812280}
   projectilePrefab: {fileID: 6184477996909171599, guid: 23feb752d2869de43bff979a79a4b14b, type: 3}
   laserPrefab: {fileID: 6811949201069583350, guid: 07afeb15d21963a40aa1864750d79178, type: 3}
-  spreadAngle: 45
-  projectileCount: 5
+  spreadAngle: 60
+  projectileCount: 12
   projectileIntervalMin: 0.1
   projectileIntervalMax: 0.4
   laserCount: 3
@@ -603,6 +604,30 @@ MonoBehaviour:
   laserIntervalMax: 0.6
   laserLength: 8
   totalAttackDuration: 4
+--- !u!114 &5377389411102924093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4790688315064530445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64da9bc8fe8cd8840b114699cd66768b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossAttackTwo
+  firePoint: {fileID: 6755047856852812280}
+  laserPrefab: {fileID: 3302892909065874605, guid: 5f267c98e5ba9254387ea17d87be2b28, type: 3}
+  startAngle: -95
+  endAngle: 95
+  sweepSpeed: 45
+  pauseBetweenSweeps: 0.4
+  laserLength: 12
+  damage: 1
+  damageRadius: 0.15
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &4835788623817551909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,6 +1148,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c8928c7ba8173134e9661a64b2500e44, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3a99f2284cc526c409bfdda7934ed671, type: 2}
     - target: {fileID: 919132149155446097, guid: c8928c7ba8173134e9661a64b2500e44, type: 3}
       propertyPath: m_Name
       value: boss_2
