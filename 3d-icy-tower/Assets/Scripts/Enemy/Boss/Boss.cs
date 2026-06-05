@@ -10,6 +10,7 @@ public abstract class Boss : Enemy
     protected enum BossPhase { Phase1, Phase2, Phase3 }
     protected BossPhase currentPhase;
 
+    
     protected virtual void Start()
     {
         currentHp = maxHp;
