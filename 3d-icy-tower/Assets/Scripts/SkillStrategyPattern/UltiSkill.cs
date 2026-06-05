@@ -29,12 +29,18 @@ public class UltiSkill : SkillStrategy
     [Tooltip("How long the rocket holds at peak speed before control is returned to the player.")]
     public float rocketPeakHoldDuration = 0.2f;
 
-   
+    public float energyCost = 100f;
 
 
     public override void UseSkill(GameObject obj)
     {
         RocketUltiHandler handler = obj.AddComponent<RocketUltiHandler>();
+        EnergySystem energy = obj.GetComponent<EnergySystem>();
+        if (energy == null || !energy.TrySpendEnergy(energyCost)) 
+        {
+            Debug.Log("Not enough energy to use Ulti Skill.");
+            return;
+        }
         Debug.Log("Ulti Skill used: " );
         handler.StartUlti(this);
     }

@@ -46,12 +46,13 @@ public class PlayerAttack : MonoBehaviour
     private Camera mainCamera;
 
     ITargetable enemy;
-    
 
+    private EnergySystem energySystem;
     private void Awake()
     {
         stateMachine = GetComponent<IStateMachine>();
         playerController = GetComponent<PlayerController>();
+        energySystem = GetComponent<EnergySystem>();
         mainCamera = Camera.main;
     }
 
@@ -74,6 +75,7 @@ public class PlayerAttack : MonoBehaviour
                 currentTarget.PerfectAttack();
                 currentTarget.StopTimingUI();
                 stateMachine.ChangeState<AttackingState>();
+                energySystem?.AddPerfectAttackEnergy();
                 StartCoroutine(AttackCoroutine(currentTarget,true)); // Belki extra parametre geçebilirsin bool isPerfect
             }
             else if (currentTarget.IsInTimingWindow)
