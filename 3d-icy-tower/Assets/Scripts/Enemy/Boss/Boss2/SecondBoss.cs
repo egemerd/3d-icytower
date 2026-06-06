@@ -11,6 +11,11 @@ public class SecondBoss : Boss
     [SerializeField] private float idleDuration = 2f;
     private float idleTimer;
 
+    [Header("State Weights")]
+    [SerializeField] private float weightIdle = 1f;
+    [SerializeField] private float weightAttackOne = 2f;
+    [SerializeField] private float weightAttackTwo = 2f;
+
     [Header("Face Rotations")]
     [Tooltip("Dönen child obje (zar mesh'i)")]
     [SerializeField] private Transform diceBody;
@@ -80,9 +85,11 @@ public class SecondBoss : Boss
         switch (newState)
         {
             case SecondBossState.Idle:
-                idleTimer = idleDuration;
+                StartCoroutine(RollThenExecute(
+                idleFaceRotation,
+                    () => idleTimer = idleDuration
+                 ));
                 break;
-
             case SecondBossState.AttackOne:
                 StartCoroutine(RollThenExecute(
                     attackOneFaceRotation,
@@ -159,7 +166,18 @@ public class SecondBoss : Boss
 
     private SecondBossState PickNextState()
     {
-        return Random.value < 0.5f ? SecondBossState.AttackOne : SecondBossState.AttackTwo;
+        float total = weightIdle + weightAttackOne + weightAttackTwo;
+        float roll = Random.Range(0f, total);
+
+        if (roll < weightIdle)
+            return SecondBossState.Idle;
+
+        roll -= weightIdle;
+
+        if (roll < weightAttackOne)
+            return SecondBossState.AttackOne;
+
+        return SecondBossState.AttackTwo;
     }
 
     private void TriggerSecondBossDeath()

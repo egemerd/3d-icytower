@@ -34919,6 +34919,10 @@ PrefabInstance:
       propertyPath: bossIndex
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
+      propertyPath: weightIdle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8366231339017147099, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.7
