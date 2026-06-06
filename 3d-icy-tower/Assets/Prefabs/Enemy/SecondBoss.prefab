@@ -582,6 +582,15 @@ MonoBehaviour:
   maxHp: 300
   bossIndex: 0
   idleDuration: 2
+  diceBody: {fileID: 1241211892704252577}
+  idleFaceRotation: {x: 0, y: 90, z: 30}
+  attackOneFaceRotation: {x: 0, y: -90, z: -30}
+  attackTwoFaceRotation: {x: 30, y: 0, z: 0}
+  wobbleAngle: 120
+  wobbleDuration: 0.03
+  wobbleCount: 15
+  snapDuration: 0.35
+  snapEase: 27
 --- !u!114 &8850146846267573391
 MonoBehaviour:
   m_ObjectHideFlags: 0
