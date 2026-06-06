@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         GameEvents.current.onBossDeathAnimationEnd += OnBossDead;
+        GameEvents.current.onSecondBossDeathAnimationEnd += OnBossDead;
         GameEvents.current.onGameOver += RestartScene;
 
     }
@@ -32,6 +33,7 @@ public class LevelManager : MonoBehaviour
     private void OnDestroy()
     {
         GameEvents.current.onBossDeathAnimationEnd -= OnBossDead;
+        GameEvents.current.onSecondBossDeathAnimationEnd -= OnBossDead;
         GameEvents.current.onGameOver -= RestartScene;
 
     }

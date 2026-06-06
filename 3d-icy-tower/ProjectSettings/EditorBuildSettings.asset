@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SecondBiom.unity
     guid: d122ff92262bdd546bc3f39f6081af27
   - enabled: 1
+    path: Assets/Scenes/SecondBossArea.unity
+    guid: 803e049cff1615b42a68a4351ed195d0
+  - enabled: 1
     path: Assets/Scenes/ThirdBiom.unity
     guid: 1b112f031d6856543a2d1e05fa9a30be
   m_configObjects:

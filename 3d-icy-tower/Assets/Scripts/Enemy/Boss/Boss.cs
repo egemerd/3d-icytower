@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public abstract class Boss : Enemy
@@ -10,7 +11,8 @@ public abstract class Boss : Enemy
     protected enum BossPhase { Phase1, Phase2, Phase3 }
     protected BossPhase currentPhase;
 
-    
+    [RangeSlider(1, 2)]
+    [SerializeField] private int bossIndex;
     protected virtual void Start()
     {
         currentHp = maxHp;
@@ -44,7 +46,10 @@ public abstract class Boss : Enemy
     private IEnumerator DelayedDeath()
     {
         yield return new WaitForSeconds(0.3f); // oyuncunun jump'ı tamamlaması için bekle
-        GameEvents.current.TriggerBossDeath();
+        if(bossIndex == 1)
+            GameEvents.current.TriggerBossDeath();
+        else if(bossIndex == 2)
+            GameEvents.current.TriggerSecondBossDeath();
     }
 }
 

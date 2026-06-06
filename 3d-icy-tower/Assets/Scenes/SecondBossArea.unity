@@ -29083,6 +29083,10 @@ PrefabInstance:
       propertyPath: isEndlessLevel
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2391427943564540062, guid: 4d2211c5743e81947995e456499533f0, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1588544254}
     - target: {fileID: 6020805559411760628, guid: 4d2211c5743e81947995e456499533f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -67.26514
@@ -29123,6 +29127,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8692317980340335419, guid: 4d2211c5743e81947995e456499533f0, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1588544254}
     - target: {fileID: 8947945190649013136, guid: 4d2211c5743e81947995e456499533f0, type: 3}
       propertyPath: m_Name
       value: LevelManager
@@ -34902,6 +34910,14 @@ PrefabInstance:
     - target: {fileID: 4790688315064530445, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: m_Name
       value: SecondBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
+      propertyPath: maxHp
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
+      propertyPath: bossIndex
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8366231339017147099, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: m_LocalPosition.x
