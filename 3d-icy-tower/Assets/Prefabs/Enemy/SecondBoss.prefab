@@ -582,6 +582,10 @@ MonoBehaviour:
   maxHp: 300
   bossIndex: 0
   idleDuration: 2
+  introOffsetY: 10
+  introDuration: 1.2
+  introEase: 30
+  bossHitVfx: []
   weightIdle: 1
   weightAttackOne: 2
   weightAttackTwo: 2
@@ -594,6 +598,7 @@ MonoBehaviour:
   wobbleCount: 15
   snapDuration: 0.35
   snapEase: 27
+  diceMeshBody: {fileID: 0}
   eyeRandomForce: 2
   eyeMaxDelay: 0.4
   eyeFallWaitDuration: 0.6
@@ -1188,7 +1193,7 @@ PrefabInstance:
     - target: {fileID: -6243382176826503313, guid: 47be9630ec8ddf947a5ea18936ba68bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3a99f2284cc526c409bfdda7934ed671, type: 2}
+      objectReference: {fileID: 2100000, guid: c114e26f0a40a824f8be7e5f0e6df605, type: 2}
     - target: {fileID: -6207161248831077565, guid: 47be9630ec8ddf947a5ea18936ba68bb, type: 3}
       propertyPath: m_Layer
       value: 25
@@ -1212,11 +1217,11 @@ PrefabInstance:
     - target: {fileID: -4000289579767867939, guid: 47be9630ec8ddf947a5ea18936ba68bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3a99f2284cc526c409bfdda7934ed671, type: 2}
+      objectReference: {fileID: 2100000, guid: c114e26f0a40a824f8be7e5f0e6df605, type: 2}
     - target: {fileID: -2077162511694896522, guid: 47be9630ec8ddf947a5ea18936ba68bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3a99f2284cc526c409bfdda7934ed671, type: 2}
+      objectReference: {fileID: 2100000, guid: 44c38da11abc48249ac2d31ce227b52d, type: 2}
     - target: {fileID: -2067286600771171265, guid: 47be9630ec8ddf947a5ea18936ba68bb, type: 3}
       propertyPath: m_Layer
       value: 25
@@ -1236,7 +1241,7 @@ PrefabInstance:
     - target: {fileID: 969499158395038045, guid: 47be9630ec8ddf947a5ea18936ba68bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3a99f2284cc526c409bfdda7934ed671, type: 2}
+      objectReference: {fileID: 2100000, guid: 44c38da11abc48249ac2d31ce227b52d, type: 2}
     - target: {fileID: 1271326346162380742, guid: 47be9630ec8ddf947a5ea18936ba68bb, type: 3}
       propertyPath: m_Layer
       value: 25
