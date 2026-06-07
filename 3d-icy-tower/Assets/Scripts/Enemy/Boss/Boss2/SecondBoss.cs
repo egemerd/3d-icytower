@@ -37,6 +37,18 @@ public class SecondBoss : Boss
     [SerializeField] private float snapDuration = 0.35f;
     [SerializeField] private Ease snapEase = Ease.OutBack;
 
+    [Header("Death Sequence - Eyes")]
+    [SerializeField] private Transform diceMeshBody;
+    [SerializeField] private float eyeRandomForce = 2f;
+    [SerializeField] private float eyeMaxDelay = 0.4f;
+    [SerializeField] private float eyeFallWaitDuration = 0.6f;
+
+    [Header("Death Sequence - Dissolve")]
+    [SerializeField] private float dissolveDuration = 1.5f;
+    [SerializeField] private float dissolveStartValue = 0f;
+    [SerializeField] private float dissolveEndValue = 1f;
+    [SerializeField] private float afterDissolveDelay = 0.2f;
+
     private Rigidbody rb;
     private BossAttackOne attackOne;
     private BossAttackTwo attackTwo;
@@ -180,10 +192,63 @@ public class SecondBoss : Boss
         return SecondBossState.AttackTwo;
     }
 
+    private IEnumerator BossDeathSequence()
+    {
+        currentState = SecondBossState.Death;
+        DOTween.Kill(diceBody);
+        isRolling = false;
+
+        Rigidbody[] eyeRigidbodies = GetComponentsInChildren<Rigidbody>();
+        foreach (Rigidbody eyeRb in eyeRigidbodies)
+        {
+            if (eyeRb == rb) continue;
+
+            eyeRb.isKinematic = false;
+            eyeRb.useGravity = true;
+            eyeRb.AddForce(Random.insideUnitSphere * eyeRandomForce, ForceMode.Impulse);
+
+            float waitTime = Random.Range(0f, eyeMaxDelay);
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        yield return new WaitForSeconds(eyeFallWaitDuration);
+
+        MeshRenderer meshRenderer = diceMeshBody.GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            Material mat = meshRenderer.material;
+
+            Vector3 startVec = mat.GetVector("_DissolveOffset");
+            startVec.y = dissolveStartValue;
+            mat.SetVector("_DissolveOffset", startVec);
+
+            float elapsed = 0f;
+            while (elapsed < dissolveDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / dissolveDuration);
+
+                Vector3 current = mat.GetVector("_DissolveOffset");
+                current.y = Mathf.Lerp(dissolveStartValue, dissolveEndValue, t);
+                mat.SetVector("_DissolveOffset", current);
+
+                yield return null;
+            }
+
+            Vector3 endVec = mat.GetVector("_DissolveOffset");
+            endVec.y = dissolveEndValue;
+            mat.SetVector("_DissolveOffset", endVec);
+        }
+
+        yield return new WaitForSeconds(afterDissolveDelay);
+        GameEvents.current.TriggerSecondBossDeathAnimationEnd();
+        Destroy(gameObject);
+    }
+
     private void TriggerSecondBossDeath()
     {
         EnterState(SecondBossState.Death);
-        GameEvents.current.TriggerSecondBossDeathAnimationEnd();
+        StartCoroutine(BossDeathSequence());
     }
 
     public override void EnemyAttack() { }
