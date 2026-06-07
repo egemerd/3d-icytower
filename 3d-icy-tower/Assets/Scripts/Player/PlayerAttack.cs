@@ -48,6 +48,9 @@ public class PlayerAttack : MonoBehaviour
     ITargetable enemy;
 
     private EnergySystem energySystem;
+
+    public static bool BossIntroActive = false;
+
     private void Awake()
     {
         stateMachine = GetComponent<IStateMachine>();
@@ -64,6 +67,7 @@ public class PlayerAttack : MonoBehaviour
     private void Update()
     {
         if (isAttacking) return;
+        if (BossIntroActive) return;
 
         ScanForTarget();
 

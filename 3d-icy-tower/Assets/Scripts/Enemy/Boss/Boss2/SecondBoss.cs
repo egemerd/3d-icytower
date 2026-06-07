@@ -11,6 +11,16 @@ public class SecondBoss : Boss
     [SerializeField] private float idleDuration = 2f;
     private float idleTimer;
 
+    [Header("Intro Animation")]
+    [SerializeField] private float introOffsetY = 10f;      // başlangıçta kaç birim yukarıda
+    [SerializeField] private float introDuration = 1.2f;    // iniş süresi
+    [SerializeField] private Ease introEase = Ease.OutBounce;
+
+    private bool introComplete = false;
+
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem[] bossHitVfx;
+
     [Header("State Weights")]
     [SerializeField] private float weightIdle = 1f;
     [SerializeField] private float weightAttackOne = 2f;
@@ -73,12 +83,13 @@ public class SecondBoss : Boss
         rb.useGravity = false;
 
         // Başlangıçta idle yüzüne snap et (animasyonsuz)
-        diceBody.localRotation = Quaternion.Euler(idleFaceRotation); 
-        EnterState(SecondBossState.Idle);
+        diceBody.localRotation = Quaternion.Euler(idleFaceRotation);
+        StartCoroutine(IntroRoutine());
     }
 
     protected override void RunStateMachine()
     {
+        if (!introComplete) return;
         switch (currentState)
         {
             case SecondBossState.Idle: StateIdle(); break;
@@ -170,10 +181,38 @@ public class SecondBoss : Boss
             EnterState(PickNextState());
     }
 
+    public void PlayVFX()
+    {
+        if (bossHitVfx == null || bossHitVfx.Length == 0) return;
+
+        // Döngüyle her bir particle'ı tek tek gezip oynatıyoruz
+        foreach (ParticleSystem ps in bossHitVfx)
+        {
+            ps.transform.position = transform.position + Vector3.up * 1.5f; // VFX'i biraz yukarıda göster
+
+            ps.Play(withChildren: true);
+        }
+    }
+
+    // ── TÜM EFEKTLERİ AYNI ANDA DURDUR ──────────────────────────────────
+    public void StopVFX()
+    {
+        if (bossHitVfx == null || bossHitVfx.Length == 0) return;
+
+        foreach (ParticleSystem ps in bossHitVfx)
+        {
+            ps.Stop(withChildren: true, ParticleSystemStopBehavior.StopEmitting);
+        }
+    }
     public override void OnKilled(int damage)
     {
         if (currentState == SecondBossState.Idle && !isRolling)
+        {
             TakeDamage(damage);
+            TimeStop.Instance.StopTime(0.2f,0.2f);
+            PlayVFX();
+        }
+
     }
 
     private SecondBossState PickNextState()
@@ -249,6 +288,32 @@ public class SecondBoss : Boss
     {
         EnterState(SecondBossState.Death);
         StartCoroutine(BossDeathSequence());
+    }
+
+    private IEnumerator IntroRoutine()
+    {
+        PlayerAttack.BossIntroActive = true;
+
+        Vector3 targetPos = transform.position;
+        transform.position = targetPos + Vector3.up * introOffsetY;
+
+        rb.isKinematic = true; // ← fizik karışmasın
+        rb.useGravity = false;
+
+        yield return null; // ← bir frame bekle, her şey initialize olsun
+
+        bool done = false;
+        transform.DOMove(targetPos, introDuration)
+                 .SetEase(introEase)
+                 .OnComplete(() => done = true);
+
+        yield return new WaitUntil(() => done);
+
+        rb.isKinematic = false;
+        introComplete = true;
+        PlayerAttack.BossIntroActive = false;
+
+        EnterState(SecondBossState.Idle);
     }
 
     public override void EnemyAttack() { }
