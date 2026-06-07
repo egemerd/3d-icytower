@@ -15,6 +15,17 @@ public class FirstBoss : Boss
     [SerializeField] private float idleDuration = 2f;
     private float idleTimer;
 
+    [Header("Intro Animation")]
+    [SerializeField] private Transform vfxPos;
+    [SerializeField] private float introOffsetY = -10f;       // başlangıçta kaç birim aşağıda
+    [SerializeField] private float introRiseDuration = 0.6f;  // yerden çıkış süresi
+    [SerializeField] private float introRiseOvershoot = 3f;   // ne kadar yukarı aşsın
+    [SerializeField] private float introDropDuration = 0.25f; // yere iniş süresi
+    [SerializeField] private Ease introRiseEase = Ease.OutExpo;
+    [SerializeField] private Ease introDropEase = Ease.InExpo;
+
+    private bool introComplete = false;
+
     [Header("Bounce Settings")]
     [SerializeField] private float bounceSpeed = 8f;
     [SerializeField] private float minBounceAngle = 20f;    // En dik (yukarıya) açı
@@ -122,14 +133,12 @@ public class FirstBoss : Boss
             // İsterseniz görünmez de yapabilirsiniz ama gömülü olması yetiyorsa kapamayın.
             // weakPointObj.gameObject.SetActive(false); 
         }
-
-        vulnerabilityCoroutine = StartCoroutine(VulnerabilityRoutine());
-
-        EnterState(FirstBossState.Idle);
+        StartCoroutine(IntroRoutine());
     }
 
     protected override void RunStateMachine()
     {
+        if (!introComplete) return;
         switch (currentState)
         {
             case FirstBossState.Idle: StateIdle(); break;
@@ -184,6 +193,56 @@ public class FirstBoss : Boss
 
             return targetPoint;
         }
+    }
+
+    private IEnumerator IntroRoutine()
+    {
+        PlayerAttack.BossIntroActive = true;
+
+        Vector3 targetPos = transform.position;
+        Vector3 startPos = targetPos + Vector3.up * introOffsetY;    // yerin altı
+        Vector3 overshootPos = targetPos + Vector3.up * introRiseOvershoot; // biraz yukarısı
+
+        transform.position = startPos;
+        rb.isKinematic = true;
+
+        yield return null; // bir frame bekle
+
+        // ── 1. Yerden hızlıca çık, biraz yukarıya aş ────────────────
+        bool riseDone = false;
+        transform.DOMove(overshootPos, introRiseDuration)
+                 .SetEase(introRiseEase)
+                 .OnComplete(() => riseDone = true);
+        yield return new WaitUntil(() => riseDone);
+
+        // ── 2. Sert şekilde yerine in ────────────────────────────────
+        bool dropDone = false;
+        transform.DOMove(targetPos, introDropDuration)
+                 .SetEase(introDropEase)
+                 .OnComplete(() => dropDone = true);
+        yield return new WaitUntil(() => dropDone);
+
+        // ── 3. Sert iniş hissi için kısa titreme ────────────────────
+        Vector3 landPos = transform.position;
+        float shakeElapsed = 0f;
+        float shakeDuration = 0.2f;
+        while (shakeElapsed < shakeDuration)
+        {
+            shakeElapsed += Time.deltaTime;
+            float shakeAmount = Mathf.Lerp(0.15f, 0f, shakeElapsed / shakeDuration);
+            transform.position = landPos + Random.insideUnitSphere * shakeAmount;
+            yield return null;
+        }
+        transform.position = landPos;
+        bossHitVFX.transform.position = vfxPos.position;
+        bossHitVFX.Play();
+        // ── 4. Normal akışa geç ──────────────────────────────────────
+        rb.isKinematic = false;
+        introComplete = true;
+        PlayerAttack.BossIntroActive = false;
+
+        vulnerabilityCoroutine = StartCoroutine(VulnerabilityRoutine());
+        EnterState(FirstBossState.Idle);
     }
 
     // ── STATE GEÇİŞ ────────────────────────────────────────────
