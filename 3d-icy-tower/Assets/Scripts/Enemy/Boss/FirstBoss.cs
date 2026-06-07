@@ -462,6 +462,9 @@ public class FirstBoss : Boss
                 IDamagable damageableTarget = playerCol.GetComponent<IDamagable>();
                 if (damageableTarget != null)
                 {
+                    float scale;
+                    float duration;
+
                     Vector3 pushDirection = gizmoDashDir;
                     damageableTarget.TakeDamage(attackDamage, timeStopScale, timeStopDuration);
                 }

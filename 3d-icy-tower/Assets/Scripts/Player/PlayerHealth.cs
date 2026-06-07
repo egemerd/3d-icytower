@@ -48,7 +48,10 @@ public class PlayerHealth : MonoBehaviour
         if (canTakeDamage == false) return;
         health -= damage;
         ParticleEffects.Instance.PlayOneShot(ParticleType.BossHitEffect, transform.position + new Vector3(2, 0, 0));
-        TimeStop.Instance.StopTime(duration,timeScale);
+        if (health > 1)
+        {
+            TimeStop.Instance.StopTime(duration, timeScale);
+        }
         Debug.Log("Player Health: " + health);
 
         if (health <= 0)
