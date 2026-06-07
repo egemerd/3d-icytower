@@ -303,7 +303,7 @@ MonoBehaviour:
   hitstopDuration: 0.13
   hitstopTimeScale: 0
   postAttackJumpForce: 60
-  postAttackForwardForce: 20
+  postAttackForwardForce: 30
   attackDamage: 1
 --- !u!54 &5107770027675983966
 Rigidbody:
@@ -388,6 +388,7 @@ MonoBehaviour:
   guiFontSize: 48
   topPadding: 20
   rightPadding: 30
+  maxHealth: 5
 --- !u!114 &3077783325694739013
 MonoBehaviour:
   m_ObjectHideFlags: 0

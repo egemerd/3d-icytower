@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField]private int health = 3;
+    [SerializeField] public int health = 3;
     public bool canTakeDamage = true;
 
     [SerializeField] private int guiFontSize = 48;
@@ -10,6 +10,14 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float rightPadding = 30f;
 
     private GUIStyle healthStyle;
+
+    public event System.Action<int, int> OnHealthChanged; // current, max
+    [SerializeField] public int maxHealth = 3;
+
+    private void Awake()
+    {
+        health = maxHealth;
+    }
 
     private void Update()
     {
@@ -35,6 +43,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (canTakeDamage == false) return;
         health -= damage;
+        OnHealthChanged?.Invoke(health, maxHealth);
         ParticleEffects.Instance.PlayOneShot(ParticleType.PlayerHit,transform.position + new Vector3(2,0,0));
         //TimeStop.Instance.StopTime(0.1f, 0.1f); 
         Debug.Log("Player Health: " + health);
@@ -47,6 +56,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (canTakeDamage == false) return;
         health -= damage;
+        OnHealthChanged?.Invoke(health, maxHealth);
         ParticleEffects.Instance.PlayOneShot(ParticleType.BossHitEffect, transform.position + new Vector3(2, 0, 0));
         if (health > 1)
         {
