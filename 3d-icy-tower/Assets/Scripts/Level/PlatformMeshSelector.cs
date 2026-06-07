@@ -15,8 +15,8 @@ public class PlatformMeshSelector : MonoBehaviour
 
     private void SelectPlatformMesh(int biom)
     {
-        biom01Platform.SetActive(biom == 0 || biom== 1); 
-        biom02Platform.SetActive(biom == 2);
-        biom03Platform.SetActive(biom == 4);
+        biom01Platform.SetActive(biom == 1 || biom== 2); 
+        biom02Platform.SetActive(biom == 3);
+        biom03Platform.SetActive(biom == 5);
     }
 }
