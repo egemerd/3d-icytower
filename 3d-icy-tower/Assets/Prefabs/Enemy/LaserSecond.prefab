@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 239313148533456453}
   - component: {fileID: 2895336165340108819}
   - component: {fileID: 7638319859589562594}
+  - component: {fileID: 6611310333025932636}
+  - component: {fileID: 4336923846895388511}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -90,6 +92,46 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &6611310333025932636
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592818333763368959}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.01
+  m_Height: 0.1
+  m_Direction: 2
+  m_Center: {x: 0, y: -5.739409e-12, z: 0.038270134}
+--- !u!114 &4336923846895388511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592818333763368959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aa489e26d61c214b9a7ad8e9844aaf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossLaserHitbox
+  damage: 1
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  isDamageActive: 0
 --- !u!1 &3302892909065874605
 GameObject:
   m_ObjectHideFlags: 0

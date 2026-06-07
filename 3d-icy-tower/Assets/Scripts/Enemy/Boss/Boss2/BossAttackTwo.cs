@@ -29,6 +29,8 @@ public class BossAttackTwo : MonoBehaviour
     private Transform laserTransform;
     private bool isDamageActive = false;
 
+    private BossLaserHitbox laserHitbox;
+
     // ── Ana coroutine ────────────────────────────────────────────────────
     public IEnumerator Execute(System.Action onComplete)
     {
@@ -36,19 +38,19 @@ public class BossAttackTwo : MonoBehaviour
         SpawnLaser(startAngle);
 
         // 3. Soldan → Sağa
-        isDamageActive = true;
+
         yield return StartCoroutine(SweepLaser(startAngle, endAngle));
 
         // 4. Bekleme
-        isDamageActive = false;
+
         yield return new WaitForSeconds(pauseBetweenSweeps);
 
         // 5. Sağdan → Sola
-        isDamageActive = true;
+
         yield return StartCoroutine(SweepLaser(endAngle, startAngle));
 
         // 6. Temizle
-        isDamageActive = false;
+
         if (laserInstance != null) Destroy(laserInstance);
 
         onComplete?.Invoke();
@@ -61,6 +63,13 @@ public class BossAttackTwo : MonoBehaviour
 
         laserInstance = Instantiate(laserPrefab, firePoint.position, Quaternion.identity);
         laserTransform = laserInstance.transform;
+        laserHitbox = laserInstance.GetComponentInChildren<BossLaserHitbox>();
+
+        if (laserHitbox != null)
+        {
+            laserHitbox.damage = damage;
+            laserHitbox.playerMask = playerMask;
+        }
 
         UpdateLaserTransform(angleDegrees);
     }
@@ -83,6 +92,9 @@ public class BossAttackTwo : MonoBehaviour
         float current = from;
         float direction = Mathf.Sign(to - from);
 
+        // Hasar aç
+        if (laserHitbox != null) laserHitbox.isDamageActive = true;
+
         while (direction > 0 ? current < to : current > to)
         {
             current += direction * sweepSpeed * Time.deltaTime;
@@ -91,12 +103,11 @@ public class BossAttackTwo : MonoBehaviour
                 : Mathf.Max(current, to);
 
             UpdateLaserTransform(current);
-
-            if (isDamageActive)
-                CheckLaserDamage(current);
-
             yield return null;
         }
+
+        // Hasar kapat
+        if (laserHitbox != null) laserHitbox.isDamageActive = false;
     }
 
     // ── Hasar ────────────────────────────────────────────────────────────
@@ -125,4 +136,6 @@ public class BossAttackTwo : MonoBehaviour
         // +90 derece girildiğinde: Cos(90) = 0, Sin(90) = 1 -> Sonuç: (0, 0, 1) yani tam sağ (Z+).
         return new Vector3(0f, -Mathf.Cos(rad), Mathf.Sin(rad)).normalized;
     }
+
+    
 }
