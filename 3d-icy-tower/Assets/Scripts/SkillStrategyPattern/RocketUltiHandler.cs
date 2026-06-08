@@ -20,7 +20,10 @@ public class RocketUltiHandler : MonoBehaviour
     private Vector3 currentLaunchDir; // The current travel direction, updated on every bounce
     private float currentSpeed;
 
+    private ParticleSystem[] speedVFXInstances;
+
     private static RocketUltiHandler activeInstance = null;
+    private PlayerVfxReferences vfxRefs;
 
     private void Awake()
     {
@@ -53,6 +56,16 @@ public class RocketUltiHandler : MonoBehaviour
         // currentLaunchDir is updated instantly in OnCollisionEnter
         // so the very next FixedUpdate after a bounce already uses
         // the correct reflected direction.
+        if (speedVFXInstances != null)
+        {
+            foreach (ParticleSystem vfx in speedVFXInstances)
+            {
+                if (vfx == null) continue;
+                vfx.transform.rotation = Quaternion.LookRotation(currentLaunchDir);
+            }
+        }
+        
+
         player.Rb.linearVelocity = currentLaunchDir * currentSpeed;
         player.SetZMomentum(currentLaunchDir.z * currentSpeed);
     }
@@ -116,6 +129,11 @@ public class RocketUltiHandler : MonoBehaviour
         isFlying = false;
 
         framesToIgnoreLaunch = LAUNCH_IGNORE_FRAMES;
+
+        vfxRefs = player.GetComponent<PlayerVfxReferences>();
+        if (vfxRefs != null)
+            speedVFXInstances = vfxRefs.rocketSpeedVFXs;
+
     }
 
     // -------------------------------------------------------------------------
@@ -154,14 +172,25 @@ public class RocketUltiHandler : MonoBehaviour
         isAiming = false;
         isFlying = true;
         player.isRocketActive = true;
-
+        vfxRefs.playerObj.GetComponent<SkinnedMeshRenderer>().enabled = false;
         Physics.IgnoreLayerCollision(12, 14, true);
 
         if (arrowInstance != null) { Destroy(arrowInstance); arrowInstance = null; }
 
+
         currentLaunchDir = launchDir.normalized;
         currentLaunchDir.x = 0f; // enforce 2.5D from the very start
         currentSpeed = skillSettings.rocketSpeed;
+
+        if (speedVFXInstances != null)
+        {
+            foreach (ParticleSystem vfx in speedVFXInstances)
+            {
+                if (vfx == null) continue;
+                vfx.transform.rotation = Quaternion.LookRotation(launchDir);
+                vfx.Play();
+            }
+        }
 
         player.Rb.useGravity = false; // keep gravity off for the full rocket duration
         player.Rb.linearVelocity = currentLaunchDir * currentSpeed;
@@ -201,6 +230,15 @@ public class RocketUltiHandler : MonoBehaviour
         // Phase 3 — peak hold
         yield return new WaitForSeconds(skillSettings.rocketPeakHoldDuration);
 
+        if (speedVFXInstances != null)
+        {
+            foreach (ParticleSystem vfx in speedVFXInstances)
+            {
+                if (vfx == null) continue;
+                vfx.Stop();
+            }
+        }
+        vfxRefs.playerObj.GetComponent<SkinnedMeshRenderer>().enabled = true;
         // Clean up
         isFlying = false;
         player.isRocketActive = false;
