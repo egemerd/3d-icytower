@@ -12869,7 +12869,7 @@ MonoBehaviour:
     normal: {x: 0, y: 1, z: 2.2204462e-17}
     length: {x: 0.064, y: 1.588}
     color: {x: 1, y: 1, z: 1}
-  m_InstantiatedMaterial: {fileID: 1925921677}
+  m_InstantiatedMaterial: {fileID: 1340177481}
 --- !u!4 &1155947548
 Transform:
   m_ObjectHideFlags: 0
@@ -14640,6 +14640,52 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!21 &1340177481
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_ShaderGraph GrassUnlitBasic(Clone)
+  m_Shader: {fileID: -6465566751694194690, guid: 99e21a4823144ba47a502a2f65b53afd, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blend: 0
+    - _BlendMult: 1
+    - _BlendOff: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1351477737
 GameObject:
   m_ObjectHideFlags: 0
@@ -31804,52 +31850,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!21 &1925921677
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_ShaderGraph GrassUnlitBasic(Clone)
-  m_Shader: {fileID: -6465566751694194690, guid: 99e21a4823144ba47a502a2f65b53afd, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses:
-  - MOTIONVECTORS
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _Blend: 0
-    - _BlendMult: 1
-    - _BlendOff: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1926000895
 GameObject:
   m_ObjectHideFlags: 0
@@ -35714,6 +35714,63 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &7847104933437463247
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1856194405073924571, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_Name
+      value: GamePlayMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -805.8363
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3605.0461
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1281.8594
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504264527342354189, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6e191cbdd8546fa418ebf83fbdd4fcdc, type: 3}
 --- !u!33 &7980075870303834155
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -36382,3 +36439,4 @@ SceneRoots:
   - {fileID: 2144223447}
   - {fileID: 1250368008}
   - {fileID: 5785785451345452696}
+  - {fileID: 7847104933437463247}

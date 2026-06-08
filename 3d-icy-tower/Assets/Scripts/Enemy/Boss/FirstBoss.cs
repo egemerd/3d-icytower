@@ -236,6 +236,7 @@ public class FirstBoss : Boss
         transform.position = landPos;
         bossHitVFX.transform.position = vfxPos.position;
         bossHitVFX.Play();
+        SoundManager.PlaySound(SoundType.BOSS1ENTRANCE, 0.2f);
         // ── 4. Normal akışa geç ──────────────────────────────────────
         rb.isKinematic = false;
         introComplete = true;
@@ -465,7 +466,7 @@ public class FirstBoss : Boss
         if (isBouncing) return;
         if ((wallMask.value & (1 << collision.gameObject.layer)) == 0) return;
 
-
+        //SoundManager.PlaySound(SoundType.BOSS1WALLBOUNCE, 0.3f);
         // --- BURADAN AŞAĞISI STANDART SEKME (WALL BOUNCE VEYA PLAYER BOUNCE) MANTIĞI ---
 
         bounceHit = false;
@@ -573,6 +574,9 @@ public class FirstBoss : Boss
         EnterState(FirstBossState.Death);
         float elapsed = 0f;
         Vector3 originalPos = transform.position;
+
+
+        SoundManager.PlaySound(SoundType.BOSS1ENTRANCE, 0.3f);
         while (elapsed < 1f)
         {
             transform.position = originalPos + Random.insideUnitSphere * 0.1f;

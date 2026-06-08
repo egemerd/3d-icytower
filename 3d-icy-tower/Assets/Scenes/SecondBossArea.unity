@@ -29272,6 +29272,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2391427943564540062, guid: 4d2211c5743e81947995e456499533f0, type: 3}
+      propertyPath: levelSettingsSO
+      value: 
+      objectReference: {fileID: 11400000, guid: cbdae42c2ee17374a9632e2926ce37c7, type: 2}
+    - target: {fileID: 2391427943564540062, guid: 4d2211c5743e81947995e456499533f0, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1588544254}

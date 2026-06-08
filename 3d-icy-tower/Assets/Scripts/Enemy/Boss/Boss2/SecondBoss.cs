@@ -256,7 +256,7 @@ public class SecondBoss : Boss
         if (meshRenderer != null)
         {
             Material mat = meshRenderer.material;
-
+            SoundManager.PlaySound(SoundType.BOSS2DEATH, 0.2f);
             Vector3 startVec = mat.GetVector("_DissolveOffset");
             startVec.y = dissolveStartValue;
             mat.SetVector("_DissolveOffset", startVec);
@@ -293,7 +293,7 @@ public class SecondBoss : Boss
     private IEnumerator IntroRoutine()
     {
         PlayerAttack.BossIntroActive = true;
-
+        SoundManager.PlaySound(SoundType.BOSS2START, 0.15f);
         Vector3 targetPos = transform.position;
         transform.position = targetPos + Vector3.up * introOffsetY;
 

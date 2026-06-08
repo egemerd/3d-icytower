@@ -36,7 +36,7 @@ public class BossAttackTwo : MonoBehaviour
     {
         // 1. Lazeri başlangıç açısında oluştur
         SpawnLaser(startAngle);
-
+        SoundManager.PlaySound(SoundType.BOSS2LASERSOUND, 0.03f);
         // 3. Soldan → Sağa
 
         yield return StartCoroutine(SweepLaser(startAngle, endAngle));
@@ -44,7 +44,6 @@ public class BossAttackTwo : MonoBehaviour
         // 4. Bekleme
 
         yield return new WaitForSeconds(pauseBetweenSweeps);
-
         // 5. Sağdan → Sola
 
         yield return StartCoroutine(SweepLaser(endAngle, startAngle));
@@ -64,6 +63,7 @@ public class BossAttackTwo : MonoBehaviour
         laserInstance = Instantiate(laserPrefab, firePoint.position, Quaternion.identity);
         laserTransform = laserInstance.transform;
         laserHitbox = laserInstance.GetComponentInChildren<BossLaserHitbox>();
+        
 
         if (laserHitbox != null)
         {

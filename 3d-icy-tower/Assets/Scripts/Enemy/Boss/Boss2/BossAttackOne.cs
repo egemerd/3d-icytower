@@ -57,6 +57,7 @@ public class BossAttackOne : MonoBehaviour
     {
         if (projectilePrefab == null || firePoint == null) return;
 
+        SoundManager.PlaySound(SoundType.BOSS2PROJECTILE, 0.2f);
         Vector3 dir = RandomConeDirection();
         GameObject obj = Instantiate(projectilePrefab, firePoint.position, Quaternion.LookRotation(dir));
         BossProjectile proj = obj.GetComponent<BossProjectile>();
