@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("Level Settings")]
     [SerializeField] private float nextLevelHeight = 1000f;
+    [SerializeField] private LevelSettings levelSettingsSO;
 
     [Header("Level Type")]
     [SerializeField] private bool isBossLevel = false;
@@ -25,6 +26,8 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        nextLevelHeight = levelSettingsSO.nextLevelHeight;
+        Debug.Log("Next Level Height: " + nextLevelHeight);
         GameEvents.current.onBossDeathAnimationEnd += OnBossDead;
         GameEvents.current.onSecondBossDeathAnimationEnd += OnBossDead;
         GameEvents.current.onGameOver += RestartScene;

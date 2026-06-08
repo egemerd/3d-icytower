@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] private LevelSettings levelSO;
     [SerializeField] private GameObject firstSelected;
 
     [SerializeField] private GameObject secondSelected;
@@ -16,6 +17,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject firstButtons;
     [SerializeField] private GameObject secondButtons;
 
+    [SerializeField] private int easyHeight = 500;
+    [SerializeField] private int hardHeight = 1500;
 
     private void Start()
     {
@@ -43,11 +46,13 @@ public class MainMenu : MonoBehaviour
 
     public void Easy()
     {
+        levelSO.nextLevelHeight = easyHeight;
         SceneManager.LoadScene(2);
     }
 
     public void Hard()
     {
+        levelSO.nextLevelHeight = hardHeight;
         SceneManager.LoadScene(2);
     }
 }
