@@ -5,7 +5,7 @@ public class JumpingState : IState
     public void EnterState(PlayerController player)
     {   
         player.animator.SetBool("isJumping",true);
-        SoundManager.PlaySound(SoundType.PLAYERJUMP, 0.7f);
+        SoundManager.PlaySound(SoundType.PLAYERJUMP, 0.4f);
         Debug.Log("Entered Jumping State");
     }
 

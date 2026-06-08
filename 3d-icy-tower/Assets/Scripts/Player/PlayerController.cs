@@ -326,7 +326,7 @@ public class PlayerController : MonoBehaviour, IStateMachine, IDamagable
         
         if ((wallMask.value & (1 << collision.gameObject.layer)) > 0)
         {
-            SoundManager.PlaySound(SoundType.PLAYERWALLBOUNCE, 0.6f);
+            SoundManager.PlaySound(SoundType.PLAYERWALLBOUNCE, 0.3f);
             ParticleEffects.Instance.PlayOneShot(ParticleType.WallBounce, collision.contacts[0].point);
             Bounce(collision);        // Original single bounce
         }
