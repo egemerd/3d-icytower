@@ -6,6 +6,8 @@ public class ArrowFollower : MonoBehaviour
     [Header("Real UI Buttons (Canvas)")]
     [SerializeField] private GameObject realPlayButton;
     [SerializeField] private GameObject realQuitButton;
+    [SerializeField] private GameObject realEasyButton;
+    [SerializeField] private GameObject realHardButton;
 
     [Header("3D Mesh Visuals (In Scene)")]
     [SerializeField] private Transform meshPlayTransform;
@@ -32,6 +34,14 @@ public class ArrowFollower : MonoBehaviour
         else if (currentSelected == realQuitButton)
         {
             targetPosition = meshQuitTransform.position + offset;
+        }
+        else if (currentSelected == realEasyButton)
+        {
+            targetPosition = meshPlayTransform.position + offset; // Easy butonu Play butonunun yanýnda
+        }
+        else if (currentSelected == realHardButton)
+        {
+            targetPosition = meshQuitTransform.position + offset; // Hard butonu Quit butonunun yanýnda
         }
 
         // Oku hedef konuma yumuþakça kaydýr (Illüzyonu güzelleþtirir)
