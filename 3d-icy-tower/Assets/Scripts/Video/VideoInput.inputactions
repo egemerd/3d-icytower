@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "VideoInput",
+    "maps": [
+        {
+            "name": "Video",
+            "id": "187dd6b3-d068-4ff5-bc8f-0825bb2d742d",
+            "actions": [
+                {
+                    "name": "Skip",
+                    "type": "Button",
+                    "id": "4cca3f27-49f9-4862-8216-c6db159e6ac9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a783b192-6a23-4d26-ba99-7c0f6167ce51",
+                    "path": "<XInputController>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
