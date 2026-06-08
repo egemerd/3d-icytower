@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LevelManager : MonoBehaviour
 {
@@ -78,6 +79,14 @@ public class LevelManager : MonoBehaviour
 
     private void RestartScene()
     {
+        if (isLoadingScene) return;
+        isLoadingScene = true;
+        StartCoroutine(RestartWithDelay());
+    }
+
+    private IEnumerator RestartWithDelay()
+    {
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

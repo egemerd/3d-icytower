@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] public int health = 3;
@@ -13,9 +13,15 @@ public class PlayerHealth : MonoBehaviour
 
     public event System.Action<int, int> OnHealthChanged; // current, max
     [SerializeField] public int maxHealth = 3;
+    [SerializeField] public float deathDelay = 3f;
 
+
+    private PlayerController playerController;
+
+    
     private void Awake()
     {
+        playerController = GetComponent<PlayerController>();
         health = maxHealth;
     }
 
@@ -70,14 +76,17 @@ public class PlayerHealth : MonoBehaviour
 
     private void GameOver()
     {
+        playerController.Die();
         GameEvents.current.TriggerGameOver();
+        StartCoroutine(GameOverRoutine());
         Debug.Log("Player fell past the active chunk limits! Game Over.");
         // Add your game over logic here (restart level, show UI, etc.)
     }
 
-    private void PlayerDead()
+    private IEnumerator GameOverRoutine()
     {
-
+        yield return new WaitForSeconds(deathDelay);
+        // LevelManager restart'ý halleder, burada sadece event yeterli
     }
 
     private void OnGUI()

@@ -103,6 +103,9 @@ public class PlayerController : MonoBehaviour, IStateMachine, IDamagable
     public bool isMantling { get; private set; }
     public bool isRocketActive { get; set; }
     public bool isAttacking { get; set; }
+
+    public bool isDead { get; private set; }
+
     public LayerMask WallMask => wallMask;
     public LayerMask UltiWallMask => ultiWallMask;
 
@@ -134,7 +137,12 @@ public class PlayerController : MonoBehaviour, IStateMachine, IDamagable
 
     private void FixedUpdate()
     {
-        
+        if (isDead)
+        {
+            HandleGravity(); // sadece düşmeye devam etsin
+            return;
+        }
+
         HandleRotation();
         RotateCharacter();
 
@@ -203,6 +211,15 @@ public class PlayerController : MonoBehaviour, IStateMachine, IDamagable
     public void SetZMomentum(float newMomentum)
     {
         zMomentum = newMomentum;
+    }
+
+    public void Die()
+    {
+        isDead = true;
+        // Yatay hareketi durdur, sadece düşsün
+        zMomentum = 0f;
+        SetZMomentum(0f);
+        ChangeState<JumpingState>();
     }
 
     public void EnableJumpTrail(bool isPerfect)
