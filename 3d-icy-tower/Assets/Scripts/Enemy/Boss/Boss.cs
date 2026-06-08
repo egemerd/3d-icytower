@@ -24,6 +24,9 @@ public abstract class Boss : Enemy
         RunStateMachine(); // child implement eder
     }
 
+    public float GetCurrentHp() => currentHp;
+
+    public float GetMaxHp() => maxHp;
 
     protected abstract void RunStateMachine();        
     protected virtual void OnBossStart() { }  
@@ -32,6 +35,7 @@ public abstract class Boss : Enemy
     {
         currentHp -= amount;
         if(currentHp <= 0) BossDeath();
+        GameEvents.current.TriggerBossGetDamage();
         //if (currentHp <= 0) OnKilled(amount);
         Debug.Log($"Boss took {amount} damage, current HP: {currentHp}");
     }
