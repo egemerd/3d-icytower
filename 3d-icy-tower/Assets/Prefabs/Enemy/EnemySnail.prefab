@@ -556,7 +556,7 @@ MonoBehaviour:
   perfectHitObj: {fileID: 2343180861846895243, guid: 1d9cea6991c31c243be373808671b41e, type: 3}
   perfectHitSprite: {fileID: 8347324900393215827}
   timingUiTransform: {fileID: 4475892765161898041}
-  useOldUiSystem: 1
+  useOldUiSystem: 0
   isBoss: 0
 --- !u!65 &5910082284553107730
 BoxCollider:

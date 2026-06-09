@@ -7849,7 +7849,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: maxHp
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: vfxPos
@@ -34921,9 +34921,9 @@ SceneRoots:
   - {fileID: 969457840}
   - {fileID: 1424186763}
   - {fileID: 1499509957}
+  - {fileID: 972742189}
   - {fileID: 1375795104}
   - {fileID: 1454419062}
-  - {fileID: 972742189}
   - {fileID: 1538652248}
   - {fileID: 1397534431}
   - {fileID: 1615701612}

@@ -11082,7 +11082,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.104
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -34443,6 +34443,63 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1001 &2134296021
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -16.3028
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.7566719
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748983695051211701, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6754771895784527841, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
+      propertyPath: m_Name
+      value: vfx_Projectile_Orb13_DarkPurple
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8093e3e6d3c33de4ea8933f12527a788, type: 3}
 --- !u!1 &2144543917
 GameObject:
   m_ObjectHideFlags: 0
@@ -35667,7 +35724,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: maxHp
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: bossIndex
@@ -35687,7 +35744,7 @@ PrefabInstance:
       objectReference: {fileID: 1042144697}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: idleDuration
-      value: 1.2
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: introOffsetY
@@ -35757,6 +35814,10 @@ PrefabInstance:
       propertyPath: 'bossHitVfx.Array.data[8]'
       value: 
       objectReference: {fileID: 1805417383}
+    - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
+      propertyPath: wobbleAngleEndMultiplier
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8366231339017147099, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.7
@@ -35799,7 +35860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8850146846267573391, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: projectileCount
-      value: 15
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36905,3 +36966,4 @@ SceneRoots:
   - {fileID: 1650889357}
   - {fileID: 69365208348590639}
   - {fileID: 1140380812}
+  - {fileID: 2134296021}

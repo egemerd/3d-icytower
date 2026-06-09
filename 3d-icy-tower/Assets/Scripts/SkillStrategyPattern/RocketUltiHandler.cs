@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RocketUltiHandler : MonoBehaviour
@@ -17,7 +18,7 @@ public class RocketUltiHandler : MonoBehaviour
     private int framesToIgnoreLaunch = 0;
     private const int LAUNCH_IGNORE_FRAMES = 5;
 
-    private Vector3 currentLaunchDir; // The current travel direction, updated on every bounce
+    private Vector3 currentLaunchDir;
     private float currentSpeed;
 
     private ParticleSystem[] speedVFXInstances;
@@ -26,6 +27,21 @@ public class RocketUltiHandler : MonoBehaviour
     private PlayerVfxReferences vfxRefs;
 
     public float radius = 1.5f;
+
+    // -------------------------------------------------------------------------
+    // Hit cooldown system — prevents the same collider from being damaged
+    // multiple times within HIT_COOLDOWN seconds.
+    // Cleared on every bounce so a tight ricochet can immediately re-hit.
+    // -------------------------------------------------------------------------
+    private const float HIT_COOLDOWN = 0.5f;
+    private Dictionary<Collider, float> hitCooldowns = new Dictionary<Collider, float>();
+
+    // Assign in Inspector: include only the layers your enemies/boss live on.
+    // If left empty (value 0) the overlap will check ALL layers.
+    [SerializeField] private LayerMask enemyHitMask;
+
+    // -------------------------------------------------------------------------
+
     private void Awake()
     {
         if (activeInstance != null && activeInstance != this) { Destroy(this); return; }
@@ -43,20 +59,14 @@ public class RocketUltiHandler : MonoBehaviour
     }
 
     // -------------------------------------------------------------------------
-    // This is the entire billiard physics loop.
-    // It runs INSTEAD of PlayerController.FixedUpdate (which returns early
-    // when isRocketActive is true).
-    // It does one thing: keep moving in currentLaunchDir at currentSpeed.
-    // OnCollisionEnter updates currentLaunchDir when a wall is hit.
+    // Billiard physics loop — runs instead of PlayerController.FixedUpdate
+    // while isRocketActive is true.
     // -------------------------------------------------------------------------
     private void FixedUpdate()
     {
         if (!isFlying) return;
 
-        // Always drive velocity from our own direction + speed.
-        // currentLaunchDir is updated instantly in OnCollisionEnter
-        // so the very next FixedUpdate after a bounce already uses
-        // the correct reflected direction.
+        // Rotate speed VFX to match travel direction
         if (speedVFXInstances != null)
         {
             foreach (ParticleSystem vfx in speedVFXInstances)
@@ -65,74 +75,80 @@ public class RocketUltiHandler : MonoBehaviour
                 vfx.transform.rotation = Quaternion.LookRotation(currentLaunchDir);
             }
         }
-        
 
         player.Rb.linearVelocity = currentLaunchDir * currentSpeed;
         player.SetZMomentum(currentLaunchDir.z * currentSpeed);
 
-        CheckEnemyCollisionWithRaycast();
+        CheckEnemyCollision();
     }
 
-    private void CheckEnemyCollisionWithRaycast()
+    // -------------------------------------------------------------------------
+    // OverlapSphere hit detection.
+    // Checks every collider inside the rocket's radius each FixedUpdate.
+    // Direction-independent — catches grazes, side hits, and already-overlapping
+    // targets that SphereCast would miss.
+    // -------------------------------------------------------------------------
+    private void CheckEnemyCollision()
     {
-        // 1. Tarama mesafesi (Hız * Süre + tolerans payı)
-        float checkDistance = (currentSpeed * Time.fixedDeltaTime) + 0.2f;
+        // Use the layermask if one was assigned; otherwise check everything.
+        Collider[] hits = (enemyHitMask.value != 0)
+            ? Physics.OverlapSphere(player.transform.position, radius, enemyHitMask)
+            : Physics.OverlapSphere(player.transform.position, radius);
 
-        // 2. Roketin kalınlığı (Yarıçapı). Çapı 1 birim olsun istiyorsan radius'u 0.5f yapabilirsin.
-        // Dilersen bunu yukarıda [SerializeField] private float rocketRadius = 0.5f; olarak da tanımlayabilirsin.
-        float rocketRadius = radius;
-
-        RaycastHit hit;
-
-        // 3. Raycast yerine SPHERECAST kullanıyoruz.
-        // Parametreler: (Başlangıç Pozisyonu, Kürenin Yarıçapı, Gidiş Yönü, Çarpışma Bilgisi, Tarama Mesafesi)
-        if (Physics.SphereCast(player.transform.position, rocketRadius, currentLaunchDir, out hit, checkDistance))
+        foreach (Collider col in hits)
         {
-            GameObject hitObj = hit.collider.gameObject;
+            // --- per-collider cooldown gate ---
+            if (hitCooldowns.TryGetValue(col, out float nextHitTime))
+                if (Time.time < nextHitTime) continue;
 
-            // 1. DURUM: Çarptığımız hacim BOSS'a mı geldi?
-            if (hitObj.TryGetComponent<Boss>(out Boss boss))
+            // Register (or refresh) the cooldown for this collider
+            hitCooldowns[col] = Time.time + HIT_COOLDOWN;
+
+            // --- damage routing ---
+            if (col.TryGetComponent<Boss>(out Boss boss))
             {
                 boss.TakeDamage(1);
-                Debug.Log("SphereCast BOSS'u yakaladı ve hasar verdi: " + hitObj.name);
-                return;
+                Debug.Log("Rocket hit Boss: " + col.name);
+                continue;
             }
 
-            // 2. DURUM: Çarptığımız hacim NORMAL DÜŞMAN'a mı geldi?
-            if (hitObj.TryGetComponent<Enemy>(out Enemy enemy))
+            if (col.TryGetComponent<Enemy>(out Enemy enemy))
             {
                 enemy.OnKilled(1);
-                Debug.Log("SphereCast normal düşmanı yakaladı ve hasar verdi: " + hitObj.name);
+                Debug.Log("Rocket hit Enemy: " + col.name);
             }
         }
     }
+
     // -------------------------------------------------------------------------
     // Wall collision — pure billiard reflection.
-    // This is the ONLY place currentLaunchDir changes after launch.
+    // currentLaunchDir is updated here; the very next FixedUpdate uses it.
+    // Hit cooldowns are cleared so a tight ricochet can re-damage immediately.
     // -------------------------------------------------------------------------
     private void OnCollisionEnter(Collision collision)
     {
         if (!isFlying) return;
         if ((player.UltiWallMask.value & (1 << collision.gameObject.layer)) == 0) return;
 
-        // Get the wall normal
         Vector3 normal = collision.contacts[0].normal;
 
-        // Keep everything in the Y/Z plane — this is a 2.5D game, X is always 0
+        // Enforce 2.5D — keep everything in the Y/Z plane
         normal.x = 0f;
         if (normal.sqrMagnitude < 0.001f) return;
         normal = normal.normalized;
 
         // Billiard reflection: r = d - 2(d·n)n
-        // Angle of incidence == angle of reflection, no energy loss
         float dot = Vector3.Dot(currentLaunchDir, normal);
         currentLaunchDir = (currentLaunchDir - 2f * dot * normal).normalized;
-        currentLaunchDir.x = 0f; // enforce 2.5D
+        currentLaunchDir.x = 0f;
 
-        // Write the new velocity immediately so there is zero-frame gap
-        // between the reflection and the rigidbody moving in the new direction
+        // Apply immediately so there is no single-frame gap in direction
         player.Rb.linearVelocity = currentLaunchDir * currentSpeed;
         player.SetZMomentum(currentLaunchDir.z * currentSpeed);
+
+        // Clear cooldowns — each bounce resets damage windows so the player
+        // is rewarded for bouncing the rocket back into the same enemy/boss.
+        hitCooldowns.Clear();
     }
 
     // -------------------------------------------------------------------------
@@ -169,7 +185,6 @@ public class RocketUltiHandler : MonoBehaviour
         vfxRefs = player.GetComponent<PlayerVfxReferences>();
         if (vfxRefs != null)
             speedVFXInstances = vfxRefs.rocketSpeedVFXs;
-
     }
 
     // -------------------------------------------------------------------------
@@ -213,9 +228,10 @@ public class RocketUltiHandler : MonoBehaviour
 
         if (arrowInstance != null) { Destroy(arrowInstance); arrowInstance = null; }
 
+        hitCooldowns.Clear();
 
         currentLaunchDir = launchDir.normalized;
-        currentLaunchDir.x = 0f; // enforce 2.5D from the very start
+        currentLaunchDir.x = 0f;
         currentSpeed = skillSettings.rocketSpeed;
 
         if (speedVFXInstances != null)
@@ -228,7 +244,7 @@ public class RocketUltiHandler : MonoBehaviour
             }
         }
 
-        player.Rb.useGravity = false; // keep gravity off for the full rocket duration
+        player.Rb.useGravity = false;
         player.Rb.linearVelocity = currentLaunchDir * currentSpeed;
         player.SetZMomentum(currentLaunchDir.z * currentSpeed);
 
@@ -266,6 +282,7 @@ public class RocketUltiHandler : MonoBehaviour
         // Phase 3 — peak hold
         yield return new WaitForSeconds(skillSettings.rocketPeakHoldDuration);
 
+        // Clean up VFX
         if (speedVFXInstances != null)
         {
             foreach (ParticleSystem vfx in speedVFXInstances)
@@ -274,12 +291,16 @@ public class RocketUltiHandler : MonoBehaviour
                 vfx.Stop();
             }
         }
+
         vfxRefs.playerObj.GetComponent<SkinnedMeshRenderer>().enabled = true;
-        // Clean up
+
+        // Reset state
         isFlying = false;
         player.isRocketActive = false;
         player.isAttacking = false;
         player.Rb.useGravity = true;
+
+        hitCooldowns.Clear();
 
         Physics.IgnoreLayerCollision(12, 14, false);
 
@@ -287,30 +308,24 @@ public class RocketUltiHandler : MonoBehaviour
         Destroy(this);
     }
 
+    // -------------------------------------------------------------------------
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         if (!isFlying || player == null || skillSettings == null) return;
 
-        // Koddaki yarıçap ile buradaki çizim yarıçapı aynı olmalı
-        float rocketRadius = radius;
         float checkDistance = (currentSpeed * Time.fixedDeltaTime) + 0.2f;
-
         Vector3 startPoint = player.transform.position;
         Vector3 endPoint = startPoint + (currentLaunchDir.normalized * checkDistance);
 
-        // 1. Roketin o karedeki BAŞLANGIÇ hacmini YEŞİL bir tel küre olarak çizer
+        // Green sphere = current position / overlap radius
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(startPoint, rocketRadius);
+        Gizmos.DrawWireSphere(startPoint, radius);
 
-        // 2. Kürenin merkezlerinin birbirine bağlandığı KIRMIZI rotayı çizer
+        // Red line + sphere = projected next position
         Gizmos.color = Color.red;
         Gizmos.DrawLine(startPoint, endPoint);
-
-        // 3. Roketin o kare ulaştığı HEDEF hacmini KIRMIZI bir tel küre olarak çizer
-        Gizmos.DrawWireSphere(endPoint, rocketRadius);
+        Gizmos.DrawWireSphere(endPoint, radius);
     }
 #endif
-
 }
-
