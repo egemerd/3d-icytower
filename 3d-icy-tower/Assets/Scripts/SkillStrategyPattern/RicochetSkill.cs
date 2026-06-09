@@ -17,7 +17,7 @@ public class RicochetSkill : SkillStrategy
     {
         if (obj == null) return;
        
-        ExecuteRicochetAsync(obj);
+        //ExecuteRicochetAsync(obj);
     }
 
     private async void ExecuteRicochetAsync(GameObject playerObj)

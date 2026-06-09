@@ -108,14 +108,10 @@ public class RocketUltiHandler : MonoBehaviour
             if (col.TryGetComponent<Boss>(out Boss boss))
             {
                 boss.TakeDamage(1);
+                TimeStop.Instance.StopTime(0.1f, 0.1f);
+                ParticleEffects.Instance.PlayOneShot(ParticleType.HitEffect2, col.transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
                 Debug.Log("Rocket hit Boss: " + col.name);
                 continue;
-            }
-
-            if (col.TryGetComponent<Enemy>(out Enemy enemy))
-            {
-                enemy.OnKilled(1);
-                Debug.Log("Rocket hit Enemy: " + col.name);
             }
         }
     }

@@ -15469,7 +15469,7 @@ MonoBehaviour:
   - type: 0
     prefab: {fileID: 198267365771992106, guid: 8de458744ba105148a6084a82ca4f9c8, type: 3}
     initialPoolSize: 5
-  - type: 4
+  - type: 2
     prefab: {fileID: 2690951000901492021, guid: d3a99effa4ade5c47a4eb8c8e5e0621f, type: 3}
     initialPoolSize: 5
   - type: 3
@@ -34850,6 +34850,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3452150511801059317, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
+      propertyPath: m_PreviewTimeScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3958501766160055021, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: health
       value: 5
@@ -34901,6 +34905,10 @@ PrefabInstance:
     - target: {fileID: 5925667882882157276, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154597057725683951, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
+      propertyPath: energyPerPerfect
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
