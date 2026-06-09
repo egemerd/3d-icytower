@@ -1374,52 +1374,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1374255540}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!21 &119082072
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_ShaderGraph GrassUnlitBasic(Clone)
-  m_Shader: {fileID: -6465566751694194690, guid: 99e21a4823144ba47a502a2f65b53afd, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses:
-  - MOTIONVECTORS
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _Blend: 0
-    - _BlendMult: 1
-    - _BlendOff: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &124961061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,6 +1931,10 @@ PrefabInstance:
     - target: {fileID: 4255691983054491695, guid: af6e400cf8ff7704cac7cadbced2cc19, type: 3}
       propertyPath: m_Name
       value: ShadowEnemyHit (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255691983054491695, guid: af6e400cf8ff7704cac7cadbced2cc19, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9212490476391622662, guid: af6e400cf8ff7704cac7cadbced2cc19, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13047,7 +13005,7 @@ MonoBehaviour:
     normal: {x: 0, y: 1, z: 2.2204462e-17}
     length: {x: 0.064, y: 1.588}
     color: {x: 1, y: 1, z: 1}
-  m_InstantiatedMaterial: {fileID: 119082072}
+  m_InstantiatedMaterial: {fileID: 1349769477}
 --- !u!4 &1155947548
 Transform:
   m_ObjectHideFlags: 0
@@ -14070,6 +14028,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyHit
       objectReference: {fileID: 0}
+    - target: {fileID: 1685874166552172, guid: 8de458744ba105148a6084a82ca4f9c8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4248089855141994, guid: 8de458744ba105148a6084a82ca4f9c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -14818,6 +14780,52 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!21 &1349769477
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_ShaderGraph GrassUnlitBasic(Clone)
+  m_Shader: {fileID: -6465566751694194690, guid: 99e21a4823144ba47a502a2f65b53afd, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blend: 0
+    - _BlendMult: 1
+    - _BlendOff: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1351477737
 GameObject:
   m_ObjectHideFlags: 0
@@ -33349,6 +33357,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShadowEnemyHit
       objectReference: {fileID: 0}
+    - target: {fileID: 4255691983054491695, guid: af6e400cf8ff7704cac7cadbced2cc19, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9212490476391622662, guid: af6e400cf8ff7704cac7cadbced2cc19, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -36502,7 +36514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9154597057725683951, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: energyPerPerfect
-      value: 25
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

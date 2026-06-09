@@ -35803,7 +35803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8850146846267573391, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: projectileCount
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36838,6 +36838,10 @@ PrefabInstance:
     - target: {fileID: 7532808689543905617, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154597057725683951, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
+      propertyPath: energyPerPerfect
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -204,9 +204,9 @@ public class RocketUltiHandler : MonoBehaviour
         }
 
         currentLaunchDir = new Vector3(
-            0f,
-            Mathf.Cos(aimAngle * Mathf.Deg2Rad),
-            Mathf.Sin(-aimAngle * Mathf.Deg2Rad)
+        0f,
+        Mathf.Cos(aimAngle * Mathf.Deg2Rad),
+        Mathf.Sin(aimAngle * Mathf.Deg2Rad)  // -aimAngle yerine aimAngle
         ).normalized;
 
         if (InputManager.Instance.UltiPressed())
