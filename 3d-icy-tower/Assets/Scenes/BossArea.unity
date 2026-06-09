@@ -7849,7 +7849,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: maxHp
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: vfxPos
@@ -7863,6 +7863,10 @@ PrefabInstance:
       propertyPath: bossHitVFX
       value: 
       objectReference: {fileID: 12578293}
+    - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
+      propertyPath: bounceSpeed
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 2112710744089284503, guid: 7793dea1d3c8f454d802520c3b09ca49, type: 3}
       propertyPath: bossDeathVFX
       value: 
@@ -9463,6 +9467,14 @@ PrefabInstance:
     - target: {fileID: 3344655177090988916, guid: c35494c48049cd5428fa1fcfd5e4e633, type: 3}
       propertyPath: m_Color.r
       value: 0.4056604
+      objectReference: {fileID: 0}
+    - target: {fileID: 3344655177090988916, guid: c35494c48049cd5428fa1fcfd5e4e633, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3344655177090988916, guid: c35494c48049cd5428fa1fcfd5e4e633, type: 3}
+      propertyPath: m_FillMethod
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3731918463321832362, guid: c35494c48049cd5428fa1fcfd5e4e633, type: 3}
       propertyPath: m_Name

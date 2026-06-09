@@ -184,7 +184,7 @@ public class PlayerAttack : MonoBehaviour
         isAttacking = true;
         Vector3 startPos = transform.position;
         Vector3 endPos = target.GetTransform().position;
-        SoundManager.PlaySound(SoundType.PLAYERATTACK, 0.5f);
+        SoundManager.PlaySound(SoundType.PLAYERATTACK, 0.15f);
         float elapsed = 0f;
         bool hitstopActivated = false;
 

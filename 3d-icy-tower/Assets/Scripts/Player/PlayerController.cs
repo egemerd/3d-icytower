@@ -651,30 +651,30 @@ public class PlayerController : MonoBehaviour, IStateMachine, IDamagable
             Debug.LogError("Player Died.");
         }
     }
-    private void OnGUI()
-    {
-        if (!showCurrentStateOnScreen || currentState == null) return;
+    //private void OnGUI()
+    //{
+    //    if (!showCurrentStateOnScreen || currentState == null) return;
 
-        if (stateLabelStyle == null)
-        {
-            stateLabelStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 16,
-                fontStyle = FontStyle.Bold,
-                normal = { textColor = Color.white }
-            };
-        }
+    //    if (stateLabelStyle == null)
+    //    {
+    //        stateLabelStyle = new GUIStyle(GUI.skin.label)
+    //        {
+    //            fontSize = 16,
+    //            fontStyle = FontStyle.Bold,
+    //            normal = { textColor = Color.white }
+    //        };
+    //    }
 
-        // 1. Current State
-        GUI.Label(new Rect(10f, 10f, 500f, 24f), "State: " + currentState.GetType().Name, stateLabelStyle);
+    //    // 1. Current State
+    //    GUI.Label(new Rect(10f, 10f, 500f, 24f), "State: " + currentState.GetType().Name, stateLabelStyle);
 
-        // 2. Linear Velocity (Shows X, Y, Z of the actual physics engine)
-        if (rb != null)
-        {
-            GUI.Label(new Rect(10f, 34f, 500f, 24f), "Velocity: " + rb.linearVelocity.ToString("F2"), stateLabelStyle);
-        }
+    //    // 2. Linear Velocity (Shows X, Y, Z of the actual physics engine)
+    //    if (rb != null)
+    //    {
+    //        GUI.Label(new Rect(10f, 34f, 500f, 24f), "Velocity: " + rb.linearVelocity.ToString("F2"), stateLabelStyle);
+    //    }
 
-        // 3. Built-up Momentum Tracker (Your manual Z variable)
-        GUI.Label(new Rect(10f, 58f, 500f, 24f), "zMomentum: " + zMomentum.ToString("F3"), stateLabelStyle);
-    }
+    //    // 3. Built-up Momentum Tracker (Your manual Z variable)
+    //    GUI.Label(new Rect(10f, 58f, 500f, 24f), "zMomentum: " + zMomentum.ToString("F3"), stateLabelStyle);
+    //}
 }

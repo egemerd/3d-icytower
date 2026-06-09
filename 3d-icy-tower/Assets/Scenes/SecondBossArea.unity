@@ -34689,6 +34689,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.40784314
       objectReference: {fileID: 0}
+    - target: {fileID: 3344655177090988916, guid: c35494c48049cd5428fa1fcfd5e4e633, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3344655177090988916, guid: c35494c48049cd5428fa1fcfd5e4e633, type: 3}
+      propertyPath: m_FillMethod
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3731918463321832362, guid: c35494c48049cd5428fa1fcfd5e4e633, type: 3}
       propertyPath: m_Name
       value: BossHealthCanvas
@@ -35645,6 +35653,10 @@ PrefabInstance:
       propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5377389411102924093, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
+      propertyPath: sweepSpeed
+      value: 65
+      objectReference: {fileID: 0}
     - target: {fileID: 5756975028236919434, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: m_UseGravity
       value: 0
@@ -35655,7 +35667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: maxHp
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: bossIndex
@@ -35667,12 +35679,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: weightIdle
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: diceMeshBody
       value: 
       objectReference: {fileID: 1042144697}
+    - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
+      propertyPath: idleDuration
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: introOffsetY
       value: 20
@@ -35684,6 +35700,10 @@ PrefabInstance:
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: eyeRandomForce
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
+      propertyPath: weightAttackOne
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6016541926037091802, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: dissolveEndValue
@@ -35776,6 +35796,10 @@ PrefabInstance:
     - target: {fileID: 8366231339017147099, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8850146846267573391, guid: e96c1681d47e8294b88e1f66d5b6758e, type: 3}
+      propertyPath: projectileCount
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

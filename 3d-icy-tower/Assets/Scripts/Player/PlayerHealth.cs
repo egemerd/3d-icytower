@@ -89,22 +89,22 @@ public class PlayerHealth : MonoBehaviour
         // LevelManager restart'ý halleder, burada sadece event yeterli
     }
 
-    private void OnGUI()
-    {
-        if (healthStyle == null)
-        {
-            healthStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = guiFontSize,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.UpperRight
-            };
-            healthStyle.normal.textColor = Color.white;
-        }
+    //private void OnGUI()
+    //{
+    //    if (healthStyle == null)
+    //    {
+    //        healthStyle = new GUIStyle(GUI.skin.label)
+    //        {
+    //            fontSize = guiFontSize,
+    //            fontStyle = FontStyle.Bold,
+    //            alignment = TextAnchor.UpperRight
+    //        };
+    //        healthStyle.normal.textColor = Color.white;
+    //    }
 
-        Rect rect = new Rect(0f, topPadding, Screen.width - rightPadding, 80f);
-        GUI.Label(rect, $"HEALTH: {health}", healthStyle);
-    }
+    //    Rect rect = new Rect(0f, topPadding, Screen.width - rightPadding, 80f);
+    //    GUI.Label(rect, $"HEALTH: {health}", healthStyle);
+    //}
 
     private void OnDrawGizmos()
     {

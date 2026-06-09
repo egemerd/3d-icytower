@@ -25,6 +25,7 @@ public class RocketUltiHandler : MonoBehaviour
     private static RocketUltiHandler activeInstance = null;
     private PlayerVfxReferences vfxRefs;
 
+    public float radius = 1.5f;
     private void Awake()
     {
         if (activeInstance != null && activeInstance != this) { Destroy(this); return; }
@@ -68,8 +69,43 @@ public class RocketUltiHandler : MonoBehaviour
 
         player.Rb.linearVelocity = currentLaunchDir * currentSpeed;
         player.SetZMomentum(currentLaunchDir.z * currentSpeed);
+
+        CheckEnemyCollisionWithRaycast();
     }
 
+    private void CheckEnemyCollisionWithRaycast()
+    {
+        // 1. Tarama mesafesi (Hız * Süre + tolerans payı)
+        float checkDistance = (currentSpeed * Time.fixedDeltaTime) + 0.2f;
+
+        // 2. Roketin kalınlığı (Yarıçapı). Çapı 1 birim olsun istiyorsan radius'u 0.5f yapabilirsin.
+        // Dilersen bunu yukarıda [SerializeField] private float rocketRadius = 0.5f; olarak da tanımlayabilirsin.
+        float rocketRadius = radius;
+
+        RaycastHit hit;
+
+        // 3. Raycast yerine SPHERECAST kullanıyoruz.
+        // Parametreler: (Başlangıç Pozisyonu, Kürenin Yarıçapı, Gidiş Yönü, Çarpışma Bilgisi, Tarama Mesafesi)
+        if (Physics.SphereCast(player.transform.position, rocketRadius, currentLaunchDir, out hit, checkDistance))
+        {
+            GameObject hitObj = hit.collider.gameObject;
+
+            // 1. DURUM: Çarptığımız hacim BOSS'a mı geldi?
+            if (hitObj.TryGetComponent<Boss>(out Boss boss))
+            {
+                boss.TakeDamage(1);
+                Debug.Log("SphereCast BOSS'u yakaladı ve hasar verdi: " + hitObj.name);
+                return;
+            }
+
+            // 2. DURUM: Çarptığımız hacim NORMAL DÜŞMAN'a mı geldi?
+            if (hitObj.TryGetComponent<Enemy>(out Enemy enemy))
+            {
+                enemy.OnKilled(1);
+                Debug.Log("SphereCast normal düşmanı yakaladı ve hasar verdi: " + hitObj.name);
+            }
+        }
+    }
     // -------------------------------------------------------------------------
     // Wall collision — pure billiard reflection.
     // This is the ONLY place currentLaunchDir changes after launch.
@@ -251,6 +287,30 @@ public class RocketUltiHandler : MonoBehaviour
         Destroy(this);
     }
 
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (!isFlying || player == null || skillSettings == null) return;
+
+        // Koddaki yarıçap ile buradaki çizim yarıçapı aynı olmalı
+        float rocketRadius = radius;
+        float checkDistance = (currentSpeed * Time.fixedDeltaTime) + 0.2f;
+
+        Vector3 startPoint = player.transform.position;
+        Vector3 endPoint = startPoint + (currentLaunchDir.normalized * checkDistance);
+
+        // 1. Roketin o karedeki BAŞLANGIÇ hacmini YEŞİL bir tel küre olarak çizer
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(startPoint, rocketRadius);
+
+        // 2. Kürenin merkezlerinin birbirine bağlandığı KIRMIZI rotayı çizer
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(startPoint, endPoint);
+
+        // 3. Roketin o kare ulaştığı HEDEF hacmini KIRMIZI bir tel küre olarak çizer
+        Gizmos.DrawWireSphere(endPoint, rocketRadius);
+    }
+#endif
 
 }
 

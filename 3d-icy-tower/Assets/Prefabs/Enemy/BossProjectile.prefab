@@ -162,7 +162,7 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 4096
-  lifetime: 6
+  lifetime: 4
 --- !u!1001 &6709556497479928854
 PrefabInstance:
   m_ObjectHideFlags: 0
