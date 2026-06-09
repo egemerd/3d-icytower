@@ -49,6 +49,12 @@ public class PlayerAttack : MonoBehaviour
 
     private EnergySystem energySystem;
 
+    [Header("Perfect Attack Combo Sound")]
+    [SerializeField] private float pitchIncreasePerCombo = 0.15f;
+    [SerializeField] private int maxComboCount = 5;
+
+    private int perfectComboCount = 0;
+
     public static bool BossIntroActive = false;
 
     private void Awake()
@@ -80,22 +86,43 @@ public class PlayerAttack : MonoBehaviour
                 currentTarget.StopTimingUI();
                 stateMachine.ChangeState<AttackingState>();
                 energySystem?.AddPerfectAttackEnergy();
+
+                perfectComboCount = Mathf.Min(perfectComboCount + 1, maxComboCount);
+                float pitch = 1f + (perfectComboCount - 1) * pitchIncreasePerCombo;
+                PlayPerfectSound(pitch);
+
                 StartCoroutine(AttackCoroutine(currentTarget,true)); // Belki extra parametre geçebilirsin bool isPerfect
             }
             else if (currentTarget.IsInTimingWindow)
             {
                 Debug.Log("NORMAL ATTACK!");
+                perfectComboCount = 0;
                 currentTarget.StopTimingUI();
                 stateMachine.ChangeState<AttackingState>();
                 StartCoroutine(AttackCoroutine(currentTarget,false));
             }
             else
             {
+                perfectComboCount = 0;
                 Debug.Log("Miss!"); // Çok erken veya çok geç basıldı.
             }
         }
     }
 
+    private void PlayPerfectSound(float pitch)
+    {
+        AudioSource src = SoundManager.GetAudioSource();
+        if (src == null) return;
+
+        AudioClip[] clips = SoundManager.GetClips(SoundType.PLAYERPERFECTATTACK);
+        if (clips == null || clips.Length == 0) return;
+
+        AudioClip clip = clips[Random.Range(0, clips.Length)];
+        src.clip = clip;
+        src.pitch = pitch;
+        src.volume = 0.2f;
+        src.Play();
+    }
 
     public ITargetable GetFirstEntryTarget()
     { 

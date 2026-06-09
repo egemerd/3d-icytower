@@ -84,6 +84,9 @@ MonoBehaviour:
   - name: PLAYERGETDAMAGE
     sounds:
     - {fileID: 8300000, guid: 5b9e7611ee38a0a41bd802edc6d5af1e, type: 3}
+  - name: PLAYERPERFECTATTACK
+    sounds:
+    - {fileID: 8300000, guid: 836daabe39e76ca479f44453a6ba06f3, type: 3}
 --- !u!82 &194880375740580073
 AudioSource:
   m_ObjectHideFlags: 0

@@ -16,7 +16,8 @@ public enum SoundType
     BOSS2PROJECTILE,
     BOSS2START,
     MAINMENUIUSOUND,
-    PLAYERGETDAMAGE
+    PLAYERGETDAMAGE,
+    PLAYERPERFECTATTACK
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -51,6 +52,17 @@ public class SoundManager : MonoBehaviour
         AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
         instance.audioSource.PlayOneShot(randomClip, volume);
     }
+
+    public static AudioSource GetAudioSource()
+    {
+        return instance.audioSource;
+    }
+
+    public static AudioClip[] GetClips(SoundType sound)
+    {
+        return instance.soundList[(int)sound].Sounds;
+    }
+
 #if UNITY_EDITOR
     private void OnValidate()
     {

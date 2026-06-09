@@ -10403,6 +10403,8 @@ MonoBehaviour:
   postAttackJumpForce: 60
   postAttackForwardForce: 30
   attackDamage: 1
+  pitchIncreasePerCombo: 0.12
+  maxComboCount: 8
 --- !u!54 &5107770027675983966
 Rigidbody:
   m_ObjectHideFlags: 0
