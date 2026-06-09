@@ -16,6 +16,7 @@ public enum SoundType
     BOSS2PROJECTILE,
     BOSS2START,
     MAINMENUIUSOUND,
+    PLAYERGETDAMAGE
 }
 
 [RequireComponent(typeof(AudioSource))]

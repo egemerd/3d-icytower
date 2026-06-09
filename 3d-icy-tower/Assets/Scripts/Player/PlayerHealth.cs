@@ -50,6 +50,7 @@ public class PlayerHealth : MonoBehaviour
         if (canTakeDamage == false) return;
         health -= damage;
         OnHealthChanged?.Invoke(health, maxHealth);
+        SoundManager.PlaySound(SoundType.PLAYERGETDAMAGE,0.1f);
         ParticleEffects.Instance.PlayOneShot(ParticleType.PlayerHit,transform.position + new Vector3(2,0,0));
         //TimeStop.Instance.StopTime(0.1f, 0.1f); 
         Debug.Log("Player Health: " + health);
@@ -63,6 +64,7 @@ public class PlayerHealth : MonoBehaviour
         if (canTakeDamage == false) return;
         health -= damage;
         OnHealthChanged?.Invoke(health, maxHealth);
+        SoundManager.PlaySound(SoundType.PLAYERGETDAMAGE, 0.1f);
         //ParticleEffects.Instance.PlayOneShot(ParticleType.BossHitEffect, transform.position + new Vector3(2, 0, 0));
         if (health > 1)
         {
