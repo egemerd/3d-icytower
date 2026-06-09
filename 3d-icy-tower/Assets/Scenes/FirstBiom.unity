@@ -36514,7 +36514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9154597057725683951, guid: 07915a1bee7582b4d8e50bf2b70d60a1, type: 3}
       propertyPath: energyPerPerfect
-      value: 100
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

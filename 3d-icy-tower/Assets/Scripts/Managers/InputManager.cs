@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
     private InputAction moveAction;
     public InputAction jumpAction;
     public InputAction attackAction;
+    public InputAction menuAction;
 
     [Header("Skill Inputs")]
     [SerializeField] private string[] skillActionNames = { "Skill1", "Skill2", "Skill3", "Skill4" }; 
@@ -52,6 +53,7 @@ public class InputManager : MonoBehaviour
         moveAction = playerInput.actions.FindAction("Move");
         jumpAction = playerInput.actions.FindAction("Jump");
         attackAction = playerInput.actions.FindAction("Attack");
+        menuAction = playerInput.actions.FindAction("MainMenu");
 
         skillActions = new InputAction[skillActionNames.Length];
         skillsPressed = new bool[skillActionNames.Length]; // Initialize the boolean array

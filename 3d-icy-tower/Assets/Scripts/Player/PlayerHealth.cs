@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VectorGraphics;
+using UnityEngine.SceneManagement;
+
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] public int health = 3;
@@ -27,6 +30,10 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
+        if(InputManager.Instance.menuAction.WasPressedThisFrame())
+        {
+            SceneManager.LoadScene(1);
+        }
         // PlatformGenerator henüz hazýr deðilse hata vermesin diye kontrol et
         if (PlatformGenerator.Instance == null) return;
 
